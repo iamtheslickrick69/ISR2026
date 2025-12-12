@@ -452,6 +452,19 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Function to increment user's conversations used count
+CREATE OR REPLACE FUNCTION increment_conversations_used(user_id UUID)
+RETURNS VOID
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+    UPDATE profiles
+    SET conversations_used = conversations_used + 1
+    WHERE id = user_id;
+END;
+$$;
+
 -- Function to increment lead count
 CREATE OR REPLACE FUNCTION increment_bot_leads()
 RETURNS TRIGGER AS $$
