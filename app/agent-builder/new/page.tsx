@@ -1,238 +1,380 @@
-'use client';
+"use client"
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useCallback } from "react"
+import { useRouter } from "next/navigation"
+import { motion, AnimatePresence } from "framer-motion"
 import {
   ArrowLeft,
   ArrowRight,
   Check,
   Globe,
-  Sparkles,
-  Palette,
-  MessageSquare,
-  Users,
-  Bot,
-  Link2,
   FileText,
+  Upload,
+  MessageSquare,
+  Palette,
+  Users,
+  Rocket,
+  Bot,
+  Sparkles,
+  Link as LinkIcon,
+  Type,
+  File,
   X,
-  Info,
+  Plus,
   Loader2,
-} from 'lucide-react';
+  Send,
+  User,
+  ChevronDown,
+  Copy,
+  CheckCircle2,
+} from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Switch } from "@/components/ui/switch"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
-// Wizard Steps
-const STEPS = [
-  { id: 1, name: 'Basics', icon: Globe, description: 'Business information' },
-  { id: 2, name: 'Knowledge', icon: FileText, description: 'Train your bot' },
-  { id: 3, name: 'Persona', icon: MessageSquare, description: 'Personality & tone' },
-  { id: 4, name: 'Appearance', icon: Palette, description: 'Visual design' },
-  { id: 5, name: 'Lead Capture', icon: Users, description: 'Capture visitor info' },
-  { id: 6, name: 'Review', icon: Check, description: 'Review & launch' },
-];
-
-// Industry options
-const INDUSTRIES = [
-  { value: 'equipment-rental', label: 'Equipment Rental' },
-  { value: 'construction', label: 'Construction' },
-  { value: 'professional-services', label: 'Professional Services' },
-  { value: 'healthcare', label: 'Healthcare' },
-  { value: 'real-estate', label: 'Real Estate' },
-  { value: 'retail', label: 'Retail & E-commerce' },
-  { value: 'restaurant', label: 'Restaurant & Hospitality' },
-  { value: 'automotive', label: 'Automotive' },
-  { value: 'fitness', label: 'Fitness & Wellness' },
-  { value: 'other', label: 'Other' },
-];
-
-// Tone options
-const TONES = [
-  {
-    value: 'professional',
-    label: 'Professional',
-    description: 'Formal and business-like',
-    emoji: '👔',
-  },
-  {
-    value: 'friendly',
-    label: 'Friendly',
-    description: 'Warm and approachable',
-    emoji: '😊',
-  },
-  {
-    value: 'playful',
-    label: 'Playful',
-    description: 'Fun and energetic',
-    emoji: '🎉',
-  },
-  {
-    value: 'luxury',
-    label: 'Luxury',
-    description: 'Sophisticated and premium',
-    emoji: '✨',
-  },
-  {
-    value: 'technical',
-    label: 'Technical',
-    description: 'Detailed and precise',
-    emoji: '🔧',
-  },
-];
-
-// Avatar options
-const AVATAR_TYPES = [
-  { value: 'orb', label: 'Animated Orb', preview: 'gradient' },
-  { value: 'circle', label: 'Circle Icon', preview: 'icon' },
-  { value: 'square', label: 'Square Icon', preview: 'square' },
-  { value: 'custom', label: 'Custom Image', preview: 'custom' },
-];
-
-// Color presets
-const COLOR_PRESETS = [
-  { primary: '#3B82F6', accent: '#60A5FA', name: 'Blue' },
-  { primary: '#10B981', accent: '#34D399', name: 'Green' },
-  { primary: '#8B5CF6', accent: '#A78BFA', name: 'Purple' },
-  { primary: '#F59E0B', accent: '#FBBF24', name: 'Orange' },
-  { primary: '#EF4444', accent: '#F87171', name: 'Red' },
-  { primary: '#EC4899', accent: '#F472B6', name: 'Pink' },
-];
-
-// Form data type
-interface FormData {
-  // Basics
-  name: string;
-  websiteUrl: string;
-  industry: string;
-  description: string;
-
-  // Knowledge
-  knowledgeSources: Array<{
-    type: 'url' | 'text';
-    value: string;
-    status: 'pending' | 'processing' | 'done';
-  }>;
-
-  // Persona
-  botName: string;
-  tone: string;
-  greetingMessage: string;
-  fallbackMessage: string;
-
-  // Appearance
-  avatarType: string;
-  primaryColor: string;
-  accentColor: string;
-  position: 'bottom-right' | 'bottom-left';
-
-  // Lead Capture
-  leadCaptureEnabled: boolean;
-  leadCaptureFields: string[];
-  leadCaptureMessage: string;
+// Types
+interface BotConfig {
+  // Step 1: Basics
+  name: string
+  websiteUrl: string
+  industry: string
+  description: string
+  // Step 2: Knowledge
+  knowledgeSources: KnowledgeSource[]
+  // Step 3: Persona
+  botName: string
+  tone: string
+  customInstructions: string
+  welcomeMessage: string
+  fallbackMessage: string
+  // Step 4: Appearance
+  avatarType: "preset" | "upload" | "initials"
+  avatarPreset: string
+  avatarUrl: string
+  primaryColor: string
+  secondaryColor: string
+  position: "bottom-right" | "bottom-left"
+  // Step 5: Lead Capture
+  leadCaptureEnabled: boolean
+  collectName: boolean
+  nameRequired: boolean
+  collectEmail: boolean
+  emailRequired: boolean
+  collectPhone: boolean
+  phoneRequired: boolean
+  triggerType: "before_first" | "after_messages" | "on_handoff"
+  triggerAfterMessages: number
 }
 
-const initialFormData: FormData = {
-  name: '',
-  websiteUrl: '',
-  industry: '',
-  description: '',
+interface KnowledgeSource {
+  id: string
+  type: "url" | "text" | "file"
+  name: string
+  content: string
+  status: "pending" | "processing" | "completed" | "error"
+}
+
+interface Message {
+  role: "user" | "assistant"
+  content: string
+}
+
+// Steps configuration
+const steps = [
+  { id: 1, name: "Basics", icon: Globe, description: "Name & website" },
+  { id: 2, name: "Knowledge", icon: FileText, description: "Train your bot" },
+  { id: 3, name: "Persona", icon: MessageSquare, description: "Voice & style" },
+  { id: 4, name: "Appearance", icon: Palette, description: "Look & feel" },
+  { id: 5, name: "Lead Capture", icon: Users, description: "Collect info" },
+  { id: 6, name: "Launch", icon: Rocket, description: "Review & deploy" },
+]
+
+const industries = [
+  "Equipment Rental",
+  "Professional Services",
+  "Home Services",
+  "Retail/E-commerce",
+  "Healthcare",
+  "Real Estate",
+  "Hospitality",
+  "Technology",
+  "Education",
+  "Other",
+]
+
+const tones = [
+  { value: "professional", label: "Professional", description: "Formal and business-like" },
+  { value: "friendly", label: "Friendly", description: "Warm and approachable" },
+  { value: "casual", label: "Casual", description: "Relaxed and conversational" },
+  { value: "custom", label: "Custom", description: "Define your own style" },
+]
+
+const avatarPresets = [
+  { id: "bot-1", label: "Bot Classic", gradient: "from-blue-500 to-blue-700" },
+  { id: "bot-2", label: "Bot Modern", gradient: "from-purple-500 to-pink-600" },
+  { id: "bot-3", label: "Bot Tech", gradient: "from-cyan-500 to-blue-600" },
+  { id: "bot-4", label: "Bot Warm", gradient: "from-orange-500 to-red-600" },
+  { id: "bot-5", label: "Bot Nature", gradient: "from-green-500 to-emerald-600" },
+]
+
+const colorPresets = [
+  { primary: "#3B82F6", secondary: "#1E40AF", label: "Blue" },
+  { primary: "#8B5CF6", secondary: "#6D28D9", label: "Purple" },
+  { primary: "#10B981", secondary: "#059669", label: "Green" },
+  { primary: "#F59E0B", secondary: "#D97706", label: "Orange" },
+  { primary: "#EF4444", secondary: "#DC2626", label: "Red" },
+  { primary: "#EC4899", secondary: "#DB2777", label: "Pink" },
+]
+
+// Initial state
+const initialConfig: BotConfig = {
+  name: "",
+  websiteUrl: "",
+  industry: "",
+  description: "",
   knowledgeSources: [],
-  botName: 'AI Assistant',
-  tone: 'friendly',
-  greetingMessage: 'Hi! 👋 How can I help you today?',
-  fallbackMessage: "I&apos;m not sure about that. Would you like me to connect you with our team?",
-  avatarType: 'orb',
-  primaryColor: '#3B82F6',
-  accentColor: '#60A5FA',
-  position: 'bottom-right',
+  botName: "AI Assistant",
+  tone: "friendly",
+  customInstructions: "",
+  welcomeMessage: "Hi! How can I help you today?",
+  fallbackMessage: "I'm not sure about that. Would you like to speak with a human?",
+  avatarType: "preset",
+  avatarPreset: "bot-1",
+  avatarUrl: "",
+  primaryColor: "#3B82F6",
+  secondaryColor: "#1E40AF",
+  position: "bottom-right",
   leadCaptureEnabled: true,
-  leadCaptureFields: ['name', 'email'],
-  leadCaptureMessage: "I&apos;d love to help you further! Could you share your contact info?",
-};
+  collectName: true,
+  nameRequired: false,
+  collectEmail: true,
+  emailRequired: true,
+  collectPhone: false,
+  phoneRequired: false,
+  triggerType: "after_messages",
+  triggerAfterMessages: 2,
+}
 
-export default function NewBotWizard() {
-  const router = useRouter();
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState<FormData>(initialFormData);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+export default function CreateBotWizard() {
+  const router = useRouter()
+  const [currentStep, setCurrentStep] = useState(1)
+  const [config, setConfig] = useState<BotConfig>(initialConfig)
+  const [isCreating, setIsCreating] = useState(false)
+  const [previewMessages, setPreviewMessages] = useState<Message[]>([])
+  const [previewInput, setPreviewInput] = useState("")
 
-  const updateFormData = (updates: Partial<FormData>) => {
-    setFormData((prev) => ({ ...prev, ...updates }));
-  };
+  // Update config helper
+  const updateConfig = useCallback((updates: Partial<BotConfig>) => {
+    setConfig((prev) => ({ ...prev, ...updates }))
+  }, [])
+
+  // Navigation
+  const canProceed = () => {
+    switch (currentStep) {
+      case 1:
+        return config.name.trim() !== "" && config.websiteUrl.trim() !== ""
+      case 2:
+        return true // Knowledge is optional
+      case 3:
+        return config.botName.trim() !== ""
+      case 4:
+        return true
+      case 5:
+        return true
+      case 6:
+        return true
+      default:
+        return false
+    }
+  }
 
   const nextStep = () => {
-    if (currentStep < STEPS.length) {
-      setCurrentStep(currentStep + 1);
+    if (currentStep < 6 && canProceed()) {
+      setCurrentStep((prev) => prev + 1)
     }
-  };
+  }
 
   const prevStep = () => {
     if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
+      setCurrentStep((prev) => prev - 1)
     }
-  };
+  }
 
-  const handleSubmit = async () => {
-    setIsSubmitting(true);
+  // Knowledge source management
+  const addKnowledgeSource = (source: Omit<KnowledgeSource, "id" | "status">) => {
+    const newSource: KnowledgeSource = {
+      ...source,
+      id: Date.now().toString(),
+      status: "pending",
+    }
+    updateConfig({
+      knowledgeSources: [...config.knowledgeSources, newSource],
+    })
+    // Simulate processing
+    setTimeout(() => {
+      setConfig((prev) => ({
+        ...prev,
+        knowledgeSources: prev.knowledgeSources.map((s) =>
+          s.id === newSource.id ? { ...s, status: "completed" } : s
+        ),
+      }))
+    }, 2000)
+  }
+
+  const removeKnowledgeSource = (id: string) => {
+    updateConfig({
+      knowledgeSources: config.knowledgeSources.filter((s) => s.id !== id),
+    })
+  }
+
+  // Preview chat
+  const sendPreviewMessage = () => {
+    if (!previewInput.trim()) return
+    const userMessage: Message = { role: "user", content: previewInput }
+    setPreviewMessages((prev) => [...prev, userMessage])
+    setPreviewInput("")
+
+    // Simulate bot response
+    setTimeout(() => {
+      const botResponse: Message = {
+        role: "assistant",
+        content: "Thanks for your message! This is a preview of how your bot will respond. In production, responses will be powered by AI and trained on your knowledge base.",
+      }
+      setPreviewMessages((prev) => [...prev, botResponse])
+    }, 1000)
+  }
+
+  // Create bot
+  const handleCreate = async () => {
+    setIsCreating(true)
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsSubmitting(false);
-    // Redirect to dashboard
-    router.push('/agent-builder');
-  };
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+    router.push("/agent-builder/1")
+  }
+
+  // Render step content
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1:
+        return <StepBasics config={config} updateConfig={updateConfig} />
+      case 2:
+        return (
+          <StepKnowledge
+            config={config}
+            addSource={addKnowledgeSource}
+            removeSource={removeKnowledgeSource}
+          />
+        )
+      case 3:
+        return <StepPersona config={config} updateConfig={updateConfig} />
+      case 4:
+        return <StepAppearance config={config} updateConfig={updateConfig} />
+      case 5:
+        return <StepLeadCapture config={config} updateConfig={updateConfig} />
+      case 6:
+        return <StepReview config={config} />
+      default:
+        return null
+    }
+  }
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col">
       {/* Header */}
-      <div className="mb-8">
-        <button
-          onClick={() => router.push('/agent-builder')}
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-4"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to Dashboard
-        </button>
-        <h1 className="text-3xl font-bold text-white">Create New Bot</h1>
-        <p className="text-gray-400 mt-1">
-          Set up your AI agent in just a few steps
-        </p>
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => router.push("/agent-builder")}
+            className="text-gray-400 hover:text-white hover:bg-white/5"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div>
+            <h1 className="text-2xl font-bold text-white">Create New Bot</h1>
+            <p className="text-gray-400">
+              Step {currentStep} of 6: {steps[currentStep - 1].name}
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Progress Steps */}
       <div className="mb-8">
         <div className="flex items-center justify-between">
-          {STEPS.map((step, index) => (
+          {steps.map((step, index) => (
             <div key={step.id} className="flex items-center">
-              <div className="flex flex-col items-center">
+              <div
+                className={cn(
+                  "flex items-center gap-3 cursor-pointer group",
+                  currentStep >= step.id ? "text-white" : "text-gray-500"
+                )}
+                onClick={() => currentStep > step.id && setCurrentStep(step.id)}
+              >
                 <div
-                  className={`
-                    w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300
-                    ${
-                      currentStep > step.id
-                        ? 'bg-green-500 text-white'
-                        : currentStep === step.id
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-white/5 text-gray-500'
-                    }
-                  `}
+                  className={cn(
+                    "flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all",
+                    currentStep === step.id
+                      ? "border-blue-500 bg-blue-500/20"
+                      : currentStep > step.id
+                      ? "border-green-500 bg-green-500/20"
+                      : "border-white/10 bg-white/5 group-hover:border-white/20"
+                  )}
                 >
                   {currentStep > step.id ? (
-                    <Check className="w-5 h-5" />
+                    <Check className="h-5 w-5 text-green-400" />
                   ) : (
-                    <step.icon className="w-5 h-5" />
+                    <step.icon
+                      className={cn(
+                        "h-5 w-5",
+                        currentStep === step.id ? "text-blue-400" : "text-gray-500"
+                      )}
+                    />
                   )}
                 </div>
-                <span
-                  className={`text-xs mt-2 hidden md:block ${
-                    currentStep >= step.id ? 'text-white' : 'text-gray-500'
-                  }`}
-                >
-                  {step.name}
-                </span>
+                <div className="hidden md:block">
+                  <p className="text-sm font-medium">{step.name}</p>
+                  <p className="text-xs text-gray-500">{step.description}</p>
+                </div>
               </div>
-              {index < STEPS.length - 1 && (
+              {index < steps.length - 1 && (
                 <div
-                  className={`w-12 lg:w-24 h-0.5 mx-2 transition-colors duration-300 ${
-                    currentStep > step.id ? 'bg-green-500' : 'bg-white/10'
-                  }`}
+                  className={cn(
+                    "hidden md:block h-0.5 w-12 lg:w-24 mx-4",
+                    currentStep > step.id ? "bg-green-500" : "bg-white/10"
+                  )}
                 />
               )}
             </div>
@@ -240,843 +382,1082 @@ export default function NewBotWizard() {
         </div>
       </div>
 
-      {/* Step Content */}
-      <div className="bg-white/[0.03] backdrop-blur-xl border border-white/5 rounded-2xl p-8">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentStep}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            {currentStep === 1 && (
-              <BasicsStep formData={formData} updateFormData={updateFormData} />
-            )}
-            {currentStep === 2 && (
-              <KnowledgeStep formData={formData} updateFormData={updateFormData} />
-            )}
-            {currentStep === 3 && (
-              <PersonaStep formData={formData} updateFormData={updateFormData} />
-            )}
-            {currentStep === 4 && (
-              <AppearanceStep formData={formData} updateFormData={updateFormData} />
-            )}
-            {currentStep === 5 && (
-              <LeadCaptureStep formData={formData} updateFormData={updateFormData} />
-            )}
-            {currentStep === 6 && (
-              <ReviewStep formData={formData} />
-            )}
-          </motion.div>
-        </AnimatePresence>
+      {/* Main Content */}
+      <div className="flex-1 grid gap-6 lg:grid-cols-2">
+        {/* Form */}
+        <div className="order-2 lg:order-1">
+          <Card className="bg-white/[0.03] border-white/5 backdrop-blur-xl h-full">
+            <CardContent className="p-6">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentStep}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {renderStepContent()}
+                </motion.div>
+              </AnimatePresence>
+            </CardContent>
+          </Card>
+        </div>
 
-        {/* Navigation Buttons */}
-        <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/5">
-          <button
-            onClick={prevStep}
-            disabled={currentStep === 1}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-              currentStep === 1
-                ? 'text-gray-600 cursor-not-allowed'
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </button>
-
-          {currentStep < STEPS.length ? (
-            <button
-              onClick={nextStep}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-medium transition-all duration-200"
-            >
-              Continue
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          ) : (
-            <button
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-medium transition-all duration-200 disabled:opacity-50"
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Creating...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-4 h-4" />
-                  Create Bot
-                </>
-              )}
-            </button>
-          )}
+        {/* Preview */}
+        <div className="order-1 lg:order-2">
+          <BotPreview
+            config={config}
+            messages={previewMessages}
+            input={previewInput}
+            setInput={setPreviewInput}
+            onSend={sendPreviewMessage}
+          />
         </div>
       </div>
 
-      {/* Live Preview */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <BotPreview formData={formData} />
+      {/* Footer Navigation */}
+      <div className="mt-8 flex items-center justify-between border-t border-white/5 pt-6">
+        <Button
+          variant="ghost"
+          onClick={prevStep}
+          disabled={currentStep === 1}
+          className="text-gray-400 hover:text-white hover:bg-white/5"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Previous
+        </Button>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-500">
+            {currentStep} / {steps.length}
+          </span>
+          <Progress value={(currentStep / steps.length) * 100} className="w-32 h-2 bg-white/10" />
+        </div>
+        {currentStep < 6 ? (
+          <Button
+            onClick={nextStep}
+            disabled={!canProceed()}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            Next
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        ) : (
+          <Button
+            onClick={handleCreate}
+            disabled={isCreating}
+            className="bg-green-600 hover:bg-green-700 text-white"
+          >
+            {isCreating ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Creating...
+              </>
+            ) : (
+              <>
+                <Rocket className="mr-2 h-4 w-4" />
+                Launch Bot
+              </>
+            )}
+          </Button>
+        )}
       </div>
     </div>
-  );
+  )
 }
 
 // Step 1: Basics
-function BasicsStep({
-  formData,
-  updateFormData,
+function StepBasics({
+  config,
+  updateConfig,
 }: {
-  formData: FormData;
-  updateFormData: (updates: Partial<FormData>) => void;
+  config: BotConfig
+  updateConfig: (updates: Partial<BotConfig>) => void
 }) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-white mb-1">Business Basics</h2>
-        <p className="text-gray-400">Tell us about your business</p>
+        <h2 className="text-xl font-semibold text-white mb-2">Basic Information</h2>
+        <p className="text-gray-400">
+          Let's start with the basics. What should we call your bot?
+        </p>
       </div>
 
       <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Bot Name *
-          </label>
-          <input
-            type="text"
-            value={formData.name}
-            onChange={(e) => updateFormData({ name: e.target.value })}
-            placeholder="e.g., St. George Rentals Assistant"
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors"
+        <div className="space-y-2">
+          <Label htmlFor="name" className="text-white">
+            Bot Name <span className="text-red-400">*</span>
+          </Label>
+          <Input
+            id="name"
+            placeholder="e.g., Customer Support Bot"
+            value={config.name}
+            onChange={(e) => updateConfig({ name: e.target.value })}
+            className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500"
           />
+          <p className="text-xs text-gray-500">Internal name for your reference</p>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Website URL *
-          </label>
+        <div className="space-y-2">
+          <Label htmlFor="website" className="text-white">
+            Website URL <span className="text-red-400">*</span>
+          </Label>
           <div className="relative">
-            <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-            <input
-              type="url"
-              value={formData.websiteUrl}
-              onChange={(e) => updateFormData({ websiteUrl: e.target.value })}
+            <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+            <Input
+              id="website"
               placeholder="https://yourwebsite.com"
-              className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors"
+              value={config.websiteUrl}
+              onChange={(e) => updateConfig({ websiteUrl: e.target.value })}
+              className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500"
             />
           </div>
-          <p className="text-xs text-gray-500 mt-1">
-            We&apos;ll use this to train your bot on your website content
-          </p>
+          <p className="text-xs text-gray-500">We'll use this to train your bot</p>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+        <div className="space-y-2">
+          <Label htmlFor="industry" className="text-white">
             Industry
-          </label>
-          <select
-            value={formData.industry}
-            onChange={(e) => updateFormData({ industry: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-blue-500/50 transition-colors appearance-none cursor-pointer"
+          </Label>
+          <Select
+            value={config.industry}
+            onValueChange={(value) => updateConfig({ industry: value })}
           >
-            <option value="" className="bg-[#1a1a24]">Select your industry</option>
-            {INDUSTRIES.map((industry) => (
-              <option key={industry.value} value={industry.value} className="bg-[#1a1a24]">
-                {industry.label}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="bg-white/5 border-white/10 text-white">
+              <SelectValue placeholder="Select your industry" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#12121a] border-white/10">
+              {industries.map((industry) => (
+                <SelectItem
+                  key={industry}
+                  value={industry}
+                  className="text-white focus:bg-white/10"
+                >
+                  {industry}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <p className="text-xs text-gray-500">Helps us optimize for your use case</p>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Business Description (Optional)
-          </label>
-          <textarea
-            value={formData.description}
-            onChange={(e) => updateFormData({ description: e.target.value })}
-            placeholder="Briefly describe what your business does..."
-            rows={3}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors resize-none"
+        <div className="space-y-2">
+          <Label htmlFor="description" className="text-white">
+            Business Description
+          </Label>
+          <Textarea
+            id="description"
+            placeholder="Tell us about your business and what you'd like your bot to help with..."
+            value={config.description}
+            onChange={(e) => updateConfig({ description: e.target.value })}
+            rows={4}
+            className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500 resize-none"
           />
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // Step 2: Knowledge
-function KnowledgeStep({
-  formData,
-  updateFormData,
+function StepKnowledge({
+  config,
+  addSource,
+  removeSource,
 }: {
-  formData: FormData;
-  updateFormData: (updates: Partial<FormData>) => void;
+  config: BotConfig
+  addSource: (source: Omit<KnowledgeSource, "id" | "status">) => void
+  removeSource: (id: string) => void
 }) {
-  const [urlInput, setUrlInput] = useState('');
-  const [textInput, setTextInput] = useState('');
+  const [activeTab, setActiveTab] = useState("url")
+  const [urlInput, setUrlInput] = useState("")
+  const [textInput, setTextInput] = useState("")
+  const [textName, setTextName] = useState("")
 
-  const addSource = (type: 'url' | 'text', value: string) => {
-    if (!value.trim()) return;
-    updateFormData({
-      knowledgeSources: [
-        ...formData.knowledgeSources,
-        { type, value, status: 'pending' },
-      ],
-    });
-    if (type === 'url') setUrlInput('');
-    else setTextInput('');
-  };
+  const handleAddUrl = () => {
+    if (!urlInput.trim()) return
+    addSource({ type: "url", name: urlInput, content: urlInput })
+    setUrlInput("")
+  }
 
-  const removeSource = (index: number) => {
-    updateFormData({
-      knowledgeSources: formData.knowledgeSources.filter((_, i) => i !== index),
-    });
-  };
+  const handleAddText = () => {
+    if (!textInput.trim()) return
+    addSource({
+      type: "text",
+      name: textName || "Custom Content",
+      content: textInput,
+    })
+    setTextInput("")
+    setTextName("")
+  }
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-white mb-1">Train Your Bot</h2>
-        <p className="text-gray-400">Add content for your bot to learn from</p>
+        <h2 className="text-xl font-semibold text-white mb-2">Train Your Bot</h2>
+        <p className="text-gray-400">
+          Add content to teach your bot about your business. The more you add, the
+          smarter your bot becomes.
+        </p>
       </div>
 
-      {/* Auto-scan from website */}
-      {formData.websiteUrl && (
-        <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
-          <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-blue-500/20">
-              <Sparkles className="w-4 h-4 text-blue-400" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium text-white">Auto-scan your website</p>
-              <p className="text-xs text-gray-400 mt-1">
-                We&apos;ll automatically extract content from {formData.websiteUrl}
-              </p>
-            </div>
-            <button
-              onClick={() => addSource('url', formData.websiteUrl)}
-              className="px-3 py-1.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition-colors"
-            >
-              Scan Website
-            </button>
-          </div>
-        </div>
-      )}
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="bg-white/5 border border-white/10">
+          <TabsTrigger
+            value="url"
+            className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-gray-400"
+          >
+            <LinkIcon className="mr-2 h-4 w-4" />
+            Website URLs
+          </TabsTrigger>
+          <TabsTrigger
+            value="text"
+            className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-gray-400"
+          >
+            <Type className="mr-2 h-4 w-4" />
+            Text Content
+          </TabsTrigger>
+          <TabsTrigger
+            value="file"
+            className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-gray-400"
+          >
+            <File className="mr-2 h-4 w-4" />
+            Upload Files
+          </TabsTrigger>
+        </TabsList>
 
-      {/* Add URL */}
-      <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
-          Add Additional URLs
-        </label>
-        <div className="flex gap-2">
-          <div className="flex-1 relative">
-            <Link2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-            <input
-              type="url"
+        <TabsContent value="url" className="mt-4 space-y-4">
+          <div className="flex gap-2">
+            <Input
+              placeholder="https://yoursite.com/about"
               value={urlInput}
               onChange={(e) => setUrlInput(e.target.value)}
-              placeholder="https://yourwebsite.com/page"
-              className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors"
+              onKeyDown={(e) => e.key === "Enter" && handleAddUrl()}
+              className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500"
             />
+            <Button
+              onClick={handleAddUrl}
+              disabled={!urlInput.trim()}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
           </div>
-          <button
-            onClick={() => addSource('url', urlInput)}
-            className="px-4 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white transition-colors"
+          <p className="text-xs text-gray-500">
+            We'll crawl and extract content from these pages
+          </p>
+        </TabsContent>
+
+        <TabsContent value="text" className="mt-4 space-y-4">
+          <Input
+            placeholder="Content name (e.g., FAQ, Policies)"
+            value={textName}
+            onChange={(e) => setTextName(e.target.value)}
+            className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500"
+          />
+          <Textarea
+            placeholder="Paste your content here (FAQs, policies, product info...)"
+            value={textInput}
+            onChange={(e) => setTextInput(e.target.value)}
+            rows={6}
+            className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500 resize-none"
+          />
+          <Button
+            onClick={handleAddText}
+            disabled={!textInput.trim()}
+            className="bg-blue-600 hover:bg-blue-700"
           >
-            Add
-          </button>
-        </div>
-      </div>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Content
+          </Button>
+        </TabsContent>
 
-      {/* Add Text */}
-      <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2">
-          Add Custom Knowledge
-        </label>
-        <textarea
-          value={textInput}
-          onChange={(e) => setTextInput(e.target.value)}
-          placeholder="Add FAQs, product info, policies, or any other information you want your bot to know..."
-          rows={4}
-          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors resize-none"
-        />
-        <button
-          onClick={() => addSource('text', textInput)}
-          className="mt-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white text-sm transition-colors"
-        >
-          Add Text
-        </button>
-      </div>
+        <TabsContent value="file" className="mt-4">
+          <div className="border-2 border-dashed border-white/10 rounded-xl p-8 text-center hover:border-blue-500/50 transition-colors cursor-pointer">
+            <Upload className="h-10 w-10 mx-auto text-gray-500 mb-4" />
+            <p className="text-white font-medium mb-2">
+              Drop files here or click to upload
+            </p>
+            <p className="text-sm text-gray-500">
+              Supports PDF, DOCX, TXT (Max 10MB per file)
+            </p>
+          </div>
+        </TabsContent>
+      </Tabs>
 
-      {/* Knowledge Sources List */}
-      {formData.knowledgeSources.length > 0 && (
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Knowledge Sources ({formData.knowledgeSources.length})
-          </label>
-          <div className="space-y-2">
-            {formData.knowledgeSources.map((source, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10"
-              >
-                {source.type === 'url' ? (
-                  <Link2 className="w-4 h-4 text-blue-400" />
-                ) : (
-                  <FileText className="w-4 h-4 text-green-400" />
+      {/* Added Sources */}
+      {config.knowledgeSources.length > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-sm font-medium text-white">Added Sources</h3>
+          {config.knowledgeSources.map((source) => (
+            <div
+              key={source.id}
+              className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10"
+            >
+              <div className="flex items-center gap-3">
+                {source.type === "url" && <LinkIcon className="h-4 w-4 text-blue-400" />}
+                {source.type === "text" && <Type className="h-4 w-4 text-purple-400" />}
+                {source.type === "file" && <File className="h-4 w-4 text-green-400" />}
+                <div>
+                  <p className="text-sm text-white truncate max-w-[200px]">
+                    {source.name}
+                  </p>
+                  <p className="text-xs text-gray-500 capitalize">{source.type}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                {source.status === "pending" && (
+                  <Badge variant="outline" className="text-yellow-400 border-yellow-500/20">
+                    <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                    Processing
+                  </Badge>
                 )}
-                <span className="flex-1 text-sm text-gray-300 truncate">
-                  {source.value}
-                </span>
-                <button
-                  onClick={() => removeSource(index)}
-                  className="p-1 rounded hover:bg-white/10 text-gray-500 hover:text-red-400 transition-colors"
+                {source.status === "completed" && (
+                  <Badge variant="outline" className="text-green-400 border-green-500/20">
+                    <Check className="mr-1 h-3 w-3" />
+                    Ready
+                  </Badge>
+                )}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => removeSource(source.id)}
+                  className="h-8 w-8 text-gray-400 hover:text-red-400 hover:bg-red-500/10"
                 >
-                  <X className="w-4 h-4" />
-                </button>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// Step 3: Persona
+function StepPersona({
+  config,
+  updateConfig,
+}: {
+  config: BotConfig
+  updateConfig: (updates: Partial<BotConfig>) => void
+}) {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl font-semibold text-white mb-2">Bot Persona</h2>
+        <p className="text-gray-400">
+          Define how your bot communicates with visitors.
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="botName" className="text-white">
+            Display Name <span className="text-red-400">*</span>
+          </Label>
+          <Input
+            id="botName"
+            placeholder="e.g., Alex, Helper, Support"
+            value={config.botName}
+            onChange={(e) => updateConfig({ botName: e.target.value })}
+            className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500"
+          />
+          <p className="text-xs text-gray-500">Visitors will see this name</p>
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-white">Tone</Label>
+          <div className="grid grid-cols-2 gap-3">
+            {tones.map((tone) => (
+              <div
+                key={tone.value}
+                onClick={() => updateConfig({ tone: tone.value })}
+                className={cn(
+                  "p-4 rounded-xl border cursor-pointer transition-all",
+                  config.tone === tone.value
+                    ? "border-blue-500 bg-blue-500/10"
+                    : "border-white/10 bg-white/[0.02] hover:border-white/20"
+                )}
+              >
+                <p className="font-medium text-white">{tone.label}</p>
+                <p className="text-xs text-gray-500 mt-1">{tone.description}</p>
               </div>
             ))}
           </div>
         </div>
-      )}
-    </div>
-  );
-}
 
-// Step 3: Persona
-function PersonaStep({
-  formData,
-  updateFormData,
-}: {
-  formData: FormData;
-  updateFormData: (updates: Partial<FormData>) => void;
-}) {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-xl font-semibold text-white mb-1">Bot Personality</h2>
-        <p className="text-gray-400">Define how your bot communicates</p>
-      </div>
-
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Bot Name
-          </label>
-          <input
-            type="text"
-            value={formData.botName}
-            onChange={(e) => updateFormData({ botName: e.target.value })}
-            placeholder="e.g., Atlas, Sarah, Helper"
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
-            Tone of Voice
-          </label>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {TONES.map((tone) => (
-              <button
-                key={tone.value}
-                onClick={() => updateFormData({ tone: tone.value })}
-                className={`p-4 rounded-xl border transition-all duration-200 text-left ${
-                  formData.tone === tone.value
-                    ? 'bg-blue-500/10 border-blue-500/50'
-                    : 'bg-white/5 border-white/10 hover:border-white/20'
-                }`}
-              >
-                <span className="text-2xl mb-2 block">{tone.emoji}</span>
-                <p className="font-medium text-white">{tone.label}</p>
-                <p className="text-xs text-gray-400">{tone.description}</p>
-              </button>
-            ))}
+        {config.tone === "custom" && (
+          <div className="space-y-2">
+            <Label htmlFor="customInstructions" className="text-white">
+              Custom Instructions
+            </Label>
+            <Textarea
+              id="customInstructions"
+              placeholder="Describe how you want your bot to communicate..."
+              value={config.customInstructions}
+              onChange={(e) => updateConfig({ customInstructions: e.target.value })}
+              rows={4}
+              className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500 resize-none"
+            />
           </div>
-        </div>
+        )}
 
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
-            Greeting Message
-          </label>
-          <textarea
-            value={formData.greetingMessage}
-            onChange={(e) => updateFormData({ greetingMessage: e.target.value })}
+        <div className="space-y-2">
+          <Label htmlFor="welcomeMessage" className="text-white">
+            Welcome Message
+          </Label>
+          <Textarea
+            id="welcomeMessage"
             placeholder="Hi! How can I help you today?"
+            value={config.welcomeMessage}
+            onChange={(e) => updateConfig({ welcomeMessage: e.target.value })}
             rows={2}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors resize-none"
+            className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500 resize-none"
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">
+        <div className="space-y-2">
+          <Label htmlFor="fallbackMessage" className="text-white">
             Fallback Message
-          </label>
-          <textarea
-            value={formData.fallbackMessage}
-            onChange={(e) => updateFormData({ fallbackMessage: e.target.value })}
-            placeholder="When the bot doesn&apos;t know the answer..."
+          </Label>
+          <Textarea
+            id="fallbackMessage"
+            placeholder="I'm not sure about that. Would you like to speak with a human?"
+            value={config.fallbackMessage}
+            onChange={(e) => updateConfig({ fallbackMessage: e.target.value })}
             rows={2}
-            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors resize-none"
+            className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500 resize-none"
           />
-          <p className="text-xs text-gray-500 mt-1">
-            This message appears when your bot can't find an answer
+          <p className="text-xs text-gray-500">
+            Shown when the bot can't answer a question
           </p>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // Step 4: Appearance
-function AppearanceStep({
-  formData,
-  updateFormData,
+function StepAppearance({
+  config,
+  updateConfig,
 }: {
-  formData: FormData;
-  updateFormData: (updates: Partial<FormData>) => void;
+  config: BotConfig
+  updateConfig: (updates: Partial<BotConfig>) => void
 }) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-white mb-1">Visual Design</h2>
-        <p className="text-gray-400">Customize how your bot looks</p>
+        <h2 className="text-xl font-semibold text-white mb-2">Appearance</h2>
+        <p className="text-gray-400">
+          Customize how your chat widget looks on your website.
+        </p>
       </div>
 
       <div className="space-y-6">
-        {/* Avatar Type */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
-            Avatar Style
-          </label>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {AVATAR_TYPES.map((avatar) => (
-              <button
-                key={avatar.value}
-                onClick={() => updateFormData({ avatarType: avatar.value })}
-                className={`p-4 rounded-xl border transition-all duration-200 ${
-                  formData.avatarType === avatar.value
-                    ? 'bg-blue-500/10 border-blue-500/50'
-                    : 'bg-white/5 border-white/10 hover:border-white/20'
-                }`}
+        {/* Avatar Selection */}
+        <div className="space-y-3">
+          <Label className="text-white">Avatar Style</Label>
+          <div className="grid grid-cols-5 gap-3">
+            {avatarPresets.map((preset) => (
+              <div
+                key={preset.id}
+                onClick={() =>
+                  updateConfig({ avatarType: "preset", avatarPreset: preset.id })
+                }
+                className={cn(
+                  "aspect-square rounded-xl flex items-center justify-center cursor-pointer border-2 transition-all",
+                  config.avatarPreset === preset.id && config.avatarType === "preset"
+                    ? "border-blue-500 ring-2 ring-blue-500/30"
+                    : "border-transparent hover:border-white/20"
+                )}
               >
                 <div
-                  className="w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center"
-                  style={{
-                    background:
-                      avatar.preview === 'gradient'
-                        ? `linear-gradient(135deg, ${formData.primaryColor}, ${formData.accentColor})`
-                        : formData.primaryColor,
-                    borderRadius: avatar.preview === 'square' ? '12px' : '50%',
-                  }}
-                >
-                  {avatar.preview !== 'gradient' && (
-                    <Bot className="w-6 h-6 text-white" />
+                  className={cn(
+                    "h-12 w-12 rounded-full bg-gradient-to-br flex items-center justify-center",
+                    preset.gradient
                   )}
+                >
+                  <Bot className="h-6 w-6 text-white" />
                 </div>
-                <p className="text-sm font-medium text-white text-center">
-                  {avatar.label}
-                </p>
-              </button>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Color Presets */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
-            Color Theme
-          </label>
-          <div className="flex flex-wrap gap-3">
-            {COLOR_PRESETS.map((preset) => (
-              <button
-                key={preset.name}
+        {/* Color Selection */}
+        <div className="space-y-3">
+          <Label className="text-white">Color Theme</Label>
+          <div className="flex gap-3 flex-wrap">
+            {colorPresets.map((color) => (
+              <div
+                key={color.primary}
                 onClick={() =>
-                  updateFormData({
-                    primaryColor: preset.primary,
-                    accentColor: preset.accent,
+                  updateConfig({
+                    primaryColor: color.primary,
+                    secondaryColor: color.secondary,
                   })
                 }
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all duration-200 ${
-                  formData.primaryColor === preset.primary
-                    ? 'border-white/30 bg-white/10'
-                    : 'border-white/10 hover:border-white/20'
-                }`}
-              >
-                <div
-                  className="w-6 h-6 rounded-full"
-                  style={{
-                    background: `linear-gradient(135deg, ${preset.primary}, ${preset.accent})`,
-                  }}
-                />
-                <span className="text-sm text-white">{preset.name}</span>
-              </button>
+                className={cn(
+                  "h-10 w-10 rounded-full cursor-pointer border-2 transition-all",
+                  config.primaryColor === color.primary
+                    ? "border-white ring-2 ring-white/30"
+                    : "border-transparent hover:border-white/50"
+                )}
+                style={{ backgroundColor: color.primary }}
+                title={color.label}
+              />
             ))}
           </div>
         </div>
 
-        {/* Custom Colors */}
+        {/* Custom Color Inputs */}
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+          <div className="space-y-2">
+            <Label htmlFor="primaryColor" className="text-white">
               Primary Color
-            </label>
+            </Label>
             <div className="flex gap-2">
-              <input
+              <Input
                 type="color"
-                value={formData.primaryColor}
-                onChange={(e) => updateFormData({ primaryColor: e.target.value })}
-                className="w-12 h-12 rounded-lg cursor-pointer bg-transparent"
+                value={config.primaryColor}
+                onChange={(e) => updateConfig({ primaryColor: e.target.value })}
+                className="h-10 w-14 p-1 bg-transparent border-white/10 cursor-pointer"
               />
-              <input
-                type="text"
-                value={formData.primaryColor}
-                onChange={(e) => updateFormData({ primaryColor: e.target.value })}
-                className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-sm focus:outline-none focus:border-blue-500/50"
+              <Input
+                id="primaryColor"
+                value={config.primaryColor}
+                onChange={(e) => updateConfig({ primaryColor: e.target.value })}
+                className="bg-white/5 border-white/10 text-white font-mono text-sm"
               />
             </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Accent Color
-            </label>
+          <div className="space-y-2">
+            <Label htmlFor="secondaryColor" className="text-white">
+              Secondary Color
+            </Label>
             <div className="flex gap-2">
-              <input
+              <Input
                 type="color"
-                value={formData.accentColor}
-                onChange={(e) => updateFormData({ accentColor: e.target.value })}
-                className="w-12 h-12 rounded-lg cursor-pointer bg-transparent"
+                value={config.secondaryColor}
+                onChange={(e) => updateConfig({ secondaryColor: e.target.value })}
+                className="h-10 w-14 p-1 bg-transparent border-white/10 cursor-pointer"
               />
-              <input
-                type="text"
-                value={formData.accentColor}
-                onChange={(e) => updateFormData({ accentColor: e.target.value })}
-                className="flex-1 px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-sm focus:outline-none focus:border-blue-500/50"
+              <Input
+                id="secondaryColor"
+                value={config.secondaryColor}
+                onChange={(e) => updateConfig({ secondaryColor: e.target.value })}
+                className="bg-white/5 border-white/10 text-white font-mono text-sm"
               />
             </div>
           </div>
         </div>
 
         {/* Position */}
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-3">
-            Widget Position
-          </label>
-          <div className="flex gap-3">
-            {['bottom-right', 'bottom-left'].map((pos) => (
-              <button
+        <div className="space-y-3">
+          <Label className="text-white">Widget Position</Label>
+          <div className="grid grid-cols-2 gap-3">
+            {["bottom-right", "bottom-left"].map((pos) => (
+              <div
                 key={pos}
                 onClick={() =>
-                  updateFormData({ position: pos as 'bottom-right' | 'bottom-left' })
+                  updateConfig({ position: pos as "bottom-right" | "bottom-left" })
                 }
-                className={`flex-1 p-4 rounded-xl border transition-all duration-200 ${
-                  formData.position === pos
-                    ? 'bg-blue-500/10 border-blue-500/50'
-                    : 'bg-white/5 border-white/10 hover:border-white/20'
-                }`}
+                className={cn(
+                  "p-4 rounded-xl border cursor-pointer transition-all",
+                  config.position === pos
+                    ? "border-blue-500 bg-blue-500/10"
+                    : "border-white/10 bg-white/[0.02] hover:border-white/20"
+                )}
               >
-                <p className="text-sm font-medium text-white capitalize">
-                  {pos.replace('-', ' ')}
+                <div className="h-16 w-full bg-white/5 rounded-lg relative mb-2">
+                  <div
+                    className={cn(
+                      "absolute bottom-2 h-4 w-4 rounded-full bg-blue-500",
+                      pos === "bottom-right" ? "right-2" : "left-2"
+                    )}
+                  />
+                </div>
+                <p className="text-sm text-white capitalize text-center">
+                  {pos.replace("-", " ")}
                 </p>
-              </button>
+              </div>
             ))}
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // Step 5: Lead Capture
-function LeadCaptureStep({
-  formData,
-  updateFormData,
+function StepLeadCapture({
+  config,
+  updateConfig,
 }: {
-  formData: FormData;
-  updateFormData: (updates: Partial<FormData>) => void;
+  config: BotConfig
+  updateConfig: (updates: Partial<BotConfig>) => void
 }) {
-  const toggleField = (field: string) => {
-    const fields = formData.leadCaptureFields.includes(field)
-      ? formData.leadCaptureFields.filter((f) => f !== field)
-      : [...formData.leadCaptureFields, field];
-    updateFormData({ leadCaptureFields: fields });
-  };
-
-  const availableFields = ['name', 'email', 'phone', 'company'];
-
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-white mb-1">Lead Capture</h2>
-        <p className="text-gray-400">Collect visitor information</p>
+        <h2 className="text-xl font-semibold text-white mb-2">Lead Capture</h2>
+        <p className="text-gray-400">
+          Collect visitor information to follow up with potential customers.
+        </p>
       </div>
 
-      <div className="space-y-6">
-        {/* Enable/Disable */}
-        <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
-          <div>
-            <p className="font-medium text-white">Enable Lead Capture</p>
-            <p className="text-sm text-gray-400">
-              Collect visitor contact information during conversations
-            </p>
-          </div>
-          <button
-            onClick={() =>
-              updateFormData({ leadCaptureEnabled: !formData.leadCaptureEnabled })
-            }
-            className={`relative w-14 h-7 rounded-full transition-colors duration-200 ${
-              formData.leadCaptureEnabled ? 'bg-blue-500' : 'bg-white/10'
-            }`}
-          >
-            <div
-              className={`absolute top-1 w-5 h-5 rounded-full bg-white transition-transform duration-200 ${
-                formData.leadCaptureEnabled ? 'left-8' : 'left-1'
-              }`}
-            />
-          </button>
+      {/* Enable/Disable */}
+      <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
+        <div>
+          <p className="font-medium text-white">Enable Lead Capture</p>
+          <p className="text-sm text-gray-500">
+            Collect contact information from visitors
+          </p>
         </div>
-
-        {formData.leadCaptureEnabled && (
-          <>
-            {/* Fields */}
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-3">
-                Information to Collect
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {availableFields.map((field) => (
-                  <button
-                    key={field}
-                    onClick={() => toggleField(field)}
-                    className={`px-4 py-2 rounded-lg border transition-all duration-200 capitalize ${
-                      formData.leadCaptureFields.includes(field)
-                        ? 'bg-blue-500/10 border-blue-500/50 text-blue-400'
-                        : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/20'
-                    }`}
-                  >
-                    {field}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Lead Capture Message */}
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Lead Capture Message
-              </label>
-              <textarea
-                value={formData.leadCaptureMessage}
-                onChange={(e) =>
-                  updateFormData({ leadCaptureMessage: e.target.value })
-                }
-                placeholder="Message shown when asking for contact info..."
-                rows={2}
-                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors resize-none"
-              />
-            </div>
-          </>
-        )}
+        <Switch
+          checked={config.leadCaptureEnabled}
+          onCheckedChange={(checked) =>
+            updateConfig({ leadCaptureEnabled: checked })
+          }
+        />
       </div>
+
+      {config.leadCaptureEnabled && (
+        <>
+          {/* Fields */}
+          <div className="space-y-3">
+            <Label className="text-white">Collect Fields</Label>
+            <div className="space-y-3">
+              {[
+                { key: "Name", collect: "collectName", required: "nameRequired" },
+                { key: "Email", collect: "collectEmail", required: "emailRequired" },
+                { key: "Phone", collect: "collectPhone", required: "phoneRequired" },
+              ].map((field) => (
+                <div
+                  key={field.key}
+                  className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] border border-white/5"
+                >
+                  <div className="flex items-center gap-3">
+                    <Switch
+                      checked={config[field.collect as keyof BotConfig] as boolean}
+                      onCheckedChange={(checked) =>
+                        updateConfig({ [field.collect]: checked })
+                      }
+                    />
+                    <span className="text-white">{field.key}</span>
+                  </div>
+                  {config[field.collect as keyof BotConfig] && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-500">Required</span>
+                      <Switch
+                        checked={config[field.required as keyof BotConfig] as boolean}
+                        onCheckedChange={(checked) =>
+                          updateConfig({ [field.required]: checked })
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Trigger */}
+          <div className="space-y-3">
+            <Label className="text-white">When to Show Form</Label>
+            <Select
+              value={config.triggerType}
+              onValueChange={(value: "before_first" | "after_messages" | "on_handoff") =>
+                updateConfig({ triggerType: value })
+              }
+            >
+              <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-[#12121a] border-white/10">
+                <SelectItem value="before_first" className="text-white focus:bg-white/10">
+                  Before first response
+                </SelectItem>
+                <SelectItem value="after_messages" className="text-white focus:bg-white/10">
+                  After a few messages
+                </SelectItem>
+                <SelectItem value="on_handoff" className="text-white focus:bg-white/10">
+                  When requesting human
+                </SelectItem>
+              </SelectContent>
+            </Select>
+
+            {config.triggerType === "after_messages" && (
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-gray-400">Show after</span>
+                <Select
+                  value={config.triggerAfterMessages.toString()}
+                  onValueChange={(value) =>
+                    updateConfig({ triggerAfterMessages: parseInt(value) })
+                  }
+                >
+                  <SelectTrigger className="w-20 bg-white/5 border-white/10 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[#12121a] border-white/10">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <SelectItem
+                        key={n}
+                        value={n.toString()}
+                        className="text-white focus:bg-white/10"
+                      >
+                        {n}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <span className="text-sm text-gray-400">messages</span>
+              </div>
+            )}
+          </div>
+        </>
+      )}
     </div>
-  );
+  )
 }
 
 // Step 6: Review
-function ReviewStep({ formData }: { formData: FormData }) {
+function StepReview({ config }: { config: BotConfig }) {
+  const [copied, setCopied] = useState(false)
+
+  const embedCode = `<script src="https://app.yourdomain.com/embed.js" data-bot-id="YOUR_BOT_ID"></script>`
+
+  const copyCode = () => {
+    navigator.clipboard.writeText(embedCode)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-white mb-1">Review & Launch</h2>
-        <p className="text-gray-400">Make sure everything looks good</p>
+        <h2 className="text-xl font-semibold text-white mb-2">Review & Launch</h2>
+        <p className="text-gray-400">
+          Review your bot configuration before launching.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Basics */}
-        <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-          <h3 className="text-sm font-medium text-gray-400 mb-3">Basics</h3>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-gray-400">Name</span>
-              <span className="text-white">{formData.name || 'Not set'}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-400">Website</span>
-              <span className="text-white truncate max-w-[200px]">
-                {formData.websiteUrl || 'Not set'}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-400">Industry</span>
-              <span className="text-white capitalize">
-                {formData.industry?.replace('-', ' ') || 'Not set'}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Knowledge */}
-        <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-          <h3 className="text-sm font-medium text-gray-400 mb-3">Knowledge</h3>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-gray-400">Sources</span>
-              <span className="text-white">{formData.knowledgeSources.length}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Persona */}
-        <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-          <h3 className="text-sm font-medium text-gray-400 mb-3">Persona</h3>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-gray-400">Bot Name</span>
-              <span className="text-white">{formData.botName}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-400">Tone</span>
-              <span className="text-white capitalize">{formData.tone}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Appearance */}
-        <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-          <h3 className="text-sm font-medium text-gray-400 mb-3">Appearance</h3>
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-400">Colors</span>
-              <div className="flex gap-1">
-                <div
-                  className="w-6 h-6 rounded-full"
-                  style={{ background: formData.primaryColor }}
-                />
-                <div
-                  className="w-6 h-6 rounded-full"
-                  style={{ background: formData.accentColor }}
-                />
+      <ScrollArea className="h-[400px] pr-4">
+        <div className="space-y-4">
+          {/* Basics */}
+          <Collapsible defaultOpen>
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/[0.07] transition-colors">
+              <div className="flex items-center gap-3">
+                <Globe className="h-5 w-5 text-blue-400" />
+                <span className="font-medium text-white">Basic Information</span>
               </div>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-400">Position</span>
-              <span className="text-white capitalize">
-                {formData.position.replace('-', ' ')}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+              <ChevronDown className="h-4 w-4 text-gray-400" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="pt-3 pb-1 px-4 space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Name</span>
+                <span className="text-white">{config.name || "Not set"}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Website</span>
+                <span className="text-white truncate max-w-[200px]">{config.websiteUrl || "Not set"}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Industry</span>
+                <span className="text-white">{config.industry || "Not set"}</span>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
 
-      {/* Info Box */}
-      <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 flex gap-3">
-        <Info className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-        <div>
-          <p className="text-sm text-white font-medium">Ready to launch!</p>
-          <p className="text-sm text-gray-400 mt-1">
-            After creating your bot, you'll get an embed code to add to your website.
-            Your bot will start learning from your content immediately.
-          </p>
+          {/* Knowledge */}
+          <Collapsible defaultOpen>
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/[0.07] transition-colors">
+              <div className="flex items-center gap-3">
+                <FileText className="h-5 w-5 text-purple-400" />
+                <span className="font-medium text-white">Knowledge Sources</span>
+              </div>
+              <ChevronDown className="h-4 w-4 text-gray-400" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="pt-3 pb-1 px-4">
+              {config.knowledgeSources.length > 0 ? (
+                <div className="space-y-2">
+                  {config.knowledgeSources.map((source) => (
+                    <div key={source.id} className="flex items-center justify-between text-sm">
+                      <span className="text-gray-400 truncate max-w-[200px]">{source.name}</span>
+                      <Badge variant="outline" className="text-green-400 border-green-500/20">
+                        <Check className="mr-1 h-3 w-3" />
+                        Ready
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500">No sources added</p>
+              )}
+            </CollapsibleContent>
+          </Collapsible>
+
+          {/* Persona */}
+          <Collapsible defaultOpen>
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/[0.07] transition-colors">
+              <div className="flex items-center gap-3">
+                <MessageSquare className="h-5 w-5 text-green-400" />
+                <span className="font-medium text-white">Persona</span>
+              </div>
+              <ChevronDown className="h-4 w-4 text-gray-400" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="pt-3 pb-1 px-4 space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Display Name</span>
+                <span className="text-white">{config.botName}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Tone</span>
+                <span className="text-white capitalize">{config.tone}</span>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+
+          {/* Appearance */}
+          <Collapsible defaultOpen>
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/[0.07] transition-colors">
+              <div className="flex items-center gap-3">
+                <Palette className="h-5 w-5 text-orange-400" />
+                <span className="font-medium text-white">Appearance</span>
+              </div>
+              <ChevronDown className="h-4 w-4 text-gray-400" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="pt-3 pb-1 px-4 space-y-2">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-gray-400">Primary Color</span>
+                <div className="flex items-center gap-2">
+                  <div
+                    className="h-4 w-4 rounded"
+                    style={{ backgroundColor: config.primaryColor }}
+                  />
+                  <span className="text-white font-mono text-xs">{config.primaryColor}</span>
+                </div>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Position</span>
+                <span className="text-white capitalize">{config.position.replace("-", " ")}</span>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+
+          {/* Lead Capture */}
+          <Collapsible defaultOpen>
+            <CollapsibleTrigger className="flex items-center justify-between w-full p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/[0.07] transition-colors">
+              <div className="flex items-center gap-3">
+                <Users className="h-5 w-5 text-pink-400" />
+                <span className="font-medium text-white">Lead Capture</span>
+              </div>
+              <ChevronDown className="h-4 w-4 text-gray-400" />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="pt-3 pb-1 px-4 space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Enabled</span>
+                <span className={config.leadCaptureEnabled ? "text-green-400" : "text-gray-500"}>
+                  {config.leadCaptureEnabled ? "Yes" : "No"}
+                </span>
+              </div>
+              {config.leadCaptureEnabled && (
+                <>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Fields</span>
+                    <span className="text-white">
+                      {[
+                        config.collectName && "Name",
+                        config.collectEmail && "Email",
+                        config.collectPhone && "Phone",
+                      ]
+                        .filter(Boolean)
+                        .join(", ")}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Trigger</span>
+                    <span className="text-white capitalize">
+                      {config.triggerType.replace("_", " ")}
+                    </span>
+                  </div>
+                </>
+              )}
+            </CollapsibleContent>
+          </Collapsible>
         </div>
+      </ScrollArea>
+
+      {/* Embed Code Preview */}
+      <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-sm font-medium text-white">Embed Code</span>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={copyCode}
+            className="text-gray-400 hover:text-white"
+          >
+            {copied ? (
+              <>
+                <CheckCircle2 className="mr-2 h-4 w-4 text-green-400" />
+                Copied!
+              </>
+            ) : (
+              <>
+                <Copy className="mr-2 h-4 w-4" />
+                Copy
+              </>
+            )}
+          </Button>
+        </div>
+        <pre className="text-xs text-gray-400 bg-black/30 p-3 rounded-lg overflow-x-auto">
+          {embedCode}
+        </pre>
       </div>
     </div>
-  );
+  )
 }
 
 // Bot Preview Component
-function BotPreview({ formData }: { formData: FormData }) {
-  const [isOpen, setIsOpen] = useState(false);
+function BotPreview({
+  config,
+  messages,
+  input,
+  setInput,
+  onSend,
+}: {
+  config: BotConfig
+  messages: Message[]
+  input: string
+  setInput: (value: string) => void
+  onSend: () => void
+}) {
+  const avatarGradient = avatarPresets.find((p) => p.id === config.avatarPreset)?.gradient || "from-blue-500 to-blue-700"
 
   return (
-    <div className={`${formData.position === 'bottom-left' ? 'left-6' : ''}`}>
-      {/* Chat Window */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 10 }}
-            className="absolute bottom-20 right-0 w-80 rounded-2xl shadow-2xl overflow-hidden"
+    <Card className="bg-white/[0.03] border-white/5 backdrop-blur-xl sticky top-24">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base text-white flex items-center gap-2">
+          <Sparkles className="h-4 w-4 text-blue-400" />
+          Live Preview
+        </CardTitle>
+        <CardDescription className="text-gray-400">
+          See how your bot will appear to visitors
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex justify-center">
+          {/* Chat Widget Preview */}
+          <div
+            className="w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl"
             style={{
-              background: '#1a1a24',
-              border: `1px solid ${formData.primaryColor}30`,
+              background: "linear-gradient(180deg, #1a1a24 0%, #12121a 100%)",
+              border: "1px solid rgba(255,255,255,0.1)",
             }}
           >
             {/* Header */}
             <div
               className="p-4 flex items-center gap-3"
-              style={{
-                background: `linear-gradient(135deg, ${formData.primaryColor}20, ${formData.accentColor}20)`,
-              }}
+              style={{ backgroundColor: config.primaryColor }}
             >
               <div
-                className="w-10 h-10 rounded-full flex items-center justify-center"
-                style={{
-                  background: `linear-gradient(135deg, ${formData.primaryColor}, ${formData.accentColor})`,
-                }}
-              >
-                {formData.avatarType === 'orb' ? (
-                  <div className="w-full h-full rounded-full animate-pulse" />
-                ) : (
-                  <Bot className="w-5 h-5 text-white" />
+                className={cn(
+                  "h-10 w-10 rounded-full bg-gradient-to-br flex items-center justify-center",
+                  avatarGradient
                 )}
+              >
+                <Bot className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="font-medium text-white">{formData.botName}</p>
-                <p className="text-xs text-gray-400">Online</p>
+                <p className="font-semibold text-white">{config.botName || "AI Assistant"}</p>
+                <p className="text-xs text-white/70">Online</p>
               </div>
             </div>
 
             {/* Messages */}
-            <div className="p-4 h-48 flex flex-col justify-end">
-              <div
-                className="p-3 rounded-2xl rounded-bl-none max-w-[85%]"
-                style={{ background: `${formData.primaryColor}20` }}
-              >
-                <p className="text-sm text-white">{formData.greetingMessage}</p>
+            <div className="h-64 p-4 space-y-4 overflow-y-auto">
+              {/* Welcome Message */}
+              <div className="flex items-start gap-2">
+                <div
+                  className={cn(
+                    "h-7 w-7 rounded-full bg-gradient-to-br flex items-center justify-center shrink-0",
+                    avatarGradient
+                  )}
+                >
+                  <Bot className="h-4 w-4 text-white" />
+                </div>
+                <div className="bg-white/10 rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-[80%]">
+                  <p className="text-sm text-white">{config.welcomeMessage}</p>
+                </div>
               </div>
+
+              {/* Chat Messages */}
+              {messages.map((message, i) => (
+                <div
+                  key={i}
+                  className={cn(
+                    "flex items-start gap-2",
+                    message.role === "user" && "flex-row-reverse"
+                  )}
+                >
+                  {message.role === "assistant" ? (
+                    <div
+                      className={cn(
+                        "h-7 w-7 rounded-full bg-gradient-to-br flex items-center justify-center shrink-0",
+                        avatarGradient
+                      )}
+                    >
+                      <Bot className="h-4 w-4 text-white" />
+                    </div>
+                  ) : (
+                    <div className="h-7 w-7 rounded-full bg-gray-600 flex items-center justify-center shrink-0">
+                      <User className="h-4 w-4 text-white" />
+                    </div>
+                  )}
+                  <div
+                    className={cn(
+                      "rounded-2xl px-4 py-2.5 max-w-[80%]",
+                      message.role === "user"
+                        ? "rounded-tr-sm"
+                        : "rounded-tl-sm bg-white/10"
+                    )}
+                    style={{
+                      backgroundColor:
+                        message.role === "user" ? config.primaryColor : undefined,
+                    }}
+                  >
+                    <p className="text-sm text-white">{message.content}</p>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* Input */}
-            <div className="p-4 border-t border-white/5">
+            <div className="p-3 border-t border-white/5">
               <div className="flex gap-2">
-                <input
-                  type="text"
+                <Input
                   placeholder="Type a message..."
-                  className="flex-1 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder-gray-500 focus:outline-none"
-                  disabled
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && onSend()}
+                  className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 text-sm"
                 />
-                <button
-                  className="p-2 rounded-xl"
-                  style={{ background: formData.primaryColor }}
+                <Button
+                  size="icon"
+                  onClick={onSend}
+                  style={{ backgroundColor: config.primaryColor }}
+                  className="shrink-0"
                 >
-                  <ArrowRight className="w-4 h-4 text-white" />
-                </button>
+                  <Send className="h-4 w-4" />
+                </Button>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Trigger Button */}
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 rounded-full shadow-lg flex items-center justify-center"
-        style={{
-          background: `linear-gradient(135deg, ${formData.primaryColor}, ${formData.accentColor})`,
-        }}
-      >
-        {isOpen ? (
-          <X className="w-6 h-6 text-white" />
-        ) : (
-          <MessageSquare className="w-6 h-6 text-white" />
-        )}
-      </motion.button>
-    </div>
-  );
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
 }

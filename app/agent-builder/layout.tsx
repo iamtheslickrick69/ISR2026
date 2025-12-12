@@ -1,292 +1,372 @@
-'use client';
+"use client"
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { motion, AnimatePresence } from "framer-motion"
 import {
   Bot,
   LayoutDashboard,
   Plus,
-  Settings,
   BarChart3,
   MessageSquare,
   Users,
+  Settings,
   HelpCircle,
   ChevronLeft,
   ChevronRight,
-  Sparkles,
   Bell,
   Search,
-} from 'lucide-react';
+  Sparkles,
+  Menu,
+  X,
+} from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface NavItem {
-  name: string;
-  href: string;
-  icon: React.ComponentType<{ className?: string }>;
-  badge?: number;
+  name: string
+  href: string
+  icon: React.ElementType
+  badge?: string
 }
 
 const mainNavItems: NavItem[] = [
-  { name: 'Dashboard', href: '/agent-builder', icon: LayoutDashboard },
-  { name: 'Create Bot', href: '/agent-builder/new', icon: Plus },
-];
+  { name: "Dashboard", href: "/agent-builder", icon: LayoutDashboard },
+  { name: "Create Bot", href: "/agent-builder/new", icon: Plus },
+]
 
 const secondaryNavItems: NavItem[] = [
-  { name: 'Analytics', href: '/agent-builder/analytics', icon: BarChart3 },
-  { name: 'Conversations', href: '/agent-builder/conversations', icon: MessageSquare, badge: 12 },
-  { name: 'Leads', href: '/agent-builder/leads', icon: Users, badge: 5 },
-];
+  { name: "Analytics", href: "/agent-builder/analytics", icon: BarChart3 },
+  { name: "Conversations", href: "/agent-builder/conversations", icon: MessageSquare, badge: "12" },
+  { name: "Leads", href: "/agent-builder/leads", icon: Users, badge: "5" },
+]
 
 const bottomNavItems: NavItem[] = [
-  { name: 'Settings', href: '/agent-builder/settings', icon: Settings },
-  { name: 'Help', href: '/agent-builder/help', icon: HelpCircle },
-];
+  { name: "Settings", href: "/agent-builder/settings", icon: Settings },
+  { name: "Help", href: "/agent-builder/help", icon: HelpCircle },
+]
 
 export default function AgentBuilderLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const pathname = usePathname();
+  const pathname = usePathname()
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const isActive = (href: string) => {
-    if (href === '/agent-builder') {
-      return pathname === '/agent-builder';
+    if (href === "/agent-builder") {
+      return pathname === href
     }
-    return pathname.startsWith(href);
-  };
+    return pathname.startsWith(href)
+  }
+
+  const NavLink = ({ item, collapsed }: { item: NavItem; collapsed: boolean }) => {
+    const active = isActive(item.href)
+    const content = (
+      <Link
+        href={item.href}
+        className={cn(
+          "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+          active
+            ? "bg-blue-600/20 text-blue-400 border border-blue-500/30"
+            : "text-gray-400 hover:text-white hover:bg-white/5 border border-transparent"
+        )}
+        onClick={() => setIsMobileMenuOpen(false)}
+      >
+        <item.icon className={cn("h-5 w-5 shrink-0", active && "text-blue-400")} />
+        <AnimatePresence mode="wait">
+          {!collapsed && (
+            <motion.span
+              initial={{ opacity: 0, width: 0 }}
+              animate={{ opacity: 1, width: "auto" }}
+              exit={{ opacity: 0, width: 0 }}
+              transition={{ duration: 0.2 }}
+              className="truncate"
+            >
+              {item.name}
+            </motion.span>
+          )}
+        </AnimatePresence>
+        {!collapsed && item.badge && (
+          <Badge
+            variant="secondary"
+            className="ml-auto bg-blue-600/20 text-blue-400 border-blue-500/30"
+          >
+            {item.badge}
+          </Badge>
+        )}
+      </Link>
+    )
+
+    if (collapsed) {
+      return (
+        <Tooltip delayDuration={0}>
+          <TooltipTrigger asChild>{content}</TooltipTrigger>
+          <TooltipContent side="right" className="flex items-center gap-2">
+            {item.name}
+            {item.badge && (
+              <Badge variant="secondary" className="ml-1 bg-blue-600/20 text-blue-400">
+                {item.badge}
+              </Badge>
+            )}
+          </TooltipContent>
+        </Tooltip>
+      )
+    }
+
+    return content
+  }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex">
-      {/* Sidebar */}
-      <motion.aside
-        initial={false}
-        animate={{ width: sidebarCollapsed ? 80 : 280 }}
-        transition={{ duration: 0.3, ease: 'easeInOut' }}
-        className="fixed left-0 top-0 h-screen bg-[#12121a] border-r border-white/5 flex flex-col z-50"
-      >
-        {/* Logo Section */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-white/5">
-          <Link href="/agent-builder" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center">
-              <Bot className="w-5 h-5 text-white" />
+    <TooltipProvider>
+      <div className="flex min-h-screen bg-[#0a0a0f]">
+        {/* Desktop Sidebar */}
+        <motion.aside
+          initial={false}
+          animate={{ width: isCollapsed ? 72 : 256 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className={cn(
+            "fixed inset-y-0 left-0 z-50 flex flex-col border-r border-white/5 bg-[#0c0c12]/80 backdrop-blur-xl",
+            "hidden md:flex"
+          )}
+        >
+          {/* Logo */}
+          <div className="flex h-16 items-center justify-between border-b border-white/5 px-4">
+            <Link href="/agent-builder" className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 shadow-lg shadow-blue-500/20">
+                <Bot className="h-5 w-5 text-white" />
+              </div>
+              <AnimatePresence mode="wait">
+                {!isCollapsed && (
+                  <motion.span
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-lg font-bold text-white"
+                  >
+                    Agent Builder
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </Link>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex flex-1 flex-col gap-1 p-3">
+            {/* Main Navigation */}
+            <div className="space-y-1">
+              {mainNavItems.map((item) => (
+                <NavLink key={item.href} item={item} collapsed={isCollapsed} />
+              ))}
             </div>
-            <AnimatePresence>
-              {!sidebarCollapsed && (
+
+            {/* Divider */}
+            <div className="my-4 h-px bg-white/5" />
+
+            {/* Secondary Navigation */}
+            <div className="space-y-1">
+              {secondaryNavItems.map((item) => (
+                <NavLink key={item.href} item={item} collapsed={isCollapsed} />
+              ))}
+            </div>
+
+            {/* Spacer */}
+            <div className="flex-1" />
+
+            {/* Upgrade Card */}
+            <AnimatePresence mode="wait">
+              {!isCollapsed && (
                 <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
+                  className="mb-4 rounded-xl bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/20 p-4"
                 >
-                  <span className="font-semibold text-white text-lg">Agent Builder</span>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Sparkles className="h-5 w-5 text-blue-400" />
+                    <span className="font-semibold text-white">Upgrade to Pro</span>
+                  </div>
+                  <p className="text-xs text-gray-400 mb-3">
+                    Get unlimited bots, advanced analytics, and priority support.
+                  </p>
+                  <Button
+                    size="sm"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    Upgrade Now
+                  </Button>
                 </motion.div>
               )}
             </AnimatePresence>
-          </Link>
-          <button
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors"
-          >
-            {sidebarCollapsed ? (
-              <ChevronRight className="w-4 h-4" />
-            ) : (
-              <ChevronLeft className="w-4 h-4" />
-            )}
-          </button>
-        </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 py-6 px-3 space-y-6 overflow-y-auto">
-          {/* Main Nav */}
-          <div className="space-y-1">
-            {mainNavItems.map((item) => (
-              <NavLink
-                key={item.name}
-                item={item}
-                isActive={isActive(item.href)}
-                collapsed={sidebarCollapsed}
-              />
-            ))}
-          </div>
+            {/* Bottom Navigation */}
+            <div className="space-y-1">
+              {bottomNavItems.map((item) => (
+                <NavLink key={item.href} item={item} collapsed={isCollapsed} />
+              ))}
+            </div>
+          </nav>
 
-          {/* Divider */}
-          <div className="h-px bg-white/5" />
-
-          {/* Secondary Nav */}
-          <div className="space-y-1">
-            <AnimatePresence>
-              {!sidebarCollapsed && (
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="text-xs font-medium text-gray-500 uppercase tracking-wider px-3 mb-2"
-                >
-                  Insights
-                </motion.p>
+          {/* Collapse Toggle */}
+          <div className="border-t border-white/5 p-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="w-full justify-center text-gray-400 hover:text-white hover:bg-white/5"
+            >
+              {isCollapsed ? (
+                <ChevronRight className="h-4 w-4" />
+              ) : (
+                <>
+                  <ChevronLeft className="h-4 w-4 mr-2" />
+                  <span>Collapse</span>
+                </>
               )}
-            </AnimatePresence>
-            {secondaryNavItems.map((item) => (
-              <NavLink
-                key={item.name}
-                item={item}
-                isActive={isActive(item.href)}
-                collapsed={sidebarCollapsed}
-              />
-            ))}
+            </Button>
           </div>
-        </nav>
+        </motion.aside>
 
-        {/* Bottom Section */}
-        <div className="p-3 space-y-1 border-t border-white/5">
-          {bottomNavItems.map((item) => (
-            <NavLink
-              key={item.name}
-              item={item}
-              isActive={isActive(item.href)}
-              collapsed={sidebarCollapsed}
-            />
-          ))}
-
-          {/* Upgrade Card */}
-          <AnimatePresence>
-            {!sidebarCollapsed && (
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <>
               <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                className="mt-4 p-4 rounded-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20"
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <Sparkles className="w-4 h-4 text-blue-400" />
-                  <span className="text-sm font-medium text-white">Upgrade to Pro</span>
-                </div>
-                <p className="text-xs text-gray-400 mb-3">
-                  Get unlimited bots and advanced analytics
-                </p>
-                <button className="w-full py-2 px-3 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition-colors">
-                  Upgrade Now
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </motion.aside>
-
-      {/* Main Content */}
-      <div
-        className={`flex-1 transition-all duration-300 ${
-          sidebarCollapsed ? 'ml-20' : 'ml-[280px]'
-        }`}
-      >
-        {/* Top Header */}
-        <header className="h-16 bg-[#12121a]/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-6 sticky top-0 z-40">
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-              <input
-                type="text"
-                placeholder="Search bots, conversations..."
-                className="w-80 h-10 pl-10 pr-4 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
+                onClick={() => setIsMobileMenuOpen(false)}
               />
-            </div>
-          </div>
+              <motion.aside
+                initial={{ x: -280 }}
+                animate={{ x: 0 }}
+                exit={{ x: -280 }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="fixed inset-y-0 left-0 z-50 w-72 flex flex-col border-r border-white/5 bg-[#0c0c12] md:hidden"
+              >
+                {/* Mobile Logo */}
+                <div className="flex h-16 items-center justify-between border-b border-white/5 px-4">
+                  <Link href="/agent-builder" className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700">
+                      <Bot className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="text-lg font-bold text-white">Agent Builder</span>
+                  </Link>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-gray-400 hover:text-white"
+                  >
+                    <X className="h-5 w-5" />
+                  </Button>
+                </div>
 
-          <div className="flex items-center gap-4">
-            {/* Notifications */}
-            <button className="relative p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full" />
-            </button>
+                {/* Mobile Navigation */}
+                <nav className="flex flex-1 flex-col gap-1 p-3">
+                  <div className="space-y-1">
+                    {mainNavItems.map((item) => (
+                      <NavLink key={item.href} item={item} collapsed={false} />
+                    ))}
+                  </div>
+                  <div className="my-4 h-px bg-white/5" />
+                  <div className="space-y-1">
+                    {secondaryNavItems.map((item) => (
+                      <NavLink key={item.href} item={item} collapsed={false} />
+                    ))}
+                  </div>
+                  <div className="flex-1" />
+                  <div className="mb-4 rounded-xl bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/20 p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Sparkles className="h-5 w-5 text-blue-400" />
+                      <span className="font-semibold text-white">Upgrade to Pro</span>
+                    </div>
+                    <p className="text-xs text-gray-400 mb-3">
+                      Get unlimited bots, advanced analytics, and priority support.
+                    </p>
+                    <Button
+                      size="sm"
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      Upgrade Now
+                    </Button>
+                  </div>
+                  <div className="space-y-1">
+                    {bottomNavItems.map((item) => (
+                      <NavLink key={item.href} item={item} collapsed={false} />
+                    ))}
+                  </div>
+                </nav>
+              </motion.aside>
+            </>
+          )}
+        </AnimatePresence>
 
-            {/* User Menu */}
-            <div className="flex items-center gap-3 pl-4 border-l border-white/10">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center text-white text-sm font-medium">
-                U
-              </div>
-              <div className="hidden md:block">
-                <p className="text-sm font-medium text-white">User</p>
-                <p className="text-xs text-gray-500">Free Plan</p>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Page Content */}
-        <main className="p-6">{children}</main>
-      </div>
-    </div>
-  );
-}
-
-// Navigation Link Component
-function NavLink({
-  item,
-  isActive,
-  collapsed,
-}: {
-  item: NavItem;
-  isActive: boolean;
-  collapsed: boolean;
-}) {
-  const Icon = item.icon;
-
-  return (
-    <Link
-      href={item.href}
-      className={`
-        flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group relative
-        ${
-          isActive
-            ? 'bg-blue-500/10 text-blue-400'
-            : 'text-gray-400 hover:bg-white/5 hover:text-white'
-        }
-      `}
-    >
-      <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-blue-400' : ''}`} />
-
-      <AnimatePresence>
-        {!collapsed && (
-          <motion.span
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -10 }}
-            transition={{ duration: 0.2 }}
-            className="font-medium text-sm"
-          >
-            {item.name}
-          </motion.span>
-        )}
-      </AnimatePresence>
-
-      {/* Badge */}
-      {item.badge && !collapsed && (
-        <motion.span
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="ml-auto px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 text-xs font-medium"
+        {/* Main Content */}
+        <div
+          className={cn(
+            "flex flex-1 flex-col transition-all duration-300",
+            isCollapsed ? "md:ml-[72px]" : "md:ml-64"
+          )}
         >
-          {item.badge}
-        </motion.span>
-      )}
+          {/* Header */}
+          <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-white/5 bg-[#0a0a0f]/80 backdrop-blur-xl px-4 md:px-6">
+            {/* Mobile Menu Toggle */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden text-gray-400 hover:text-white"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
 
-      {/* Active Indicator */}
-      {isActive && (
-        <motion.div
-          layoutId="activeIndicator"
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-500 rounded-r-full"
-        />
-      )}
+            {/* Search */}
+            <div className="flex-1 max-w-md">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+                <Input
+                  type="search"
+                  placeholder="Search bots, conversations..."
+                  className="w-full pl-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500/50 focus:ring-blue-500/20"
+                />
+              </div>
+            </div>
 
-      {/* Tooltip for collapsed state */}
-      {collapsed && (
-        <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
-          {item.name}
+            {/* Actions */}
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="relative text-gray-400 hover:text-white hover:bg-white/5"
+              >
+                <Bell className="h-5 w-5" />
+                <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-blue-500" />
+              </Button>
+              <div className="h-9 w-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium">
+                JD
+              </div>
+            </div>
+          </header>
+
+          {/* Page Content */}
+          <main className="flex-1 p-4 md:p-6">{children}</main>
         </div>
-      )}
-    </Link>
-  );
+      </div>
+    </TooltipProvider>
+  )
 }

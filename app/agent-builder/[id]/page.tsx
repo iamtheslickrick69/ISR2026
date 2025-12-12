@@ -1,592 +1,853 @@
-'use client';
+"use client"
 
-import { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { useState } from "react"
+import { useParams, useRouter } from "next/navigation"
+import Link from "next/link"
+import { motion } from "framer-motion"
 import {
   ArrowLeft,
   Bot,
-  Settings,
-  BarChart3,
   MessageSquare,
   Users,
-  FileText,
-  Palette,
-  Code,
-  Copy,
-  Check,
-  ExternalLink,
+  TrendingUp,
+  Clock,
+  MoreVertical,
   Play,
   Pause,
+  Trash2,
+  ExternalLink,
+  FileText,
+  LinkIcon,
+  Type,
+  Plus,
   RefreshCw,
-  Clock,
-  TrendingUp,
-  Zap,
+  Palette,
+  Settings,
+  Code2,
+  Copy,
+  CheckCircle2,
   Globe,
-  Edit3,
-} from 'lucide-react';
+  Loader2,
+  X,
+  Check,
+  AlertCircle,
+} from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
-// Mock bot data
-const mockBot = {
-  id: '1',
-  name: 'St. George Rentals Assistant',
-  botName: 'Atlas',
-  domain: 'stgeorgerentals.com',
-  status: 'active',
-  industry: 'equipment-rental',
-  tone: 'friendly',
-  greetingMessage: 'Hi! 👋 How can I help you find the right equipment today?',
-  primaryColor: '#3B82F6',
-  accentColor: '#60A5FA',
-  avatarType: 'orb',
-  createdAt: '2024-12-01',
-  lastActive: '2 hours ago',
+// Mock data
+const botData = {
+  id: "1",
+  name: "St. George Rentals Bot",
+  status: "active" as const,
+  website: "stgeorgerentals.com",
+  industry: "Equipment Rental",
+  createdAt: "2024-11-15",
+  lastActive: "2 mins ago",
   stats: {
-    conversations: 142,
-    messages: 1834,
-    leads: 23,
-    avgResponseTime: '1.2s',
+    totalConversations: 847,
+    thisWeek: 124,
+    leads: 52,
+    leadsThisWeek: 8,
+    avgResponseTime: "1.2s",
     satisfactionRate: 94,
   },
-  knowledgeSources: [
-    { type: 'url', value: 'https://stgeorgerentals.com', status: 'completed' },
-    { type: 'url', value: 'https://stgeorgerentals.com/equipment', status: 'completed' },
-    { type: 'text', value: 'FAQ content...', status: 'completed' },
-  ],
-};
+  appearance: {
+    primaryColor: "#3B82F6",
+    secondaryColor: "#1E40AF",
+    position: "bottom-right",
+    avatarPreset: "bot-1",
+  },
+  persona: {
+    name: "Alex",
+    tone: "friendly",
+    welcomeMessage: "Hi! I'm Alex, your equipment rental assistant. How can I help you today?",
+  },
+}
 
-const tabs = [
-  { id: 'overview', name: 'Overview', icon: BarChart3 },
-  { id: 'knowledge', name: 'Knowledge', icon: FileText },
-  { id: 'appearance', name: 'Appearance', icon: Palette },
-  { id: 'settings', name: 'Settings', icon: Settings },
-  { id: 'embed', name: 'Embed Code', icon: Code },
-];
+const knowledgeSources = [
+  {
+    id: "1",
+    type: "url",
+    name: "https://stgeorgerentals.com",
+    status: "completed" as const,
+    chunks: 156,
+    lastUpdated: "2024-12-01",
+  },
+  {
+    id: "2",
+    type: "url",
+    name: "https://stgeorgerentals.com/equipment",
+    status: "completed" as const,
+    chunks: 89,
+    lastUpdated: "2024-12-01",
+  },
+  {
+    id: "3",
+    type: "text",
+    name: "Equipment FAQ",
+    status: "completed" as const,
+    chunks: 34,
+    lastUpdated: "2024-11-28",
+  },
+  {
+    id: "4",
+    type: "text",
+    name: "Rental Policies",
+    status: "completed" as const,
+    chunks: 22,
+    lastUpdated: "2024-11-28",
+  },
+]
+
+const recentConversations = [
+  {
+    id: "c1",
+    visitor: "Visitor #1234",
+    lastMessage: "Do you rent excavators for weekend projects?",
+    time: "2 mins ago",
+    messages: 5,
+  },
+  {
+    id: "c2",
+    visitor: "John D.",
+    lastMessage: "Thanks for the help!",
+    time: "15 mins ago",
+    messages: 8,
+  },
+  {
+    id: "c3",
+    visitor: "Visitor #1232",
+    lastMessage: "What are your hours?",
+    time: "1 hour ago",
+    messages: 3,
+  },
+]
+
+const recentLeads = [
+  {
+    id: "l1",
+    name: "Mike Johnson",
+    email: "mike.j@email.com",
+    phone: "(555) 123-4567",
+    time: "30 mins ago",
+  },
+  {
+    id: "l2",
+    name: "Sarah Williams",
+    email: "sarah.w@company.com",
+    phone: null,
+    time: "2 hours ago",
+  },
+]
+
+const statusConfig = {
+  active: {
+    label: "Active",
+    class: "bg-green-500/10 text-green-400 border-green-500/20",
+    dotClass: "bg-green-500",
+  },
+  paused: {
+    label: "Paused",
+    class: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+    dotClass: "bg-yellow-500",
+  },
+  training: {
+    label: "Training",
+    class: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+    dotClass: "bg-blue-500 animate-pulse",
+  },
+  error: {
+    label: "Error",
+    class: "bg-red-500/10 text-red-400 border-red-500/20",
+    dotClass: "bg-red-500",
+  },
+}
 
 export default function BotManagementPage() {
-  useParams();
-  const router = useRouter();
-  const [activeTab, setActiveTab] = useState('overview');
-  const [copied, setCopied] = useState(false);
+  const params = useParams()
+  const router = useRouter()
+  const [activeTab, setActiveTab] = useState("overview")
+  const [isRetraining, setIsRetraining] = useState(false)
+  const [copiedEmbed, setCopiedEmbed] = useState(false)
 
-  const bot = mockBot; // In real app, fetch by params.id
+  const bot = botData // In production, fetch based on params.id
+  const status = statusConfig[bot.status]
 
-  const embedCode = `<script src="https://haestus.dev/widget/agent.js" data-bot-id="${bot.id}" async></script>`;
+  const handleRetrain = () => {
+    setIsRetraining(true)
+    setTimeout(() => setIsRetraining(false), 3000)
+  }
 
-  const copyCode = () => {
-    navigator.clipboard.writeText(embedCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const copyEmbedCode = () => {
+    const code = `<script src="https://app.yourdomain.com/embed.js" data-bot-id="${bot.id}"></script>`
+    navigator.clipboard.writeText(code)
+    setCopiedEmbed(true)
+    setTimeout(() => setCopiedEmbed(false), 2000)
+  }
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div className="flex items-start gap-4">
-          <button
-            onClick={() => router.push('/agent-builder')}
-            className="p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors mt-1"
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => router.push("/agent-builder")}
+            className="mt-1 text-gray-400 hover:text-white hover:bg-white/5"
           >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <div className="flex items-center gap-4">
-            <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center"
-              style={{
-                background: `linear-gradient(135deg, ${bot.primaryColor}20, ${bot.accentColor}40)`,
-              }}
-            >
-              <Bot className="w-7 h-7" style={{ color: bot.primaryColor }} />
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div className="flex items-start gap-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg shadow-blue-500/20">
+              <Bot className="h-7 w-7 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-bold text-white">{bot.name}</h1>
-                <span
-                  className={`px-2.5 py-1 rounded-full text-xs font-medium ${
-                    bot.status === 'active'
-                      ? 'bg-green-500/10 text-green-400'
-                      : 'bg-yellow-500/10 text-yellow-400'
-                  }`}
-                >
-                  {bot.status === 'active' ? 'Active' : 'Paused'}
-                </span>
+                <Badge variant="outline" className={cn("text-xs", status.class)}>
+                  <span className={cn("mr-1.5 h-1.5 w-1.5 rounded-full", status.dotClass)} />
+                  {status.label}
+                </Badge>
               </div>
-              <div className="flex items-center gap-4 mt-1">
-                <span className="text-sm text-gray-400 flex items-center gap-1">
-                  <Globe className="w-3.5 h-3.5" />
-                  {bot.domain}
+              <div className="flex items-center gap-3 mt-1 text-sm text-gray-400">
+                <span className="flex items-center gap-1">
+                  <Globe className="h-4 w-4" />
+                  {bot.website}
                 </span>
-                <span className="text-sm text-gray-500 flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5" />
+                <span>•</span>
+                <span className="flex items-center gap-1">
+                  <Clock className="h-4 w-4" />
                   Last active {bot.lastActive}
                 </span>
               </div>
             </div>
           </div>
         </div>
-
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 transition-colors">
-            {bot.status === 'active' ? (
-              <>
-                <Pause className="w-4 h-4" />
-                Pause
-              </>
-            ) : (
-              <>
-                <Play className="w-4 h-4" />
-                Activate
-              </>
-            )}
-          </button>
-          <Link
-            href={`/agent-builder/${bot.id}/edit`}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-500 hover:bg-blue-600 text-white transition-colors"
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            className="border-white/10 text-gray-300 hover:bg-white/5 hover:text-white"
           >
-            <Edit3 className="w-4 h-4" />
-            Edit Bot
-          </Link>
+            <ExternalLink className="mr-2 h-4 w-4" />
+            Preview
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="border-white/10 text-gray-300 hover:bg-white/5"
+              >
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 bg-[#12121a] border-white/10">
+              {bot.status === "active" ? (
+                <DropdownMenuItem className="text-yellow-400 focus:text-yellow-300 focus:bg-yellow-500/10">
+                  <Pause className="mr-2 h-4 w-4" />
+                  Pause Bot
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem className="text-green-400 focus:text-green-300 focus:bg-green-500/10">
+                  <Play className="mr-2 h-4 w-4" />
+                  Activate Bot
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuSeparator className="bg-white/10" />
+              <DropdownMenuItem className="text-red-400 focus:text-red-300 focus:bg-red-500/10">
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete Bot
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-      </div>
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <StatCard
-          icon={MessageSquare}
-          label="Conversations"
-          value={bot.stats.conversations.toString()}
-          color="blue"
-        />
-        <StatCard
-          icon={Zap}
-          label="Messages"
-          value={bot.stats.messages.toString()}
-          color="purple"
-        />
-        <StatCard
-          icon={Users}
-          label="Leads"
-          value={bot.stats.leads.toString()}
-          color="green"
-        />
-        <StatCard
-          icon={Clock}
-          label="Avg Response"
-          value={bot.stats.avgResponseTime}
-          color="orange"
-        />
-        <StatCard
-          icon={TrendingUp}
-          label="Satisfaction"
-          value={`${bot.stats.satisfactionRate}%`}
-          color="cyan"
-        />
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-white/5">
-        <div className="flex gap-1">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors relative ${
-                activeTab === tab.id
-                  ? 'text-blue-400'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              <tab.icon className="w-4 h-4" />
-              {tab.name}
-              {activeTab === tab.id && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500"
-                />
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <TabsList className="bg-white/5 border border-white/10 p-1">
+          <TabsTrigger
+            value="overview"
+            className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-gray-400"
+          >
+            <TrendingUp className="mr-2 h-4 w-4" />
+            Overview
+          </TabsTrigger>
+          <TabsTrigger
+            value="knowledge"
+            className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-gray-400"
+          >
+            <FileText className="mr-2 h-4 w-4" />
+            Knowledge
+          </TabsTrigger>
+          <TabsTrigger
+            value="appearance"
+            className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-gray-400"
+          >
+            <Palette className="mr-2 h-4 w-4" />
+            Appearance
+          </TabsTrigger>
+          <TabsTrigger
+            value="settings"
+            className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-gray-400"
+          >
+            <Settings className="mr-2 h-4 w-4" />
+            Settings
+          </TabsTrigger>
+          <TabsTrigger
+            value="embed"
+            className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-gray-400"
+          >
+            <Code2 className="mr-2 h-4 w-4" />
+            Embed
+          </TabsTrigger>
+        </TabsList>
 
-      {/* Tab Content */}
-      <div className="bg-white/[0.02] rounded-2xl border border-white/5 p-6">
-        {activeTab === 'overview' && <OverviewTab bot={bot} />}
-        {activeTab === 'knowledge' && <KnowledgeTab bot={bot} />}
-        {activeTab === 'appearance' && <AppearanceTab bot={bot} />}
-        {activeTab === 'settings' && <SettingsTab bot={bot} />}
-        {activeTab === 'embed' && (
-          <EmbedTab
-            embedCode={embedCode}
-            copied={copied}
-            onCopy={copyCode}
-          />
-        )}
-      </div>
-    </div>
-  );
-}
-
-// Stat Card Component
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  color,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-  color: string;
-}) {
-  const colorClasses: Record<string, string> = {
-    blue: 'bg-blue-500/10 text-blue-400',
-    purple: 'bg-purple-500/10 text-purple-400',
-    green: 'bg-green-500/10 text-green-400',
-    orange: 'bg-orange-500/10 text-orange-400',
-    cyan: 'bg-cyan-500/10 text-cyan-400',
-  };
-
-  return (
-    <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
-      <div className={`inline-flex p-2 rounded-lg ${colorClasses[color]} mb-3`}>
-        <Icon className="w-4 h-4" />
-      </div>
-      <p className="text-2xl font-bold text-white">{value}</p>
-      <p className="text-sm text-gray-400">{label}</p>
-    </div>
-  );
-}
-
-// Overview Tab
-function OverviewTab({ bot }: { bot: typeof mockBot }) {
-  return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Recent Conversations */}
-        <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
-          <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-            <MessageSquare className="w-4 h-4 text-blue-400" />
-            Recent Conversations
-          </h3>
-          <div className="space-y-3">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] transition-colors cursor-pointer"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 text-xs font-medium">
-                    V{i}
+        {/* Overview Tab */}
+        <TabsContent value="overview" className="space-y-6">
+          {/* Stats Grid */}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                name: "Conversations",
+                value: bot.stats.totalConversations,
+                subtext: `+${bot.stats.thisWeek} this week`,
+                icon: MessageSquare,
+              },
+              {
+                name: "Leads Captured",
+                value: bot.stats.leads,
+                subtext: `+${bot.stats.leadsThisWeek} this week`,
+                icon: Users,
+              },
+              {
+                name: "Avg Response Time",
+                value: bot.stats.avgResponseTime,
+                subtext: "AI-powered",
+                icon: Clock,
+              },
+              {
+                name: "Satisfaction Rate",
+                value: `${bot.stats.satisfactionRate}%`,
+                subtext: "Based on feedback",
+                icon: TrendingUp,
+              },
+            ].map((stat) => (
+              <Card key={stat.name} className="bg-white/[0.03] border-white/5">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                      <stat.icon className="h-5 w-5 text-blue-400" />
+                    </div>
                   </div>
+                  <p className="text-2xl font-bold text-white">{stat.value}</p>
+                  <p className="text-sm text-gray-400">{stat.name}</p>
+                  <p className="text-xs text-gray-500 mt-1">{stat.subtext}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            {/* Recent Conversations */}
+            <Card className="bg-white/[0.03] border-white/5">
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle className="text-white">Recent Conversations</CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Latest visitor interactions
+                  </CardDescription>
+                </div>
+                <Link href="/agent-builder/conversations">
+                  <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300">
+                    View All
+                  </Button>
+                </Link>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {recentConversations.map((convo) => (
+                  <div
+                    key={convo.id}
+                    className="flex items-start justify-between p-3 rounded-lg bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors cursor-pointer"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-white">{convo.visitor}</p>
+                        <Badge variant="outline" className="text-xs text-gray-400 border-white/10">
+                          {convo.messages} msgs
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-gray-400 truncate mt-1">
+                        {convo.lastMessage}
+                      </p>
+                    </div>
+                    <span className="text-xs text-gray-500 shrink-0 ml-4">{convo.time}</span>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Recent Leads */}
+            <Card className="bg-white/[0.03] border-white/5">
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle className="text-white">Recent Leads</CardTitle>
+                  <CardDescription className="text-gray-400">
+                    Captured contact information
+                  </CardDescription>
+                </div>
+                <Link href="/agent-builder/leads">
+                  <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300">
+                    View All
+                  </Button>
+                </Link>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {recentLeads.map((lead) => (
+                  <div
+                    key={lead.id}
+                    className="flex items-start justify-between p-3 rounded-lg bg-white/[0.02] border border-white/5"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-white">{lead.name}</p>
+                      <p className="text-sm text-gray-400">{lead.email}</p>
+                      {lead.phone && (
+                        <p className="text-sm text-gray-500">{lead.phone}</p>
+                      )}
+                    </div>
+                    <span className="text-xs text-gray-500 shrink-0 ml-4">{lead.time}</span>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Bot Info Card */}
+          <Card className="bg-white/[0.03] border-white/5">
+            <CardHeader>
+              <CardTitle className="text-white">Bot Information</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4 md:grid-cols-3">
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Display Name</p>
+                  <p className="text-white">{bot.persona.name}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Tone</p>
+                  <p className="text-white capitalize">{bot.persona.tone}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Industry</p>
+                  <p className="text-white">{bot.industry}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Created</p>
+                  <p className="text-white">{bot.createdAt}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Website</p>
+                  <p className="text-white">{bot.website}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Bot ID</p>
+                  <p className="text-white font-mono text-sm">{bot.id}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Knowledge Tab */}
+        <TabsContent value="knowledge" className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-white">Knowledge Sources</h2>
+              <p className="text-sm text-gray-400">
+                Content used to train your bot ({knowledgeSources.length} sources, {knowledgeSources.reduce((acc, s) => acc + s.chunks, 0)} chunks)
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={handleRetrain}
+                disabled={isRetraining}
+                className="border-white/10 text-gray-300 hover:bg-white/5"
+              >
+                {isRetraining ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                )}
+                {isRetraining ? "Retraining..." : "Retrain Bot"}
+              </Button>
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                <Plus className="mr-2 h-4 w-4" />
+                Add Source
+              </Button>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {knowledgeSources.map((source) => (
+              <Card key={source.id} className="bg-white/[0.03] border-white/5">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="h-10 w-10 rounded-lg bg-white/5 flex items-center justify-center">
+                        {source.type === "url" ? (
+                          <LinkIcon className="h-5 w-5 text-blue-400" />
+                        ) : (
+                          <Type className="h-5 w-5 text-purple-400" />
+                        )}
+                      </div>
+                      <div>
+                        <p className="font-medium text-white truncate max-w-md">
+                          {source.name}
+                        </p>
+                        <div className="flex items-center gap-3 mt-1">
+                          <span className="text-xs text-gray-500 capitalize">
+                            {source.type}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {source.chunks} chunks
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            Updated {source.lastUpdated}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Badge variant="outline" className="text-green-400 border-green-500/20">
+                        <Check className="mr-1 h-3 w-3" />
+                        {source.status}
+                      </Badge>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-gray-400 hover:text-red-400"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        {/* Appearance Tab */}
+        <TabsContent value="appearance" className="space-y-6">
+          <Card className="bg-white/[0.03] border-white/5">
+            <CardHeader>
+              <CardTitle className="text-white">Visual Settings</CardTitle>
+              <CardDescription className="text-gray-400">
+                Customize how your chat widget appears
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Colors */}
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <Label className="text-white mb-2 block">Primary Color</Label>
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="h-10 w-10 rounded-lg border border-white/10"
+                      style={{ backgroundColor: bot.appearance.primaryColor }}
+                    />
+                    <span className="text-white font-mono">
+                      {bot.appearance.primaryColor}
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <Label className="text-white mb-2 block">Secondary Color</Label>
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="h-10 w-10 rounded-lg border border-white/10"
+                      style={{ backgroundColor: bot.appearance.secondaryColor }}
+                    />
+                    <span className="text-white font-mono">
+                      {bot.appearance.secondaryColor}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Position */}
+              <div>
+                <Label className="text-white mb-2 block">Widget Position</Label>
+                <p className="text-gray-400 capitalize">
+                  {bot.appearance.position.replace("-", " ")}
+                </p>
+              </div>
+
+              {/* Avatar */}
+              <div>
+                <Label className="text-white mb-2 block">Avatar</Label>
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <Bot className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="text-gray-400">Preset: {bot.appearance.avatarPreset}</span>
+                </div>
+              </div>
+
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                Edit Appearance
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Settings Tab */}
+        <TabsContent value="settings" className="space-y-6">
+          <Card className="bg-white/[0.03] border-white/5">
+            <CardHeader>
+              <CardTitle className="text-white">Bot Settings</CardTitle>
+              <CardDescription className="text-gray-400">
+                Configure bot behavior and features
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Toggle Settings */}
+              {[
+                {
+                  id: "active",
+                  label: "Bot Active",
+                  description: "Enable or disable your bot",
+                  defaultChecked: true,
+                },
+                {
+                  id: "leadCapture",
+                  label: "Lead Capture",
+                  description: "Collect visitor contact information",
+                  defaultChecked: true,
+                },
+                {
+                  id: "humanHandoff",
+                  label: "Human Handoff",
+                  description: "Allow visitors to request human support",
+                  defaultChecked: true,
+                },
+                {
+                  id: "emailNotifications",
+                  label: "Email Notifications",
+                  description: "Receive email alerts for new leads",
+                  defaultChecked: false,
+                },
+                {
+                  id: "analytics",
+                  label: "Analytics Tracking",
+                  description: "Track conversation metrics and insights",
+                  defaultChecked: true,
+                },
+              ].map((setting) => (
+                <div
+                  key={setting.id}
+                  className="flex items-center justify-between p-4 rounded-lg bg-white/[0.02] border border-white/5"
+                >
                   <div>
-                    <p className="text-sm text-white">Visitor #{1000 + i}</p>
-                    <p className="text-xs text-gray-500">
-                      Asked about equipment availability
+                    <Label htmlFor={setting.id} className="text-white font-medium">
+                      {setting.label}
+                    </Label>
+                    <p className="text-sm text-gray-500">{setting.description}</p>
+                  </div>
+                  <Switch id={setting.id} defaultChecked={setting.defaultChecked} />
+                </div>
+              ))}
+
+              {/* AI Model Selection */}
+              <div className="p-4 rounded-lg bg-white/[0.02] border border-white/5">
+                <Label className="text-white font-medium mb-2 block">AI Model</Label>
+                <p className="text-sm text-gray-500 mb-3">
+                  Select the AI model for your bot
+                </p>
+                <Select defaultValue="gpt-4o-mini">
+                  <SelectTrigger className="w-full md:w-64 bg-white/5 border-white/10 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[#12121a] border-white/10">
+                    <SelectItem value="gpt-4o-mini" className="text-white focus:bg-white/10">
+                      GPT-4o Mini (Recommended)
+                    </SelectItem>
+                    <SelectItem value="gpt-4o" className="text-white focus:bg-white/10">
+                      GPT-4o (Advanced)
+                    </SelectItem>
+                    <SelectItem value="deepseek" className="text-white focus:bg-white/10">
+                      DeepSeek (Cost-effective)
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Danger Zone */}
+          <Card className="bg-red-500/5 border-red-500/20">
+            <CardHeader>
+              <CardTitle className="text-red-400">Danger Zone</CardTitle>
+              <CardDescription className="text-gray-400">
+                Irreversible actions
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between p-4 rounded-lg bg-red-500/10 border border-red-500/20">
+                <div>
+                  <p className="text-white font-medium">Delete Bot</p>
+                  <p className="text-sm text-gray-400">
+                    Permanently delete this bot and all its data
+                  </p>
+                </div>
+                <Button variant="destructive" className="bg-red-600 hover:bg-red-700">
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Delete Bot
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Embed Tab */}
+        <TabsContent value="embed" className="space-y-6">
+          <Card className="bg-white/[0.03] border-white/5">
+            <CardHeader>
+              <CardTitle className="text-white">Embed Code</CardTitle>
+              <CardDescription className="text-gray-400">
+                Add this script to your website to enable the chat widget
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Code Block */}
+              <div className="relative">
+                <pre className="p-4 rounded-lg bg-black/40 border border-white/10 overflow-x-auto">
+                  <code className="text-sm text-gray-300">
+                    {`<script src="https://app.yourdomain.com/embed.js" data-bot-id="${bot.id}"></script>`}
+                  </code>
+                </pre>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={copyEmbedCode}
+                  className="absolute top-2 right-2 text-gray-400 hover:text-white"
+                >
+                  {copiedEmbed ? (
+                    <>
+                      <CheckCircle2 className="mr-2 h-4 w-4 text-green-400" />
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="mr-2 h-4 w-4" />
+                      Copy
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              {/* Instructions */}
+              <div className="space-y-4">
+                <h3 className="text-white font-medium">Installation Instructions</h3>
+                <div className="space-y-3">
+                  {[
+                    "Copy the embed code above",
+                    "Open your website's HTML file or CMS",
+                    "Paste the code just before the closing </body> tag",
+                    "Save and publish your changes",
+                    "Visit your website to see the chat widget",
+                  ].map((step, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500/20 text-blue-400 text-xs font-medium shrink-0">
+                        {i + 1}
+                      </span>
+                      <p className="text-gray-400">{step}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Platform-specific guides */}
+              <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="h-5 w-5 text-blue-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-white font-medium">Need help?</p>
+                    <p className="text-sm text-gray-400 mt-1">
+                      Check our installation guides for popular platforms:
+                      <span className="text-blue-400 ml-1 hover:underline cursor-pointer">
+                        WordPress
+                      </span>
+                      ,{" "}
+                      <span className="text-blue-400 hover:underline cursor-pointer">
+                        Shopify
+                      </span>
+                      ,{" "}
+                      <span className="text-blue-400 hover:underline cursor-pointer">
+                        Wix
+                      </span>
+                      ,{" "}
+                      <span className="text-blue-400 hover:underline cursor-pointer">
+                        Squarespace
+                      </span>
                     </p>
                   </div>
                 </div>
-                <span className="text-xs text-gray-500">{i}h ago</span>
               </div>
-            ))}
-          </div>
-          <Link
-            href={`/agent-builder/${bot.id}/conversations`}
-            className="block mt-4 text-center text-sm text-blue-400 hover:text-blue-300 transition-colors"
-          >
-            View all conversations →
-          </Link>
-        </div>
 
-        {/* Recent Leads */}
-        <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
-          <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-            <Users className="w-4 h-4 text-green-400" />
-            Recent Leads
-          </h3>
-          <div className="space-y-3">
-            {[
-              { name: 'John Smith', email: 'john@example.com' },
-              { name: 'Sarah Johnson', email: 'sarah@company.com' },
-              { name: 'Mike Davis', email: 'mike@business.net' },
-            ].map((lead, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between p-3 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] transition-colors cursor-pointer"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 text-xs font-medium">
-                    {lead.name.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="text-sm text-white">{lead.name}</p>
-                    <p className="text-xs text-gray-500">{lead.email}</p>
-                  </div>
+              {/* Verification */}
+              <div className="flex items-center justify-between p-4 rounded-lg bg-white/[0.02] border border-white/5">
+                <div>
+                  <p className="text-white font-medium">Verify Installation</p>
+                  <p className="text-sm text-gray-500">
+                    Check if your bot is properly installed
+                  </p>
                 </div>
-                <span className="px-2 py-1 rounded-full bg-green-500/10 text-green-400 text-xs">
-                  New
-                </span>
+                <Button
+                  variant="outline"
+                  className="border-white/10 text-gray-300 hover:bg-white/5"
+                >
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Test on Site
+                </Button>
               </div>
-            ))}
-          </div>
-          <Link
-            href={`/agent-builder/${bot.id}/leads`}
-            className="block mt-4 text-center text-sm text-blue-400 hover:text-blue-300 transition-colors"
-          >
-            View all leads →
-          </Link>
-        </div>
-      </div>
-
-      {/* Bot Info */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
-          <p className="text-sm text-gray-400 mb-1">Bot Name</p>
-          <p className="text-white font-medium">{bot.botName}</p>
-        </div>
-        <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
-          <p className="text-sm text-gray-400 mb-1">Tone</p>
-          <p className="text-white font-medium capitalize">{bot.tone}</p>
-        </div>
-        <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
-          <p className="text-sm text-gray-400 mb-1">Industry</p>
-          <p className="text-white font-medium capitalize">
-            {bot.industry.replace('-', ' ')}
-          </p>
-        </div>
-      </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
-  );
-}
-
-// Knowledge Tab
-function KnowledgeTab({ bot }: { bot: typeof mockBot }) {
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="font-semibold text-white">Knowledge Sources</h3>
-          <p className="text-sm text-gray-400">
-            Content your bot has been trained on
-          </p>
-        </div>
-        <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 transition-colors">
-          <RefreshCw className="w-4 h-4" />
-          Retrain Bot
-        </button>
-      </div>
-
-      <div className="space-y-3">
-        {bot.knowledgeSources.map((source, i) => (
-          <div
-            key={i}
-            className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/5"
-          >
-            <div className="flex items-center gap-3">
-              {source.type === 'url' ? (
-                <Globe className="w-5 h-5 text-blue-400" />
-              ) : (
-                <FileText className="w-5 h-5 text-green-400" />
-              )}
-              <div>
-                <p className="text-white">{source.value}</p>
-                <p className="text-xs text-gray-500 capitalize">{source.type}</p>
-              </div>
-            </div>
-            <span className="px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 text-xs">
-              {source.status}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      <button className="w-full py-3 rounded-xl border border-dashed border-white/10 hover:border-blue-500/50 text-gray-400 hover:text-white transition-colors">
-        + Add Knowledge Source
-      </button>
-    </div>
-  );
-}
-
-// Appearance Tab
-function AppearanceTab({ bot }: { bot: typeof mockBot }) {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="font-semibold text-white">Visual Settings</h3>
-        <p className="text-sm text-gray-400">Customize how your bot looks</p>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
-          <p className="text-sm text-gray-400 mb-2">Avatar Type</p>
-          <p className="text-white font-medium capitalize">{bot.avatarType}</p>
-        </div>
-        <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
-          <p className="text-sm text-gray-400 mb-2">Colors</p>
-          <div className="flex gap-2">
-            <div
-              className="w-8 h-8 rounded-full"
-              style={{ background: bot.primaryColor }}
-            />
-            <div
-              className="w-8 h-8 rounded-full"
-              style={{ background: bot.accentColor }}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5">
-        <p className="text-sm text-gray-400 mb-2">Greeting Message</p>
-        <p className="text-white">{bot.greetingMessage}</p>
-      </div>
-
-      <Link
-        href={`/agent-builder/${bot.id}/edit`}
-        className="block text-center text-sm text-blue-400 hover:text-blue-300 transition-colors"
-      >
-        Edit appearance →
-      </Link>
-    </div>
-  );
-}
-
-// Settings Tab
-function SettingsTab({ }: { bot: typeof mockBot }) {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="font-semibold text-white">Bot Settings</h3>
-        <p className="text-sm text-gray-400">Configure your bot behavior</p>
-      </div>
-
-      <div className="space-y-4">
-        <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/5">
-          <div>
-            <p className="text-white font-medium">Lead Capture</p>
-            <p className="text-sm text-gray-400">
-              Collect visitor contact information
-            </p>
-          </div>
-          <div className="w-12 h-6 rounded-full bg-green-500 relative cursor-pointer">
-            <div className="absolute right-1 top-1 w-4 h-4 rounded-full bg-white" />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/5">
-          <div>
-            <p className="text-white font-medium">Email Notifications</p>
-            <p className="text-sm text-gray-400">Get notified of new leads</p>
-          </div>
-          <div className="w-12 h-6 rounded-full bg-green-500 relative cursor-pointer">
-            <div className="absolute right-1 top-1 w-4 h-4 rounded-full bg-white" />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/5">
-          <div>
-            <p className="text-white font-medium">Human Handoff</p>
-            <p className="text-sm text-gray-400">
-              Allow escalation to human support
-            </p>
-          </div>
-          <div className="w-12 h-6 rounded-full bg-white/10 relative cursor-pointer">
-            <div className="absolute left-1 top-1 w-4 h-4 rounded-full bg-white" />
-          </div>
-        </div>
-      </div>
-
-      <div className="pt-6 border-t border-white/5">
-        <button className="text-red-400 hover:text-red-300 text-sm transition-colors">
-          Delete this bot
-        </button>
-      </div>
-    </div>
-  );
-}
-
-// Embed Tab
-function EmbedTab({
-  embedCode,
-  copied,
-  onCopy,
-}: {
-  embedCode: string;
-  copied: boolean;
-  onCopy: () => void;
-}) {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="font-semibold text-white">Embed Code</h3>
-        <p className="text-sm text-gray-400">
-          Add this code to your website to display the chat widget
-        </p>
-      </div>
-
-      <div className="relative">
-        <pre className="p-4 rounded-xl bg-black/50 border border-white/10 overflow-x-auto">
-          <code className="text-sm text-green-400">{embedCode}</code>
-        </pre>
-        <button
-          onClick={onCopy}
-          className="absolute top-3 right-3 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 text-sm transition-colors"
-        >
-          {copied ? (
-            <>
-              <Check className="w-4 h-4 text-green-400" />
-              Copied!
-            </>
-          ) : (
-            <>
-              <Copy className="w-4 h-4" />
-              Copy
-            </>
-          )}
-        </button>
-      </div>
-
-      <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
-        <h4 className="font-medium text-white mb-2">Installation Instructions</h4>
-        <ol className="list-decimal list-inside space-y-2 text-sm text-gray-300">
-          <li>Copy the embed code above</li>
-          <li>
-            Paste it into your website&apos;s HTML, just before the closing{' '}
-            <code className="px-1 py-0.5 rounded bg-black/30 text-blue-400">
-              &lt;/body&gt;
-            </code>{' '}
-            tag
-          </li>
-          <li>Save and refresh your website</li>
-          <li>The chat widget will appear in the bottom-right corner</li>
-        </ol>
-      </div>
-
-      <div className="flex gap-4">
-        <a
-          href="#"
-          className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors"
-        >
-          <ExternalLink className="w-4 h-4" />
-          WordPress Guide
-        </a>
-        <a
-          href="#"
-          className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors"
-        >
-          <ExternalLink className="w-4 h-4" />
-          Shopify Guide
-        </a>
-        <a
-          href="#"
-          className="flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors"
-        >
-          <ExternalLink className="w-4 h-4" />
-          Wix Guide
-        </a>
-      </div>
-    </div>
-  );
+  )
 }

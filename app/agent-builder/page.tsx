@@ -1,415 +1,451 @@
-'use client';
+"use client"
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { useState } from "react"
+import Link from "next/link"
+import { motion } from "framer-motion"
 import {
-  Plus,
   Bot,
   MessageSquare,
   Users,
   TrendingUp,
+  Plus,
   MoreVertical,
-  Settings,
-  Trash2,
-  Pause,
   Play,
+  Pause,
+  Pencil,
+  Trash2,
   Copy,
-  Check,
-  Sparkles,
-  ArrowUpRight,
+  ExternalLink,
+  BookOpen,
+  ArrowRight,
+  Zap,
   Clock,
-} from 'lucide-react';
+  CheckCircle2,
+} from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 // Mock data for demonstration
-const mockBots = [
-  {
-    id: '1',
-    name: 'St. George Rentals Assistant',
-    domain: 'stgeorgerentals.com',
-    status: 'active',
-    conversations: 142,
-    leads: 23,
-    lastActive: '2 hours ago',
-    avatarType: 'orb',
-    primaryColor: '#3B82F6',
-  },
-  {
-    id: '2',
-    name: 'Support Bot',
-    domain: 'example.com',
-    status: 'draft',
-    conversations: 0,
-    leads: 0,
-    lastActive: 'Never',
-    avatarType: 'circle',
-    primaryColor: '#10B981',
-  },
-];
-
 const stats = [
   {
-    name: 'Total Conversations',
-    value: '1,234',
-    change: '+12%',
-    changeType: 'positive',
+    name: "Total Conversations",
+    value: "1,234",
+    change: "+12%",
+    changeType: "positive" as const,
     icon: MessageSquare,
   },
   {
-    name: 'Leads Captured',
-    value: '89',
-    change: '+23%',
-    changeType: 'positive',
+    name: "Leads Captured",
+    value: "89",
+    change: "+23%",
+    changeType: "positive" as const,
     icon: Users,
   },
   {
-    name: 'Response Rate',
-    value: '94%',
-    change: '+5%',
-    changeType: 'positive',
+    name: "Response Rate",
+    value: "94%",
+    change: "+2%",
+    changeType: "positive" as const,
     icon: TrendingUp,
   },
   {
-    name: 'Active Bots',
-    value: '2',
-    change: '0',
-    changeType: 'neutral',
+    name: "Active Bots",
+    value: "3",
+    change: "of 5",
+    changeType: "neutral" as const,
     icon: Bot,
   },
-];
+]
+
+const bots = [
+  {
+    id: "1",
+    name: "St. George Rentals Bot",
+    status: "active" as const,
+    conversations: 847,
+    leads: 52,
+    lastActive: "2 mins ago",
+    website: "stgeorgerentals.com",
+  },
+  {
+    id: "2",
+    name: "Support Assistant",
+    status: "active" as const,
+    conversations: 324,
+    leads: 28,
+    lastActive: "5 mins ago",
+    website: "mycompany.com",
+  },
+  {
+    id: "3",
+    name: "Sales Bot",
+    status: "paused" as const,
+    conversations: 63,
+    leads: 9,
+    lastActive: "2 days ago",
+    website: "sales.mycompany.com",
+  },
+]
+
+const quickActions = [
+  {
+    title: "Setup Guide",
+    description: "Complete your bot setup in 5 easy steps",
+    icon: BookOpen,
+    href: "/agent-builder/help/setup",
+    progress: 60,
+  },
+  {
+    title: "View Conversations",
+    description: "12 new conversations today",
+    icon: MessageSquare,
+    href: "/agent-builder/conversations",
+    badge: "12",
+  },
+  {
+    title: "Export Leads",
+    description: "Download your leads as CSV",
+    icon: Users,
+    href: "/agent-builder/leads",
+  },
+]
+
+const statusConfig = {
+  active: {
+    label: "Active",
+    class: "bg-green-500/10 text-green-400 border-green-500/20",
+    dotClass: "bg-green-500",
+  },
+  paused: {
+    label: "Paused",
+    class: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+    dotClass: "bg-yellow-500",
+  },
+  training: {
+    label: "Training",
+    class: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+    dotClass: "bg-blue-500 animate-pulse",
+  },
+  error: {
+    label: "Error",
+    class: "bg-red-500/10 text-red-400 border-red-500/20",
+    dotClass: "bg-red-500",
+  },
+}
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: "easeOut" },
+  },
+}
 
 export default function AgentBuilderDashboard() {
+  const [selectedBot, setSelectedBot] = useState<string | null>(null)
+
   return (
-    <div className="space-y-8">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="space-y-8"
+    >
       {/* Page Header */}
-      <div className="flex items-center justify-between">
+      <motion.div variants={itemVariants} className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-          <p className="text-gray-400 mt-1">Manage your AI agents and track performance</p>
+          <p className="mt-1 text-gray-400">
+            Welcome back! Here's what's happening with your bots.
+          </p>
         </div>
-        <Link
-          href="/agent-builder/new"
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-medium transition-all duration-200 shadow-lg shadow-blue-500/25"
-        >
-          <Plus className="w-5 h-5" />
-          Create New Bot
+        <Link href="/agent-builder/new">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20">
+            <Plus className="mr-2 h-4 w-4" />
+            Create Bot
+          </Button>
         </Link>
-      </div>
+      </motion.div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat, index) => (
-          <motion.div
+      <motion.div variants={itemVariants} className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {stats.map((stat) => (
+          <Card
             key={stat.name}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
-            className="p-6 rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/5 hover:border-white/10 transition-colors"
+            className="bg-white/[0.03] border-white/5 backdrop-blur-xl"
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2.5 rounded-xl bg-blue-500/10">
-                <stat.icon className="w-5 h-5 text-blue-400" />
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10">
+                  <stat.icon className="h-6 w-6 text-blue-400" />
+                </div>
+                <span
+                  className={cn(
+                    "text-sm font-medium",
+                    stat.changeType === "positive" && "text-green-400",
+                    stat.changeType === "negative" && "text-red-400",
+                    stat.changeType === "neutral" && "text-gray-400"
+                  )}
+                >
+                  {stat.change}
+                </span>
               </div>
-              <span
-                className={`text-sm font-medium ${
-                  stat.changeType === 'positive'
-                    ? 'text-green-400'
-                    : stat.changeType === 'negative'
-                    ? 'text-red-400'
-                    : 'text-gray-400'
-                }`}
-              >
-                {stat.change}
-              </span>
-            </div>
-            <p className="text-2xl font-bold text-white">{stat.value}</p>
-            <p className="text-sm text-gray-400 mt-1">{stat.name}</p>
-          </motion.div>
+              <div className="mt-4">
+                <p className="text-2xl font-bold text-white">{stat.value}</p>
+                <p className="text-sm text-gray-400">{stat.name}</p>
+              </div>
+            </CardContent>
+          </Card>
         ))}
-      </div>
+      </motion.div>
 
-      {/* Bots Section */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-white">Your Bots</h2>
-          <Link
-            href="/agent-builder/new"
-            className="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1"
-          >
-            View all
-            <ArrowUpRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        {/* Bots Grid */}
-        {mockBots.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {mockBots.map((bot, index) => (
-              <BotCard key={bot.id} bot={bot} index={index} />
-            ))}
-
-            {/* Create New Bot Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: mockBots.length * 0.1 }}
-            >
-              <Link
-                href="/agent-builder/new"
-                className="flex flex-col items-center justify-center h-full min-h-[200px] p-6 rounded-2xl border-2 border-dashed border-white/10 hover:border-blue-500/50 hover:bg-blue-500/5 transition-all duration-200 group"
-              >
-                <div className="p-4 rounded-2xl bg-white/5 group-hover:bg-blue-500/10 transition-colors mb-4">
-                  <Plus className="w-8 h-8 text-gray-400 group-hover:text-blue-400 transition-colors" />
-                </div>
-                <p className="text-lg font-medium text-gray-400 group-hover:text-white transition-colors">
-                  Create New Bot
-                </p>
-                <p className="text-sm text-gray-500 mt-1">
-                  Add an AI agent to your website
-                </p>
+      {/* Main Content Grid */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Bots List */}
+        <motion.div variants={itemVariants} className="lg:col-span-2">
+          <Card className="bg-white/[0.03] border-white/5 backdrop-blur-xl">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle className="text-white">Your Bots</CardTitle>
+                <CardDescription className="text-gray-400">
+                  Manage and monitor your AI assistants
+                </CardDescription>
+              </div>
+              <Link href="/agent-builder/new">
+                <Button variant="outline" size="sm" className="border-white/10 text-gray-300 hover:bg-white/5 hover:text-white">
+                  <Plus className="mr-2 h-4 w-4" />
+                  New Bot
+                </Button>
               </Link>
-            </motion.div>
-          </div>
-        ) : (
-          <EmptyState />
-        )}
-      </div>
+            </CardHeader>
+            <CardContent>
+              {bots.length > 0 ? (
+                <div className="space-y-4">
+                  {bots.map((bot) => {
+                    const status = statusConfig[bot.status]
+                    return (
+                      <motion.div
+                        key={bot.id}
+                        whileHover={{ scale: 1.01 }}
+                        className={cn(
+                          "group relative rounded-xl border border-white/5 bg-white/[0.02] p-4 transition-all hover:border-white/10 hover:bg-white/[0.04]",
+                          selectedBot === bot.id && "border-blue-500/30 bg-blue-500/5"
+                        )}
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          {/* Bot Info */}
+                          <div className="flex items-start gap-4">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-purple-600">
+                              <Bot className="h-6 w-6 text-white" />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <Link
+                                  href={`/agent-builder/${bot.id}`}
+                                  className="text-lg font-semibold text-white hover:text-blue-400 transition-colors"
+                                >
+                                  {bot.name}
+                                </Link>
+                                <Badge
+                                  variant="outline"
+                                  className={cn("text-xs", status.class)}
+                                >
+                                  <span className={cn("mr-1.5 h-1.5 w-1.5 rounded-full", status.dotClass)} />
+                                  {status.label}
+                                </Badge>
+                              </div>
+                              <p className="mt-1 text-sm text-gray-500">{bot.website}</p>
+                              <div className="mt-3 flex items-center gap-4 text-sm">
+                                <span className="flex items-center gap-1.5 text-gray-400">
+                                  <MessageSquare className="h-4 w-4" />
+                                  {bot.conversations.toLocaleString()} conversations
+                                </span>
+                                <span className="flex items-center gap-1.5 text-gray-400">
+                                  <Users className="h-4 w-4" />
+                                  {bot.leads} leads
+                                </span>
+                                <span className="flex items-center gap-1.5 text-gray-500">
+                                  <Clock className="h-4 w-4" />
+                                  {bot.lastActive}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <QuickActionCard
-          icon={Sparkles}
-          title="Quick Setup Guide"
-          description="Learn how to create your first AI agent in under 10 minutes"
-          href="/agent-builder/guide"
-          color="blue"
-        />
-        <QuickActionCard
-          icon={MessageSquare}
-          title="View Conversations"
-          description="See what your customers are asking your AI agents"
-          href="/agent-builder/conversations"
-          color="green"
-        />
-        <QuickActionCard
-          icon={Users}
-          title="Manage Leads"
-          description="Review and export leads captured by your bots"
-          href="/agent-builder/leads"
-          color="purple"
-        />
-      </div>
-    </div>
-  );
-}
-
-// Bot Card Component
-function BotCard({ bot, index }: { bot: typeof mockBots[0]; index: number }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const copyEmbedCode = () => {
-    const code = `<script src="https://haestus.dev/widget/agent.js" data-bot-id="${bot.id}"></script>`;
-    navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.1 }}
-      className="p-6 rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all duration-200 group"
-    >
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-4">
-          {/* Bot Avatar */}
-          <div
-            className="w-12 h-12 rounded-xl flex items-center justify-center"
-            style={{
-              background: `linear-gradient(135deg, ${bot.primaryColor}20, ${bot.primaryColor}40)`,
-            }}
-          >
-            <Bot className="w-6 h-6" style={{ color: bot.primaryColor }} />
-          </div>
-          <div>
-            <h3 className="font-semibold text-white group-hover:text-blue-400 transition-colors">
-              {bot.name}
-            </h3>
-            <p className="text-sm text-gray-500">{bot.domain}</p>
-          </div>
-        </div>
-
-        {/* Status Badge */}
-        <div className="flex items-center gap-2">
-          <span
-            className={`px-2.5 py-1 rounded-full text-xs font-medium ${
-              bot.status === 'active'
-                ? 'bg-green-500/10 text-green-400'
-                : 'bg-yellow-500/10 text-yellow-400'
-            }`}
-          >
-            {bot.status === 'active' ? 'Active' : 'Draft'}
-          </span>
-
-          {/* More Menu */}
-          <div className="relative">
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors"
-            >
-              <MoreVertical className="w-4 h-4" />
-            </button>
-
-            {menuOpen && (
-              <>
-                <div
-                  className="fixed inset-0 z-10"
-                  onClick={() => setMenuOpen(false)}
-                />
-                <div className="absolute right-0 top-full mt-1 w-48 py-2 rounded-xl bg-[#1a1a24] border border-white/10 shadow-xl z-20">
-                  <Link
-                    href={`/agent-builder/${bot.id}`}
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
-                  >
-                    <Settings className="w-4 h-4" />
-                    Edit Bot
-                  </Link>
-                  <button
-                    onClick={copyEmbedCode}
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors w-full"
-                  >
-                    {copied ? (
-                      <Check className="w-4 h-4 text-green-400" />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
-                    {copied ? 'Copied!' : 'Copy Embed Code'}
-                  </button>
-                  <button className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors w-full">
-                    {bot.status === 'active' ? (
-                      <>
-                        <Pause className="w-4 h-4" />
-                        Pause Bot
-                      </>
-                    ) : (
-                      <>
-                        <Play className="w-4 h-4" />
-                        Activate Bot
-                      </>
-                    )}
-                  </button>
-                  <div className="h-px bg-white/5 my-2" />
-                  <button className="flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/5 transition-colors w-full">
-                    <Trash2 className="w-4 h-4" />
-                    Delete Bot
-                  </button>
+                          {/* Actions */}
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8 text-gray-400 hover:text-white hover:bg-white/5"
+                              >
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-48 bg-[#12121a] border-white/10">
+                              <DropdownMenuItem className="text-gray-300 focus:text-white focus:bg-white/5">
+                                <Pencil className="mr-2 h-4 w-4" />
+                                Edit Bot
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="text-gray-300 focus:text-white focus:bg-white/5">
+                                <Copy className="mr-2 h-4 w-4" />
+                                Copy Embed Code
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="text-gray-300 focus:text-white focus:bg-white/5">
+                                <ExternalLink className="mr-2 h-4 w-4" />
+                                View on Site
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator className="bg-white/10" />
+                              {bot.status === "active" ? (
+                                <DropdownMenuItem className="text-yellow-400 focus:text-yellow-300 focus:bg-yellow-500/10">
+                                  <Pause className="mr-2 h-4 w-4" />
+                                  Pause Bot
+                                </DropdownMenuItem>
+                              ) : (
+                                <DropdownMenuItem className="text-green-400 focus:text-green-300 focus:bg-green-500/10">
+                                  <Play className="mr-2 h-4 w-4" />
+                                  Activate Bot
+                                </DropdownMenuItem>
+                              )}
+                              <DropdownMenuSeparator className="bg-white/10" />
+                              <DropdownMenuItem className="text-red-400 focus:text-red-300 focus:bg-red-500/10">
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Delete Bot
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </motion.div>
+                    )
+                  })}
                 </div>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
+              ) : (
+                /* Empty State */
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-500/10 mb-4">
+                    <Bot className="h-8 w-8 text-blue-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    No bots yet
+                  </h3>
+                  <p className="text-gray-400 max-w-sm mb-6">
+                    Create your first AI assistant to start engaging with your
+                    website visitors automatically.
+                  </p>
+                  <Link href="/agent-builder/new">
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                      <Plus className="mr-2 h-4 w-4" />
+                      Create Your First Bot
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
 
-      {/* Stats Row */}
-      <div className="flex items-center gap-6 pt-4 border-t border-white/5">
-        <div className="flex items-center gap-2">
-          <MessageSquare className="w-4 h-4 text-gray-500" />
-          <span className="text-sm text-gray-400">
-            <span className="text-white font-medium">{bot.conversations}</span> conversations
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Users className="w-4 h-4 text-gray-500" />
-          <span className="text-sm text-gray-400">
-            <span className="text-white font-medium">{bot.leads}</span> leads
-          </span>
-        </div>
-        <div className="flex items-center gap-2 ml-auto">
-          <Clock className="w-4 h-4 text-gray-500" />
-          <span className="text-sm text-gray-500">{bot.lastActive}</span>
-        </div>
-      </div>
+        {/* Quick Actions */}
+        <motion.div variants={itemVariants} className="space-y-4">
+          <h3 className="text-lg font-semibold text-white">Quick Actions</h3>
+          {quickActions.map((action, index) => (
+            <Link key={index} href={action.href}>
+              <Card className="group bg-white/[0.03] border-white/5 backdrop-blur-xl hover:border-white/10 hover:bg-white/[0.05] transition-all cursor-pointer">
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 group-hover:bg-blue-500/20 transition-colors">
+                      <action.icon className="h-5 w-5 text-blue-400" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <h4 className="font-medium text-white group-hover:text-blue-400 transition-colors">
+                          {action.title}
+                        </h4>
+                        {action.badge && (
+                          <Badge className="bg-blue-600/20 text-blue-400 border-blue-500/30">
+                            {action.badge}
+                          </Badge>
+                        )}
+                        <ArrowRight className="h-4 w-4 text-gray-500 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                      </div>
+                      <p className="mt-1 text-sm text-gray-400">
+                        {action.description}
+                      </p>
+                      {action.progress !== undefined && (
+                        <div className="mt-3">
+                          <div className="flex items-center justify-between text-xs mb-1">
+                            <span className="text-gray-500">Progress</span>
+                            <span className="text-blue-400">{action.progress}%</span>
+                          </div>
+                          <div className="h-1.5 rounded-full bg-white/5">
+                            <div
+                              className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-400"
+                              style={{ width: `${action.progress}%` }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
 
-      {/* Quick Actions */}
-      <div className="flex gap-2 mt-4">
-        <Link
-          href={`/agent-builder/${bot.id}`}
-          className="flex-1 py-2 px-4 rounded-lg bg-white/5 hover:bg-white/10 text-white text-sm font-medium text-center transition-colors"
-        >
-          Manage
-        </Link>
-        <Link
-          href={`/agent-builder/${bot.id}/analytics`}
-          className="flex-1 py-2 px-4 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-sm font-medium text-center transition-colors"
-        >
-          View Analytics
-        </Link>
+          {/* Recent Activity */}
+          <Card className="bg-white/[0.03] border-white/5 backdrop-blur-xl mt-6">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base text-white">Recent Activity</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {[
+                  { text: "New lead captured", bot: "St. George Rentals Bot", time: "2m ago", icon: Users },
+                  { text: "Conversation resolved", bot: "Support Assistant", time: "15m ago", icon: CheckCircle2 },
+                  { text: "Bot training completed", bot: "Sales Bot", time: "1h ago", icon: Zap },
+                ].map((activity, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500/10">
+                      <activity.icon className="h-4 w-4 text-blue-400" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-white">{activity.text}</p>
+                      <p className="text-xs text-gray-500 truncate">{activity.bot}</p>
+                    </div>
+                    <span className="text-xs text-gray-500 shrink-0">{activity.time}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </motion.div>
-  );
-}
-
-// Empty State Component
-function EmptyState() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center justify-center py-16 px-8 rounded-2xl bg-white/[0.02] border border-white/5"
-    >
-      <div className="p-6 rounded-2xl bg-blue-500/10 mb-6">
-        <Bot className="w-12 h-12 text-blue-400" />
-      </div>
-      <h3 className="text-xl font-semibold text-white mb-2">No bots yet</h3>
-      <p className="text-gray-400 text-center max-w-md mb-6">
-        Create your first AI agent to start engaging with your website visitors 24/7.
-        It only takes 10 minutes!
-      </p>
-      <Link
-        href="/agent-builder/new"
-        className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-medium transition-all duration-200"
-      >
-        <Plus className="w-5 h-5" />
-        Create Your First Bot
-      </Link>
-    </motion.div>
-  );
-}
-
-// Quick Action Card Component
-function QuickActionCard({
-  icon: Icon,
-  title,
-  description,
-  href,
-  color,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  description: string;
-  href: string;
-  color: 'blue' | 'green' | 'purple';
-}) {
-  const colorClasses = {
-    blue: 'bg-blue-500/10 text-blue-400',
-    green: 'bg-green-500/10 text-green-400',
-    purple: 'bg-purple-500/10 text-purple-400',
-  };
-
-  return (
-    <Link
-      href={href}
-      className="p-6 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-white/10 transition-all duration-200 group"
-    >
-      <div className={`inline-flex p-3 rounded-xl ${colorClasses[color]} mb-4`}>
-        <Icon className="w-6 h-6" />
-      </div>
-      <h3 className="font-semibold text-white group-hover:text-blue-400 transition-colors mb-2">
-        {title}
-      </h3>
-      <p className="text-sm text-gray-400">{description}</p>
-    </Link>
-  );
+  )
 }
