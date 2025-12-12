@@ -31,6 +31,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Logo } from "@/components/logo"
 
 interface NavItem {
   name: string
@@ -143,10 +144,8 @@ export default function AgentBuilderLayout({
         >
           {/* Logo */}
           <div className="flex h-16 items-center justify-between border-b border-white/5 px-4">
-            <Link href="/agent-builder" className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 shadow-lg shadow-blue-500/20">
-                <Bot className="h-5 w-5 text-white" />
-              </div>
+            <Link href="/" className="flex items-center gap-3">
+              <Logo className="h-9 w-9 text-white" />
               <AnimatePresence mode="wait">
                 {!isCollapsed && (
                   <motion.span
@@ -156,7 +155,7 @@ export default function AgentBuilderLayout({
                     transition={{ duration: 0.2 }}
                     className="text-lg font-bold text-white"
                   >
-                    Agent Builder
+                    HAESTUS
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -260,11 +259,9 @@ export default function AgentBuilderLayout({
               >
                 {/* Mobile Logo */}
                 <div className="flex h-16 items-center justify-between border-b border-white/5 px-4">
-                  <Link href="/agent-builder" className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700">
-                      <Bot className="h-5 w-5 text-white" />
-                    </div>
-                    <span className="text-lg font-bold text-white">Agent Builder</span>
+                  <Link href="/" className="flex items-center gap-3">
+                    <Logo className="h-9 w-9 text-white" />
+                    <span className="text-lg font-bold text-white">HAESTUS</span>
                   </Link>
                   <Button
                     variant="ghost"
