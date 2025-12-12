@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
-import { generateEmbedding, generateChatResponse } from '@/lib/openai'
+import { generateEmbedding, generateChatResponse } from '@/lib/anthropic'
 
 // POST /api/chat - Handle chat messages (public endpoint for embed widget)
 export async function POST(request: NextRequest) {

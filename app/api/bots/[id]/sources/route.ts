@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { generateEmbedding, chunkText } from '@/lib/openai'
+import { generateEmbedding, chunkText } from '@/lib/anthropic'
 
 // GET /api/bots/[id]/sources - List knowledge sources for a bot
 export async function GET(

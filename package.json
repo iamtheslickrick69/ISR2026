@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.2",
     "@cloudflare/stream-react": "^1.9.3",
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^3.10.0",

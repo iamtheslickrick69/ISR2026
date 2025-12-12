@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { generateEmbedding, chunkText } from '@/lib/openai'
+import { generateEmbedding, chunkText } from '@/lib/anthropic'
 
 // POST /api/bots/[id]/train - Retrain all knowledge sources
 export async function POST(
