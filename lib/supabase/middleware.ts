@@ -63,7 +63,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (isAuthPath && user) {
-    // Redirect to dashboard if already logged in
+    // Redirect to agent builder if already logged in
     const url = request.nextUrl.clone()
     url.pathname = '/agent-builder'
     return NextResponse.redirect(url)

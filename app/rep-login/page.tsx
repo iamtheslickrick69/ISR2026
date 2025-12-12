@@ -16,7 +16,7 @@ export default function RepLogin() {
             Rep portal coming soon...
           </p>
           <p className="text-gray-500">
-            The rep login system is currently under development. Check back soon for access to your rep dashboard.
+            The rep login system is currently under development. Check back soon for access to your rep portal.
           </p>
         </div>
 

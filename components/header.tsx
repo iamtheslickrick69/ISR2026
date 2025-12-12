@@ -15,7 +15,6 @@ const navLinks: NavLink[] = [
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
   { href: "#portfolio", label: "Work" },
-  { href: "/dashboard", label: "Dashboard", external: true },
   { href: "/agent-builder", label: "AI Builder", external: true },
   { href: "#insights", label: "Insights" },
   { href: "#connect", label: "Connect" },

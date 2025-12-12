@@ -248,7 +248,7 @@ export default function PremiumHeader() {
                         Login as Partner
                       </div>
                       <div className="text-sm text-gray-400">
-                        Access partner dashboard
+                        Access partner portal
                       </div>
                     </div>
                   </div>
@@ -270,7 +270,7 @@ export default function PremiumHeader() {
                         Login as Rep
                       </div>
                       <div className="text-sm text-gray-400">
-                        Access rep dashboard
+                        Access rep portal
                       </div>
                     </div>
                   </div>
