@@ -6,8 +6,18 @@ export async function updateSession(request: NextRequest) {
     request,
   })
 
+  // Check if using placeholder/demo credentials
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+  const isPlaceholder = supabaseUrl.includes('placeholder') || supabaseUrl === 'your_supabase_project_url'
+
+  // In development mode with placeholders, skip auth checks
+  if (isPlaceholder) {
+    console.log('⚠️  Running in DEMO mode - Supabase not configured. Add real credentials to .env.local')
+    return supabaseResponse
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    supabaseUrl,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {

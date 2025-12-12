@@ -5,10 +5,17 @@ import { useState, useEffect } from "react"
 import { Menu, X } from "lucide-react"
 import { LogoWithText } from "./logo"
 
-const navLinks = [
+type NavLink = {
+  href: string
+  label: string
+  external?: boolean
+}
+
+const navLinks: NavLink[] = [
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
   { href: "#portfolio", label: "Work" },
+  { href: "/agent-builder", label: "AI Builder", external: true },
   { href: "#insights", label: "Insights" },
   { href: "#connect", label: "Connect" },
 ]
@@ -36,7 +43,11 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, external?: boolean) => {
+    if (external) {
+      setMobileMenuOpen(false)
+      return // Allow default behavior for external links
+    }
     e.preventDefault()
     const target = document.querySelector(href)
     if (target) {
@@ -62,7 +73,7 @@ export function Header() {
             <a
               key={link.href}
               href={link.href}
-              onClick={(e) => handleNavClick(e, link.href)}
+              onClick={(e) => handleNavClick(e, link.href, link.external)}
               className={`text-sm transition-colors duration-200 ${
                 activeSection === link.href.slice(1) ? "text-foreground" : "text-muted-foreground hover:text-foreground"
               }`}
@@ -104,7 +115,7 @@ export function Header() {
             <a
               key={link.href}
               href={link.href}
-              onClick={(e) => handleNavClick(e, link.href)}
+              onClick={(e) => handleNavClick(e, link.href, link.external)}
               className="text-2xl font-heading text-foreground"
             >
               {link.label}
