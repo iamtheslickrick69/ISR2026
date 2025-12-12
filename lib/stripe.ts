@@ -1,8 +1,27 @@
 import Stripe from 'stripe'
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-03-31.basil',
-  typescript: true,
+// Lazy-load Stripe client to avoid build-time errors
+let stripeInstance: Stripe | null = null
+
+function getStripe(): Stripe {
+  if (!stripeInstance) {
+    const secretKey = process.env.STRIPE_SECRET_KEY
+    if (!secretKey || secretKey === 'sk_test_placeholder') {
+      throw new Error('Stripe is not configured. Please set STRIPE_SECRET_KEY environment variable.')
+    }
+    stripeInstance = new Stripe(secretKey, {
+      apiVersion: '2025-03-31.basil',
+      typescript: true,
+    })
+  }
+  return stripeInstance
+}
+
+export const stripe = new Proxy({} as Stripe, {
+  get: (_target, prop) => {
+    const client = getStripe()
+    return client[prop as keyof Stripe]
+  },
 })
 
 // Pricing configuration
