@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function Footer() {
+export function Footer() {
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/#about' },
@@ -178,3 +178,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+export default Footer;
