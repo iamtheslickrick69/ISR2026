@@ -1126,8 +1126,9 @@ function StepLeadCapture({
 // Step 6: Review
 function StepReview({ config }: { config: BotConfig }) {
   const [copied, setCopied] = useState(false)
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : 'https://your-app.vercel.app')
 
-  const embedCode = `<script src="https://app.yourdomain.com/embed.js" data-bot-id="YOUR_BOT_ID"></script>`
+  const embedCode = `<script src="${appUrl}/embed.js" data-bot-id="YOUR_BOT_ID"></script>`
 
   const copyCode = () => {
     navigator.clipboard.writeText(embedCode)
