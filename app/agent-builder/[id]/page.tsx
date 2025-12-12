@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import { BotInstallationGuide } from "@/components/bot-installation-guide"
 import {
   ArrowLeft,
   Bot,
@@ -209,10 +210,8 @@ export default function BotManagementPage() {
     setTimeout(() => setIsRetraining(false), 3000)
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : 'https://your-app.vercel.app')
-
   const copyEmbedCode = () => {
-    const code = `<script src="${appUrl}/embed.js" data-bot-id="${bot.id}"></script>`
+    const code = `<script src="https://app.yourdomain.com/embed.js" data-bot-id="${bot.id}"></script>`
     navigator.clipboard.writeText(code)
     setCopiedEmbed(true)
     setTimeout(() => setCopiedEmbed(false), 2000)
@@ -746,124 +745,7 @@ export default function BotManagementPage() {
 
         {/* Embed Tab */}
         <TabsContent value="embed" className="space-y-6">
-          <Card className="bg-white/[0.03] border-white/5">
-            <CardHeader>
-              <CardTitle className="text-white">Embed Code</CardTitle>
-              <CardDescription className="text-gray-400">
-                Add this script to your website to enable the chat widget
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Code Block */}
-              <div className="relative">
-                <pre className="p-4 rounded-lg bg-black/40 border border-white/10 overflow-x-auto">
-                  <code className="text-sm text-gray-300">
-                    {`<script src="${appUrl}/embed.js" data-bot-id="${bot.id}"></script>`}
-                  </code>
-                </pre>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={copyEmbedCode}
-                  className="absolute top-2 right-2 text-gray-400 hover:text-white"
-                >
-                  {copiedEmbed ? (
-                    <>
-                      <CheckCircle2 className="mr-2 h-4 w-4 text-green-400" />
-                      Copied!
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="mr-2 h-4 w-4" />
-                      Copy
-                    </>
-                  )}
-                </Button>
-              </div>
-
-              {/* Instructions */}
-              <div className="space-y-4">
-                <h3 className="text-white font-medium">Installation Instructions</h3>
-                <div className="space-y-3">
-                  {[
-                    "Copy the embed code above",
-                    "Open your website's HTML file or CMS",
-                    "Paste the code just before the closing </body> tag",
-                    "Save and publish your changes",
-                    "Visit your website to see the chat widget",
-                  ].map((step, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500/20 text-blue-400 text-xs font-medium shrink-0">
-                        {i + 1}
-                      </span>
-                      <p className="text-gray-400">{step}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Platform-specific guides */}
-              <div className="space-y-3">
-                <h3 className="text-white font-medium">Platform Instructions</h3>
-                <div className="grid gap-3 md:grid-cols-2">
-                  <div className="p-4 rounded-lg bg-white/[0.02] border border-white/5">
-                    <p className="text-white font-medium mb-2">Shopify</p>
-                    <ol className="text-sm text-gray-400 space-y-1 list-decimal list-inside">
-                      <li>Go to Online Store → Themes</li>
-                      <li>Click Actions → Edit Code</li>
-                      <li>Find theme.liquid file</li>
-                      <li>Paste code before &lt;/body&gt;</li>
-                      <li>Click Save</li>
-                    </ol>
-                  </div>
-                  <div className="p-4 rounded-lg bg-white/[0.02] border border-white/5">
-                    <p className="text-white font-medium mb-2">WordPress</p>
-                    <ol className="text-sm text-gray-400 space-y-1 list-decimal list-inside">
-                      <li>Install &quot;Insert Headers and Footers&quot; plugin</li>
-                      <li>Go to Settings → Insert Headers and Footers</li>
-                      <li>Paste code in Footer section</li>
-                      <li>Click Save</li>
-                    </ol>
-                  </div>
-                  <div className="p-4 rounded-lg bg-white/[0.02] border border-white/5">
-                    <p className="text-white font-medium mb-2">Wix</p>
-                    <ol className="text-sm text-gray-400 space-y-1 list-decimal list-inside">
-                      <li>Go to Settings → Custom Code</li>
-                      <li>Click + Add Code</li>
-                      <li>Paste code, select &quot;Body - end&quot;</li>
-                      <li>Click Apply</li>
-                    </ol>
-                  </div>
-                  <div className="p-4 rounded-lg bg-white/[0.02] border border-white/5">
-                    <p className="text-white font-medium mb-2">Squarespace</p>
-                    <ol className="text-sm text-gray-400 space-y-1 list-decimal list-inside">
-                      <li>Go to Settings → Advanced</li>
-                      <li>Click Code Injection</li>
-                      <li>Paste code in Footer section</li>
-                      <li>Click Save</li>
-                    </ol>
-                  </div>
-                </div>
-              </div>
-
-              {/* Verification */}
-              <div className="flex items-center justify-between p-4 rounded-lg bg-white/[0.02] border border-white/5">
-                <div>
-                  <p className="text-white font-medium">Verify Installation</p>
-                  <p className="text-sm text-gray-500">
-                    Check if your bot is properly installed
-                  </p>
-                </div>
-                <Button
-                  variant="outline"
-                  className="border-white/10 text-gray-300 hover:bg-white/5"
-                >
-                  <ExternalLink className="mr-2 h-4 w-4" />
-                  Test on Site
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <BotInstallationGuide botId={bot.id} />
         </TabsContent>
       </Tabs>
     </div>

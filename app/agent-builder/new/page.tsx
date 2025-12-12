@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
+import { BotCreatedSuccessModal } from "@/components/bot-created-success-modal"
 import {
   ArrowLeft,
   ArrowRight,
@@ -188,11 +189,14 @@ const initialConfig: BotConfig = {
 
 export default function CreateBotWizard() {
   const router = useRouter()
+
   const [currentStep, setCurrentStep] = useState(1)
   const [config, setConfig] = useState<BotConfig>(initialConfig)
   const [isCreating, setIsCreating] = useState(false)
   const [previewMessages, setPreviewMessages] = useState<Message[]>([])
   const [previewInput, setPreviewInput] = useState("")
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [createdBotId, setCreatedBotId] = useState<string | null>(null)
 
   // Update config helper
   const updateConfig = useCallback((updates: Partial<BotConfig>) => {
@@ -278,9 +282,64 @@ export default function CreateBotWizard() {
   // Create bot
   const handleCreate = async () => {
     setIsCreating(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    router.push("/agent-builder/1")
+    try {
+      const response = await fetch('/api/bots', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: config.name,
+          description: config.description,
+          websiteUrl: config.websiteUrl,
+          industry: config.industry,
+          botName: config.botName,
+          tone: config.tone,
+          customInstructions: config.customInstructions,
+          welcomeMessage: config.welcomeMessage,
+          fallbackMessage: config.fallbackMessage,
+          // Appearance settings
+          avatarType: config.avatarType,
+          avatarPreset: config.avatarPreset,
+          avatarUrl: config.avatarUrl,
+          primaryColor: config.primaryColor,
+          secondaryColor: config.secondaryColor,
+          position: config.position,
+          // Lead capture settings
+          leadCaptureEnabled: config.leadCaptureEnabled,
+          collectName: config.collectName,
+          nameRequired: config.nameRequired,
+          collectEmail: config.collectEmail,
+          emailRequired: config.emailRequired,
+          collectPhone: config.collectPhone,
+          phoneRequired: config.phoneRequired,
+          triggerType: config.triggerType,
+          triggerAfterMessages: config.triggerAfterMessages,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to create bot')
+      }
+
+      const { bot } = await response.json()
+
+      // Show success modal instead of immediate redirect
+      setCreatedBotId(bot.id)
+      setShowSuccessModal(true)
+      setIsCreating(false)
+    } catch (error) {
+      console.error('Error creating bot:', error)
+      alert('Failed to create bot. Please try again.')
+      setIsCreating(false)
+    }
+  }
+
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false)
+    if (createdBotId) {
+      router.push(`/agent-builder/${createdBotId}`)
+    }
   }
 
   // Render step content
@@ -310,10 +369,18 @@ export default function CreateBotWizard() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
+    <>
+      <BotCreatedSuccessModal
+        isOpen={showSuccessModal}
+        onClose={handleCloseSuccessModal}
+        botId={createdBotId || ""}
+        botName={config.name}
+      />
+
+      <div className="min-h-[calc(100vh-4rem)] flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
           <Button
             variant="ghost"
             size="icon"
@@ -328,10 +395,10 @@ export default function CreateBotWizard() {
               Step {currentStep} of 6: {steps[currentStep - 1].name}
             </p>
           </div>
+          </div>
         </div>
-      </div>
 
-      {/* Progress Steps */}
+        {/* Progress Steps */}
       <div className="mb-8">
         <div className="flex items-center justify-between">
           {steps.map((step, index) => (
@@ -461,7 +528,8 @@ export default function CreateBotWizard() {
           </Button>
         )}
       </div>
-    </div>
+      </div>
+    </>
   )
 }
 

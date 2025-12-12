@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import {
@@ -72,35 +72,7 @@ const stats = [
   },
 ]
 
-const bots = [
-  {
-    id: "1",
-    name: "St. George Rentals Bot",
-    status: "active" as const,
-    conversations: 847,
-    leads: 52,
-    lastActive: "2 mins ago",
-    website: "stgeorgerentals.com",
-  },
-  {
-    id: "2",
-    name: "Support Assistant",
-    status: "active" as const,
-    conversations: 324,
-    leads: 28,
-    lastActive: "5 mins ago",
-    website: "mycompany.com",
-  },
-  {
-    id: "3",
-    name: "Sales Bot",
-    status: "paused" as const,
-    conversations: 63,
-    leads: 9,
-    lastActive: "2 days ago",
-    website: "sales.mycompany.com",
-  },
-]
+// Mock bots moved to component state - will fetch from API
 
 const quickActions = [
   {
@@ -169,6 +141,24 @@ const itemVariants = {
 
 export default function AgentBuilderDashboard() {
   const [selectedBot, setSelectedBot] = useState<string | null>(null)
+  const [bots, setBots] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchBots = async () => {
+      try {
+        const response = await fetch('/api/bots')
+        if (!response.ok) throw new Error('Failed to fetch bots')
+        const data = await response.json()
+        setBots(data.bots || [])
+      } catch (error) {
+        console.error('Error fetching bots:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchBots()
+  }, [])
 
   return (
     <motion.div
@@ -245,10 +235,14 @@ export default function AgentBuilderDashboard() {
               </Link>
             </CardHeader>
             <CardContent>
-              {bots.length > 0 ? (
+              {loading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                </div>
+              ) : bots.length > 0 ? (
                 <div className="space-y-4">
                   {bots.map((bot) => {
-                    const status = statusConfig[bot.status]
+                    const status = statusConfig[bot.status as keyof typeof statusConfig] || statusConfig.active
                     return (
                       <motion.div
                         key={bot.id}
@@ -280,19 +274,19 @@ export default function AgentBuilderDashboard() {
                                   {status.label}
                                 </Badge>
                               </div>
-                              <p className="mt-1 text-sm text-gray-500">{bot.website}</p>
+                              <p className="mt-1 text-sm text-gray-500">{bot.website_url || 'No website'}</p>
                               <div className="mt-3 flex items-center gap-4 text-sm">
                                 <span className="flex items-center gap-1.5 text-gray-400">
                                   <MessageSquare className="h-4 w-4" />
-                                  {bot.conversations.toLocaleString()} conversations
+                                  0 conversations
                                 </span>
                                 <span className="flex items-center gap-1.5 text-gray-400">
                                   <Users className="h-4 w-4" />
-                                  {bot.leads} leads
+                                  0 leads
                                 </span>
                                 <span className="flex items-center gap-1.5 text-gray-500">
                                   <Clock className="h-4 w-4" />
-                                  {bot.lastActive}
+                                  {new Date(bot.created_at).toLocaleDateString()}
                                 </span>
                               </div>
                             </div>

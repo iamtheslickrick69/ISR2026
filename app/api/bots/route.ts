@@ -81,7 +81,8 @@ export async function POST(request: NextRequest) {
       custom_instructions: body.customInstructions || null,
       welcome_message: body.welcomeMessage || 'Hi! How can I help you today?',
       fallback_message: body.fallbackMessage || "I'm not sure about that. Would you like to speak with a human?",
-      status: 'draft',
+      status: 'active',
+      is_published: true,
     }
 
     const { data: bot, error: botError } = await supabase
