@@ -209,8 +209,10 @@ export default function BotManagementPage() {
     setTimeout(() => setIsRetraining(false), 3000)
   }
 
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : 'https://your-app.vercel.app')
+
   const copyEmbedCode = () => {
-    const code = `<script src="https://app.yourdomain.com/embed.js" data-bot-id="${bot.id}"></script>`
+    const code = `<script src="${appUrl}/embed.js" data-bot-id="${bot.id}"></script>`
     navigator.clipboard.writeText(code)
     setCopiedEmbed(true)
     setTimeout(() => setCopiedEmbed(false), 2000)
@@ -756,7 +758,7 @@ export default function BotManagementPage() {
               <div className="relative">
                 <pre className="p-4 rounded-lg bg-black/40 border border-white/10 overflow-x-auto">
                   <code className="text-sm text-gray-300">
-                    {`<script src="https://app.yourdomain.com/embed.js" data-bot-id="${bot.id}"></script>`}
+                    {`<script src="${appUrl}/embed.js" data-bot-id="${bot.id}"></script>`}
                   </code>
                 </pre>
                 <Button
@@ -801,29 +803,45 @@ export default function BotManagementPage() {
               </div>
 
               {/* Platform-specific guides */}
-              <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="h-5 w-5 text-blue-400 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-white font-medium">Need help?</p>
-                    <p className="text-sm text-gray-400 mt-1">
-                      Check our installation guides for popular platforms:
-                      <span className="text-blue-400 ml-1 hover:underline cursor-pointer">
-                        WordPress
-                      </span>
-                      ,{" "}
-                      <span className="text-blue-400 hover:underline cursor-pointer">
-                        Shopify
-                      </span>
-                      ,{" "}
-                      <span className="text-blue-400 hover:underline cursor-pointer">
-                        Wix
-                      </span>
-                      ,{" "}
-                      <span className="text-blue-400 hover:underline cursor-pointer">
-                        Squarespace
-                      </span>
-                    </p>
+              <div className="space-y-3">
+                <h3 className="text-white font-medium">Platform Instructions</h3>
+                <div className="grid gap-3 md:grid-cols-2">
+                  <div className="p-4 rounded-lg bg-white/[0.02] border border-white/5">
+                    <p className="text-white font-medium mb-2">Shopify</p>
+                    <ol className="text-sm text-gray-400 space-y-1 list-decimal list-inside">
+                      <li>Go to Online Store → Themes</li>
+                      <li>Click Actions → Edit Code</li>
+                      <li>Find theme.liquid file</li>
+                      <li>Paste code before &lt;/body&gt;</li>
+                      <li>Click Save</li>
+                    </ol>
+                  </div>
+                  <div className="p-4 rounded-lg bg-white/[0.02] border border-white/5">
+                    <p className="text-white font-medium mb-2">WordPress</p>
+                    <ol className="text-sm text-gray-400 space-y-1 list-decimal list-inside">
+                      <li>Install &quot;Insert Headers and Footers&quot; plugin</li>
+                      <li>Go to Settings → Insert Headers and Footers</li>
+                      <li>Paste code in Footer section</li>
+                      <li>Click Save</li>
+                    </ol>
+                  </div>
+                  <div className="p-4 rounded-lg bg-white/[0.02] border border-white/5">
+                    <p className="text-white font-medium mb-2">Wix</p>
+                    <ol className="text-sm text-gray-400 space-y-1 list-decimal list-inside">
+                      <li>Go to Settings → Custom Code</li>
+                      <li>Click + Add Code</li>
+                      <li>Paste code, select &quot;Body - end&quot;</li>
+                      <li>Click Apply</li>
+                    </ol>
+                  </div>
+                  <div className="p-4 rounded-lg bg-white/[0.02] border border-white/5">
+                    <p className="text-white font-medium mb-2">Squarespace</p>
+                    <ol className="text-sm text-gray-400 space-y-1 list-decimal list-inside">
+                      <li>Go to Settings → Advanced</li>
+                      <li>Click Code Injection</li>
+                      <li>Paste code in Footer section</li>
+                      <li>Click Save</li>
+                    </ol>
                   </div>
                 </div>
               </div>
