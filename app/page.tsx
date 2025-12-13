@@ -4,7 +4,8 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { Logo } from "@/components/logo"
-import { ArrowDown, ArrowUpRight, Mail } from "lucide-react"
+import { HeroWallpaper } from "@/components/HeroWallpaper"
+import { ArrowUpRight, Mail } from "lucide-react"
 
 const services = [
   {
@@ -103,39 +104,9 @@ export default function Home() {
       <Header />
 
       {/* Hero Section */}
-      <section id="hero" className="min-h-screen flex items-center justify-center relative">
-        <div className="max-w-[1200px] mx-auto px-6 py-32 text-center">
-          <p className="text-sm font-mono tracking-[0.3em] text-muted-foreground mb-8">AI ARCHITECTURE STUDIO</p>
-
-          <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-medium tracking-tight mb-8">
-            Crafting Digital
-            <br />
-            Intelligence
-          </h1>
-
-          <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-12">
-            We architect AI systems that amplify human capability and compound competitive advantage.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="#portfolio"
-              className="px-8 py-4 bg-foreground text-background font-medium transition-opacity duration-200 hover:opacity-80"
-            >
-              View Our Work
-            </a>
-            <a
-              href="#connect"
-              className="px-8 py-4 border border-foreground text-foreground font-medium transition-colors duration-200 hover:bg-foreground hover:text-background"
-            >
-              Start a Project
-            </a>
-          </div>
-
-          <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-            <ArrowDown className="w-5 h-5 text-muted-foreground" />
-          </div>
-        </div>
+      <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden">
+        {/* Magical 3D Hero Wallpaper Background with integrated content */}
+        <HeroWallpaper />
       </section>
 
       {/* About Section */}
