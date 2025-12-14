@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import { Menu, X } from "lucide-react"
 import { LogoWithText } from "./logo"
 import Image from "next/image"
+import Link from "next/link"
 
 type NavLink = {
   href: string
@@ -22,9 +23,6 @@ const navLinks: NavLink[] = [
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [showClientPortal, setShowClientPortal] = useState(false)
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,17 +43,6 @@ export function Header() {
     if (target) {
       target.scrollIntoView({ behavior: "smooth" })
       setMobileMenuOpen(false)
-    }
-  }
-
-  const handlePasswordSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (password === "sidekick") {
-      window.location.href = "https://sidekick2026.haestus.dev"
-    } else {
-      setError(true)
-      setPassword("")
-      setTimeout(() => setError(false), 2000)
     }
   }
 
@@ -120,24 +107,16 @@ export function Header() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4 flex-shrink-0">
-            <button
-              onClick={() => setShowClientPortal(true)}
-              className="rounded-button text-sm font-medium transition-all duration-200 px-6 py-2.5"
+            <Link
+              href="/portal"
+              className="rounded-button text-sm font-medium transition-all duration-200 px-6 py-2.5 hover:bg-[#1ebda5] hover:text-white"
               style={{
                 border: '1px solid #1ebda5',
                 color: '#1ebda5',
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#1ebda5'
-                e.currentTarget.style.color = '#ffffff'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent'
-                e.currentTarget.style.color = '#1ebda5'
-              }}
             >
               Clients
-            </button>
+            </Link>
             <a
               href="#connect"
               onClick={(e) => handleNavClick(e, "#connect")}
@@ -184,19 +163,17 @@ export function Header() {
               {link.label}
             </a>
           ))}
-          <button
-            onClick={() => {
-              setShowClientPortal(true)
-              setMobileMenuOpen(false)
-            }}
-            className="rounded-button mt-4 px-6 py-3 text-center transition-colors w-full"
+          <Link
+            href="/portal"
+            onClick={() => setMobileMenuOpen(false)}
+            className="rounded-button mt-4 px-6 py-3 text-center transition-colors w-full hover:bg-[#1ebda5] hover:text-white"
             style={{
               border: '1px solid #1ebda5',
               color: '#1ebda5',
             }}
           >
             Clients
-          </button>
+          </Link>
           <a
             href="#connect"
             onClick={(e) => handleNavClick(e, "#connect")}
@@ -206,102 +183,6 @@ export function Header() {
           </a>
         </nav>
       </div>
-
-      {/* Client Portal Password Modal */}
-      {showClientPortal && (
-        <div
-          className="fixed inset-0 z-[1000000] flex items-center justify-center p-4"
-          style={{
-            background: 'rgba(0, 0, 0, 0.75)',
-            backdropFilter: 'blur(12px)',
-          }}
-          onClick={() => {
-            setShowClientPortal(false)
-            setPassword("")
-            setError(false)
-          }}
-        >
-          <div
-            className="relative rounded-2xl p-10 max-w-md w-full"
-            style={{
-              background: 'white',
-              boxShadow: '0 25px 70px rgba(0, 0, 0, 0.4)',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
-            <button
-              onClick={() => {
-                setShowClientPortal(false)
-                setPassword("")
-                setError(false)
-              }}
-              className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
-              aria-label="Close"
-            >
-              <X className="w-5 h-5 text-gray-500" />
-            </button>
-
-            {/* Logo */}
-            <div className="flex justify-center mb-8">
-              <Image
-                src="/line.png"
-                alt="Haestus"
-                width={280}
-                height={84}
-                className="h-auto"
-                style={{ maxWidth: '280px' }}
-                priority
-              />
-            </div>
-
-            {/* Welcome Message */}
-            <h2 className="text-2xl font-heading font-medium text-center mb-8 text-foreground">
-              Welcome! Please enter the password
-            </h2>
-
-            {/* Password Form */}
-            <form onSubmit={handlePasswordSubmit} className="space-y-4">
-              <div>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter password"
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-white text-foreground placeholder:text-muted-foreground focus:outline-none transition-all"
-                  style={{
-                    boxShadow: error ? '0 0 0 2px rgba(239, 68, 68, 0.5)' : undefined,
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.boxShadow = '0 0 0 2px rgba(30, 189, 165, 0.5)'
-                  }}
-                  onBlur={(e) => {
-                    if (!error) {
-                      e.target.style.boxShadow = 'none'
-                    }
-                  }}
-                  autoFocus
-                />
-                {error && (
-                  <p className="text-sm text-red-500 mt-2">
-                    Incorrect password. Please try again.
-                  </p>
-                )}
-              </div>
-
-              <button
-                type="submit"
-                className="w-full rounded-button px-6 py-4 font-medium text-white transition-all duration-200 hover:opacity-90"
-                style={{
-                  background: 'linear-gradient(45deg, #1ebda5 0%, #e26a00 50%, #ffe046 100%)',
-                }}
-              >
-                Access Portal
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
     </header>
   )
 }
