@@ -149,87 +149,6 @@ export default function Home() {
         <HeroWallpaper />
       </section>
 
-      {/* PayPro AI Section */}
-      <section id="paypro" className="py-32 relative">
-        <div className="section-divider" />
-        <div className="max-w-[1200px] mx-auto px-6 pt-32">
-          {/* Header */}
-          <div className="text-center mb-20">
-            <ScrollReveal>
-              <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight mb-8 text-foreground">
-                AI isn't coming,<br />it's here.
-              </h2>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-4">
-                PayPro is focused on decreasing costs and increasing revenue. We are your partners in payments, and our AI partners at{" "}
-                <span className="font-semibold text-foreground">Haestus</span>
-              </p>
-            </ScrollReveal>
-            <ScrollReveal delay={200}>
-              <p className="text-lg text-muted-foreground">
-                Try our products, custom built, or consulting.
-              </p>
-            </ScrollReveal>
-          </div>
-
-          {/* Single Card - Centered */}
-          <div className="max-w-2xl mx-auto">
-            {/* Increasing Revenue */}
-            <ScrollReveal delay={200}>
-              <div
-                className="relative overflow-hidden rounded-2xl p-10 h-full flex flex-col"
-                style={{
-                  background: 'linear-gradient(45deg, #1ebda5 0%, #e26a00 50%, #ffe046 100%)',
-                  boxShadow: '0 20px 60px -20px rgba(30, 189, 165, 0.5)',
-                }}
-              >
-                <div className="relative z-10">
-                  <p className="text-sm font-mono tracking-[0.2em] text-white/90 mb-3">INCREASING REVENUE</p>
-                  <h3 className="font-heading text-4xl md:text-5xl font-medium tracking-tight text-white mb-6">
-                    #1 AI<br />Implementation
-                  </h3>
-                  <p className="text-lg text-white/90 leading-relaxed mb-8">
-                    From custom AI agents to full implementation consulting, we build solutions that drive revenue. Real AI. Real results. Real ROI.
-                  </p>
-
-                  <div className="space-y-3 mb-10">
-                    <div className="flex items-center gap-3 text-white">
-                      <div className="w-1.5 h-1.5 bg-white/80 rounded-full" />
-                      <span className="text-base">Custom AI products</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-white">
-                      <div className="w-1.5 h-1.5 bg-white/80 rounded-full" />
-                      <span className="text-base">Implementation consulting</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-white">
-                      <div className="w-1.5 h-1.5 bg-white/80 rounded-full" />
-                      <span className="text-base">Built for your business</span>
-                    </div>
-                  </div>
-
-                  <a
-                    href="#ai-solutions"
-                    className="inline-block rounded-button px-8 py-4 bg-white font-medium transition-all duration-200 hover:shadow-lg"
-                    style={{ color: '#1ebda5' }}
-                  >
-                    Explore AI Solutions
-                  </a>
-                </div>
-
-                {/* Decorative gradient overlay */}
-                <div
-                  className="absolute inset-0 opacity-20"
-                  style={{
-                    background: 'radial-gradient(circle at top right, rgba(255,255,255,0.3) 0%, transparent 60%)',
-                  }}
-                />
-              </div>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-
       {/* Services Section */}
       <section id="services" className="py-32 relative">
         <div className="section-divider" />
@@ -422,7 +341,7 @@ export default function Home() {
       </section>
 
       {/* Process Section */}
-      <section id="process" className="py-16 relative overflow-hidden">
+      <section id="process" className="py-14 relative overflow-hidden">
         <div className="section-divider" />
 
         {/* Animated Gradient Background */}
@@ -466,96 +385,172 @@ export default function Home() {
           }
         `}</style>
 
-        <div className="max-w-[1200px] mx-auto px-6 pt-16 relative" style={{ zIndex: 1 }}>
+        <div className="max-w-[1200px] mx-auto px-6 pt-14 relative" style={{ zIndex: 1 }}>
           {/* Header */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-10">
             <ScrollReveal>
-              <div className="inline-block px-6 py-2 rounded-full mb-6" style={{ background: 'rgba(255, 255, 255, 0.9)' }}>
+              <div className="inline-block px-5 py-1.5 rounded-full mb-5" style={{ background: 'rgba(255, 255, 255, 0.9)' }}>
                 <p className="text-sm font-medium tracking-wider text-gray-700">HOW WE WORK</p>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <h2 className="font-heading text-5xl md:text-6xl font-medium tracking-tight mb-4 text-white drop-shadow-lg">
+              <h2 className="font-heading text-4xl md:text-5xl font-medium tracking-tight mb-3 text-white drop-shadow-lg">
                 Our Process
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={200}>
-              <p className="text-xl text-white/90 max-w-3xl mx-auto drop-shadow">
+              <p className="text-lg text-white/90 max-w-3xl mx-auto drop-shadow">
                 From idea to implementation, we guide you every step of the way
               </p>
             </ScrollReveal>
           </div>
 
           {/* Process Cards */}
-          <div className="grid md:grid-cols-4 gap-6 relative">
+          <div className="grid md:grid-cols-4 gap-5 relative">
             {/* Connecting Line */}
-            <div className="hidden md:block absolute top-20 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent" style={{ zIndex: 0 }} />
+            <div className="hidden md:block absolute top-16 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent" style={{ zIndex: 0 }} />
 
             {/* Card 1 - Discover */}
             <ScrollReveal delay={100}>
-              <div className="relative bg-white rounded-2xl p-8 text-center shadow-xl hover:shadow-2xl transition-shadow duration-300" style={{ zIndex: 1 }}>
-                <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)' }}>
-                  <svg className="w-10 h-10 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="relative bg-white rounded-2xl p-6 text-center shadow-xl hover:shadow-2xl transition-shadow duration-300" style={{ zIndex: 1 }}>
+                <div className="w-16 h-16 mx-auto mb-5 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)' }}>
+                  <svg className="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                   </svg>
                 </div>
-                <p className="text-sm font-medium text-gray-500 mb-2">01</p>
-                <h3 className="font-heading text-2xl font-semibold text-gray-900 mb-4">Discover</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-xs font-medium text-gray-500 mb-2">01</p>
+                <h3 className="font-heading text-xl font-semibold text-gray-900 mb-3">Discover</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
                   We learn your business, challenges, and goals
                 </p>
-                <div className="mt-6 h-1 bg-gray-200 rounded-full" />
+                <div className="mt-5 h-1 bg-gray-200 rounded-full" />
               </div>
             </ScrollReveal>
 
             {/* Card 2 - Design */}
             <ScrollReveal delay={200}>
-              <div className="relative bg-white rounded-2xl p-8 text-center shadow-xl hover:shadow-2xl transition-shadow duration-300" style={{ zIndex: 1 }}>
-                <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)' }}>
-                  <svg className="w-10 h-10 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="relative bg-white rounded-2xl p-6 text-center shadow-xl hover:shadow-2xl transition-shadow duration-300" style={{ zIndex: 1 }}>
+                <div className="w-16 h-16 mx-auto mb-5 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)' }}>
+                  <svg className="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                   </svg>
                 </div>
-                <p className="text-sm font-medium text-gray-500 mb-2">02</p>
-                <h3 className="font-heading text-2xl font-semibold text-gray-900 mb-4">Design</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-xs font-medium text-gray-500 mb-2">02</p>
+                <h3 className="font-heading text-xl font-semibold text-gray-900 mb-3">Design</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
                   We create a tailored solution and strategy
                 </p>
-                <div className="mt-6 h-1 bg-gray-200 rounded-full" />
+                <div className="mt-5 h-1 bg-gray-200 rounded-full" />
               </div>
             </ScrollReveal>
 
             {/* Card 3 - Develop */}
             <ScrollReveal delay={300}>
-              <div className="relative bg-white rounded-2xl p-8 text-center shadow-xl hover:shadow-2xl transition-shadow duration-300" style={{ zIndex: 1 }}>
-                <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)' }}>
-                  <svg className="w-10 h-10 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="relative bg-white rounded-2xl p-6 text-center shadow-xl hover:shadow-2xl transition-shadow duration-300" style={{ zIndex: 1 }}>
+                <div className="w-16 h-16 mx-auto mb-5 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)' }}>
+                  <svg className="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                   </svg>
                 </div>
-                <p className="text-sm font-medium text-gray-500 mb-2">03</p>
-                <h3 className="font-heading text-2xl font-semibold text-gray-900 mb-4">Develop</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-xs font-medium text-gray-500 mb-2">03</p>
+                <h3 className="font-heading text-xl font-semibold text-gray-900 mb-3">Develop</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
                   We build and refine your AI solution
                 </p>
-                <div className="mt-6 h-1 bg-gray-200 rounded-full" />
+                <div className="mt-5 h-1 bg-gray-200 rounded-full" />
               </div>
             </ScrollReveal>
 
             {/* Card 4 - Deploy */}
             <ScrollReveal delay={400}>
-              <div className="relative bg-white rounded-2xl p-8 text-center shadow-xl hover:shadow-2xl transition-shadow duration-300" style={{ zIndex: 1 }}>
-                <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)' }}>
-                  <svg className="w-10 h-10 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="relative bg-white rounded-2xl p-6 text-center shadow-xl hover:shadow-2xl transition-shadow duration-300" style={{ zIndex: 1 }}>
+                <div className="w-16 h-16 mx-auto mb-5 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)' }}>
+                  <svg className="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                   </svg>
                 </div>
-                <p className="text-sm font-medium text-gray-500 mb-2">04</p>
-                <h3 className="font-heading text-2xl font-semibold text-gray-900 mb-4">Deploy</h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-xs font-medium text-gray-500 mb-2">04</p>
+                <h3 className="font-heading text-xl font-semibold text-gray-900 mb-3">Deploy</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
                   We launch and support your success
                 </p>
-                <div className="mt-6 h-1 bg-gray-200 rounded-full" />
+                <div className="mt-5 h-1 bg-gray-200 rounded-full" />
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* PayPro AI Section */}
+      <section id="paypro" className="py-32 relative">
+        <div className="section-divider" />
+        <div className="max-w-[1200px] mx-auto px-6 pt-32">
+          {/* Header */}
+          <div className="text-center mb-20">
+            <ScrollReveal>
+              <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight mb-8 text-foreground">
+                AI isn't coming,<br />it's here.
+              </h2>
+            </ScrollReveal>
+            <ScrollReveal delay={100}>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                From custom AI agents to full implementation consulting, we build solutions that drive revenue. Real AI. Real results. Real ROI.
+              </p>
+            </ScrollReveal>
+          </div>
+
+          {/* Single Card - Centered */}
+          <div className="max-w-2xl mx-auto">
+            {/* Increasing Revenue */}
+            <ScrollReveal delay={200}>
+              <div
+                className="relative overflow-hidden rounded-2xl p-10 h-full flex flex-col"
+                style={{
+                  boxShadow: '0 20px 60px -20px rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                {/* Background Image */}
+                <div className="absolute inset-0 z-0 rounded-2xl overflow-hidden">
+                  <Image
+                    src="/haha.png"
+                    alt="AI Implementation Background"
+                    fill
+                    className="object-cover object-center rounded-2xl"
+                    style={{ objectFit: 'cover' }}
+                  />
+                  {/* Dark overlay for text readability */}
+                  <div className="absolute inset-0 bg-black/30" />
+                </div>
+
+                <div className="relative z-10 flex flex-col items-end text-right">
+                  <p className="text-sm font-mono tracking-[0.2em] text-white/90 mb-3" style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.6)' }}>INCREASING REVENUE</p>
+                  <h3 className="font-heading text-4xl md:text-5xl font-medium tracking-tight text-white mb-6" style={{ textShadow: '0 4px 12px rgba(0, 0, 0, 0.7)' }}>
+                    #1 AI<br />Implementation
+                  </h3>
+
+                  <div className="space-y-3 mb-10">
+                    <div className="flex items-center gap-3 text-white justify-end" style={{ textShadow: '0 2px 6px rgba(0, 0, 0, 0.6)' }}>
+                      <span className="text-base">Custom AI products</span>
+                      <div className="w-1.5 h-1.5 bg-white/80 rounded-full" />
+                    </div>
+                    <div className="flex items-center gap-3 text-white justify-end" style={{ textShadow: '0 2px 6px rgba(0, 0, 0, 0.6)' }}>
+                      <span className="text-base">Implementation consulting</span>
+                      <div className="w-1.5 h-1.5 bg-white/80 rounded-full" />
+                    </div>
+                    <div className="flex items-center gap-3 text-white justify-end" style={{ textShadow: '0 2px 6px rgba(0, 0, 0, 0.6)' }}>
+                      <span className="text-base">Built for your business</span>
+                      <div className="w-1.5 h-1.5 bg-white/80 rounded-full" />
+                    </div>
+                  </div>
+
+                  <a
+                    href="#ai-solutions"
+                    className="inline-block rounded-button px-8 py-4 bg-white font-medium transition-all duration-200 hover:shadow-lg"
+                    style={{ color: '#1ebda5' }}
+                  >
+                    Explore AI Solutions
+                  </a>
+                </div>
               </div>
             </ScrollReveal>
           </div>
@@ -618,22 +613,57 @@ export default function Home() {
             {activeTab === "projects" ? (
               projects.map((project, index) => (
                 <ScrollReveal key={project.name} delay={index * 50}>
-                  <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
-                    <div className="col-span-2 md:col-span-1 text-muted-foreground font-mono text-sm">{project.year}</div>
-                    <div className="col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
-                      {project.name}
-                      <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                  {project.name === "promptlee" ? (
+                    <div className="group relative grid grid-cols-12 gap-4 py-8 border-b border-border transition-colors duration-200 -mx-6 px-6 cursor-pointer overflow-hidden">
+                      {/* Project Image - only visible on hover */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out rounded-2xl overflow-hidden" style={{ zIndex: 0 }}>
+                        <Image
+                          src="/supa.png"
+                          alt={project.name}
+                          fill
+                          className="object-cover object-center rounded-2xl"
+                          style={{ objectFit: 'cover' }}
+                        />
+                      </div>
+
+                      {/* Content - hidden on hover */}
+                      <div className="relative z-10 col-span-2 md:col-span-1 text-muted-foreground font-mono text-sm group-hover:opacity-0 transition-opacity duration-300">{project.year}</div>
+                      <div className="relative z-10 col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2 group-hover:opacity-0 transition-opacity duration-300">
+                        {project.name}
+                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      </div>
+                      <div className="relative z-10 col-span-12 md:col-span-4 text-muted-foreground group-hover:opacity-0 transition-opacity duration-300">
+                        {project.description}
+                      </div>
+                      <div className="relative z-10 col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground group-hover:opacity-0 transition-opacity duration-300">
+                        {project.stat}
+                      </div>
+                      <div className="relative z-10 col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end group-hover:opacity-0 transition-opacity duration-300">
+                        {project.tech.map((t) => (
+                          <span key={t} className="tech-tag">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                    <div className="col-span-12 md:col-span-4 text-muted-foreground">{project.description}</div>
-                    <div className="col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground">{project.stat}</div>
-                    <div className="col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end">
-                      {project.tech.map((t) => (
-                        <span key={t} className="tech-tag">
-                          {t}
-                        </span>
-                      ))}
+                  ) : (
+                    <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
+                      <div className="col-span-2 md:col-span-1 text-muted-foreground font-mono text-sm">{project.year}</div>
+                      <div className="col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                        {project.name}
+                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      </div>
+                      <div className="col-span-12 md:col-span-4 text-muted-foreground">{project.description}</div>
+                      <div className="col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground">{project.stat}</div>
+                      <div className="col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end">
+                        {project.tech.map((t) => (
+                          <span key={t} className="tech-tag">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </ScrollReveal>
               ))
             ) : activeTab === "clients" ? (
@@ -658,16 +688,6 @@ export default function Home() {
                         />
                       </div>
 
-                      {/* Gradient Curtain - sweeps left to right on hover */}
-                      <div
-                        className="absolute inset-0 opacity-100 group-hover:opacity-0 transition-opacity duration-500 ease-out"
-                        style={{
-                          background: 'linear-gradient(90deg, #1ebda5 0%, #e26a00 50%, #ffe046 100%)',
-                          animation: 'curtainSweep 0.6s ease-out forwards',
-                          zIndex: 1,
-                        }}
-                      />
-
                       {/* Content - hidden on hover */}
                       <div className="relative z-10 col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2 group-hover:opacity-0 transition-opacity duration-300">
                         {client.name}
@@ -686,17 +706,6 @@ export default function Home() {
                           </span>
                         ))}
                       </div>
-
-                      <style jsx>{`
-                        @keyframes curtainSweep {
-                          0% {
-                            transform: translateX(0);
-                          }
-                          100% {
-                            transform: translateX(100%);
-                          }
-                        }
-                      `}</style>
                     </div>
                   ) : (
                     <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
@@ -739,16 +748,6 @@ export default function Home() {
                         />
                       </div>
 
-                      {/* Gradient Curtain - sweeps left to right on hover */}
-                      <div
-                        className="absolute inset-0 opacity-100 group-hover:opacity-0 transition-opacity duration-500 ease-out"
-                        style={{
-                          background: 'linear-gradient(90deg, #1ebda5 0%, #e26a00 50%, #ffe046 100%)',
-                          animation: 'curtainSweep 0.6s ease-out forwards',
-                          zIndex: 1,
-                        }}
-                      />
-
                       {/* Content - hidden on hover */}
                       <div className="relative z-10 col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2 group-hover:opacity-0 transition-opacity duration-300">
                         {member.name}
@@ -767,17 +766,6 @@ export default function Home() {
                           </span>
                         ))}
                       </div>
-
-                      <style jsx>{`
-                        @keyframes curtainSweep {
-                          0% {
-                            transform: translateX(0);
-                          }
-                          100% {
-                            transform: translateX(100%);
-                          }
-                        }
-                      `}</style>
                     </div>
                   ) : (
                     <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
@@ -812,17 +800,35 @@ export default function Home() {
       </section>
 
       {/* Insights Section */}
-      <section id="insights" className="py-32 relative">
+      <section id="insights" className="py-24 relative overflow-hidden">
         <div className="section-divider" />
-        <div className="max-w-[1200px] mx-auto px-6 pt-32">
+
+        {/* Video Background */}
+        <div className="absolute inset-0" style={{ zIndex: 0 }}>
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ objectFit: 'cover', filter: 'brightness(0.8)' }}
+          >
+            <source src="https://pub-7824dae2ffd24193b52760c54972be1d.r2.dev/111peachbaby.mp4" type="video/mp4" />
+          </video>
+
+          {/* Subtle overlay for balance */}
+          <div className="absolute inset-0 bg-black/30" />
+        </div>
+
+        <div className="max-w-[1200px] mx-auto px-6 pt-24 relative" style={{ zIndex: 1 }}>
           <ScrollReveal>
-            <p className="text-sm font-mono tracking-[0.2em] text-muted-foreground mb-6">INSIGHTS</p>
+            <p className="text-sm font-mono tracking-[0.2em] text-white mb-6 drop-shadow-lg">INSIGHTS</p>
           </ScrollReveal>
           <ScrollReveal delay={100}>
-            <h2 className="font-heading text-4xl md:text-5xl font-medium tracking-tight mb-8">Recent Thoughts</h2>
+            <h2 className="font-heading text-4xl md:text-5xl font-medium tracking-tight mb-8 text-white drop-shadow-lg">Recent Thoughts</h2>
           </ScrollReveal>
           <ScrollReveal delay={200}>
-            <p className="text-lg text-muted-foreground max-w-2xl mb-16">
+            <p className="text-lg text-white max-w-2xl mb-16 drop-shadow-lg">
               Personal research on where AI is, where it's going, and what matters.
             </p>
           </ScrollReveal>
@@ -830,14 +836,14 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6">
             {insights.map((post, index) => (
               <ScrollReveal key={post.title} delay={index * 100}>
-                <div className="group p-8 border border-border angled-border-subtle cursor-pointer h-full flex flex-col transition-colors duration-200 hover:border-foreground">
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4">
+                <div className="group p-8 border border-white/30 angled-border-subtle cursor-pointer h-full flex flex-col transition-all duration-200 hover:border-white/70 bg-white/10 backdrop-blur-md hover:bg-white/20">
+                  <div className="flex items-center gap-3 text-sm text-white/90 mb-4">
                     <span>{post.date}</span>
-                    <span className="w-1 h-1 bg-muted-foreground rounded-full" />
+                    <span className="w-1 h-1 bg-white/90 rounded-full" />
                     <span>{post.readTime}</span>
                   </div>
-                  <h3 className="font-heading text-xl font-medium text-foreground flex-grow">{post.title}</h3>
-                  <div className="mt-6 flex items-center gap-2 text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-200">
+                  <h3 className="font-heading text-xl font-medium text-white flex-grow">{post.title}</h3>
+                  <div className="mt-6 flex items-center gap-2 text-sm text-white/90 group-hover:text-white transition-colors duration-200">
                     Read more
                     <ArrowUpRight className="w-4 h-4" />
                   </div>
@@ -852,24 +858,37 @@ export default function Home() {
       <section id="connect" className="py-32 relative">
         <div className="section-divider" />
         <div className="max-w-[1200px] mx-auto px-6 pt-32">
-          <div className="max-w-3xl mx-auto text-center">
-            <ScrollReveal>
-              <p className="text-sm font-mono tracking-[0.2em] text-muted-foreground mb-6">GET IN TOUCH</p>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
-              <h2 className="font-heading text-4xl md:text-5xl font-medium tracking-tight mb-8">
-                Let's Build Something Legendary
-              </h2>
-            </ScrollReveal>
-            <ScrollReveal delay={200}>
-              <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-12">
-                Three projects per month. Enterprise-grade standards. No inflated promises—only real capabilities, real
-                results.
-              </p>
-            </ScrollReveal>
+          <div className="max-w-3xl mx-auto text-center relative">
+            {/* Oogway Image */}
+            <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none" style={{ top: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
+              <Image
+                src="/oogway1.png"
+                alt="Oogway"
+                width={2400}
+                height={2400}
+                className="opacity-40"
+                style={{ objectFit: 'contain', filter: 'brightness(0)' }}
+              />
+            </div>
 
-            <ScrollReveal delay={300}>
-              <div className="p-12 border border-border angled-border mb-8">
+            <div className="relative" style={{ zIndex: 0 }}>
+              <ScrollReveal>
+                <p className="text-sm font-mono tracking-[0.2em] text-muted-foreground mb-6">GET IN TOUCH</p>
+              </ScrollReveal>
+              <ScrollReveal delay={100}>
+                <h2 className="font-heading text-4xl md:text-5xl font-medium tracking-tight mb-8">
+                  Let's Build Something Legendary
+                </h2>
+              </ScrollReveal>
+              <ScrollReveal delay={200}>
+                <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-12">
+                  Three projects per month. Enterprise-grade standards. No inflated promises—only real capabilities, real
+                  results.
+                </p>
+              </ScrollReveal>
+
+              <ScrollReveal delay={300}>
+                <div className="p-12 border border-border angled-border mb-8">
                 <Mail className="w-8 h-8 text-foreground mx-auto mb-6" />
                 <a
                   href="mailto:hello@haestus.dev"
@@ -897,6 +916,7 @@ export default function Home() {
                 </a>
               </div>
             </ScrollReveal>
+            </div>
           </div>
         </div>
       </section>

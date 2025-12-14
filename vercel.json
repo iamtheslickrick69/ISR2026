@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "sidekick2026.haestus.dev"
+        }
+      ],
+      "destination": "/agent-builder/:path*",
+      "permanent": false
+    }
+  ]
+}
