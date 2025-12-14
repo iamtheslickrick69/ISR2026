@@ -181,21 +181,21 @@ export function HeroWallpaper() {
                   }
                 `}</style>
 
-                {/* Tagline - Apple Standard Mobile */}
+                {/* Tagline - Desktop Bold */}
                 <div
-                  className="inline-block px-4 py-2 rounded-lg backdrop-blur-sm bg-foreground/5 border border-border mb-6 sm:mb-8"
+                  className="inline-block px-4 py-2 rounded-lg backdrop-blur-sm bg-foreground/5 border border-border mb-6 sm:mb-8 lg:mb-10"
                   style={{
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
                     transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s',
                   }}
                 >
-                  <p className="text-mobile-xs sm:text-sm font-mono tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground">AI ARCHITECTURE STUDIO</p>
+                  <p className="text-mobile-xs sm:text-sm lg:text-base font-mono tracking-[0.2em] sm:tracking-[0.3em] lg:tracking-[0.35em] text-muted-foreground font-medium">AI ARCHITECTURE STUDIO</p>
                 </div>
 
-                {/* Hero Heading - Apple Standard: Max 40px on mobile */}
+                {/* Hero Heading - Desktop Bold & Large */}
                 <h1
-                  className="font-heading text-mobile-hero sm:text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight mb-6 sm:mb-8 text-foreground px-4 sm:px-0"
+                  className="font-heading text-mobile-hero sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tighter mb-6 sm:mb-8 lg:mb-10 text-foreground px-4 sm:px-0"
                   style={{
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -207,9 +207,9 @@ export function HeroWallpaper() {
                   Intelligence
                 </h1>
 
-                {/* Subtitle - Desktop Optimized */}
+                {/* Subtitle - Desktop Bold & Large */}
                 <div
-                  className="inline-block px-5 sm:px-6 py-3 rounded-full backdrop-blur-sm mb-10 sm:mb-12"
+                  className="inline-block px-5 sm:px-6 lg:px-8 py-3 lg:py-4 rounded-full backdrop-blur-sm mb-10 sm:mb-12 lg:mb-16"
                   style={{
                     background: "radial-gradient(ellipse at center, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.01) 70%, transparent 100%)",
                     opacity: isVisible ? 1 : 0,
@@ -217,14 +217,14 @@ export function HeroWallpaper() {
                     transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s',
                   }}
                 >
-                  <p className="text-mobile-base sm:text-lg lg:text-xl text-gray-700 max-w-xl leading-relaxed">
+                  <p className="text-mobile-base sm:text-lg lg:text-xl xl:text-2xl text-gray-700 max-w-2xl leading-relaxed font-medium">
                     We architect AI systems that amplify human capability and compound competitive advantage.
                   </p>
                 </div>
 
-                {/* CTA Buttons - Desktop Optimized */}
+                {/* CTA Buttons - Desktop Large */}
                 <div
-                  className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 px-5 sm:px-0"
+                  className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 lg:gap-5 px-5 sm:px-0"
                   style={{
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -233,13 +233,13 @@ export function HeroWallpaper() {
                 >
                   <a
                     href="#portfolio"
-                    className="enhanced-button text-sm lg:text-base font-medium px-6 lg:px-8 py-3 lg:py-3.5 rounded-full bg-black text-white hover:bg-gray-800 transition-all duration-200 text-center"
+                    className="enhanced-button text-sm lg:text-base xl:text-lg font-semibold px-6 lg:px-10 xl:px-12 py-3 lg:py-4 rounded-full bg-black text-white hover:bg-gray-800 hover:shadow-2xl transition-all duration-300 text-center"
                   >
                     View My Work →
                   </a>
                   <a
                     href="/portal"
-                    className="enhanced-button text-sm lg:text-base font-medium px-6 lg:px-8 py-3 lg:py-3.5 rounded-full border-2 border-[#1ebda5] text-[#1ebda5] hover:bg-[#1ebda5] hover:text-white transition-all duration-200 text-center"
+                    className="enhanced-button text-sm lg:text-base xl:text-lg font-semibold px-6 lg:px-10 xl:px-12 py-3 lg:py-4 rounded-full border-2 border-[#1ebda5] text-[#1ebda5] hover:bg-[#1ebda5] hover:text-white hover:shadow-2xl transition-all duration-300 text-center"
                   >
                     Clients
                   </a>
