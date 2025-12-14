@@ -1,5 +1,5 @@
 "use client"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ScrollReveal } from "@/components/scroll-reveal"
@@ -76,6 +76,42 @@ const projects = [
   },
 ]
 
+const clients = [
+  {
+    name: "Beehive Rental and Sales",
+    description: "Professional equipment rental and sales platform",
+    stat: "Southern Utah's leading provider",
+    tech: ["Next.js", "E-commerce"],
+  },
+  {
+    name: "Custom Branded Screen Cleaners",
+    description: "Specialized cleaning solutions and brand partnerships",
+    stat: "Premium quality service",
+    tech: ["Service", "Branding"],
+  },
+]
+
+const team = [
+  {
+    name: "Crew Cam",
+    description: "ML models reducing logistics costs",
+    stat: "35% savings",
+    tech: ["TensorFlow", "ML"],
+  },
+  {
+    name: "BidMyBrace",
+    description: "Multi-modal customer service automation",
+    stat: "80% faster",
+    tech: ["NLP", "React"],
+  },
+  {
+    name: "BeWeddy",
+    description: "Wedding planning and coordination platform",
+    stat: "Premium service",
+    tech: ["Next.js", "React"],
+  },
+]
+
 const insights = [
   { date: "Dec 2024", title: "Why 30% of AI Projects Fail After POC", readTime: "8 min" },
   { date: "Dec 2024", title: "The Architecture-First Approach to AI", readTime: "6 min" },
@@ -83,6 +119,8 @@ const insights = [
 ]
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState<"projects" | "clients" | "team">("projects")
+
   useEffect(() => {
     const reveals = document.querySelectorAll(".fade-in")
     const observer = new IntersectionObserver(
@@ -205,27 +243,103 @@ export default function Home() {
             </ScrollReveal>
           </div>
 
+          {/* Tabs */}
+          <div className="flex gap-4 mb-8 border-b border-border">
+            <button
+              onClick={() => setActiveTab("projects")}
+              className={`px-4 py-4 font-medium transition-colors duration-200 ${
+                activeTab === "projects"
+                  ? "text-foreground border-b-2 border-foreground -mb-px"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Projects
+            </button>
+            <button
+              onClick={() => setActiveTab("clients")}
+              className={`px-4 py-4 font-medium transition-colors duration-200 ${
+                activeTab === "clients"
+                  ? "text-foreground border-b-2 border-foreground -mb-px"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Clients
+            </button>
+            <button
+              onClick={() => setActiveTab("team")}
+              className={`px-4 py-4 font-medium transition-colors duration-200 ${
+                activeTab === "team"
+                  ? "text-foreground border-b-2 border-foreground -mb-px"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Team
+            </button>
+          </div>
+
           <div className="space-y-0">
-            {projects.map((project, index) => (
-              <ScrollReveal key={project.name} delay={index * 50}>
-                <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
-                  <div className="col-span-2 md:col-span-1 text-muted-foreground font-mono text-sm">{project.year}</div>
-                  <div className="col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
-                    {project.name}
-                    <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+            {activeTab === "projects" ? (
+              projects.map((project, index) => (
+                <ScrollReveal key={project.name} delay={index * 50}>
+                  <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
+                    <div className="col-span-2 md:col-span-1 text-muted-foreground font-mono text-sm">{project.year}</div>
+                    <div className="col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                      {project.name}
+                      <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                    </div>
+                    <div className="col-span-12 md:col-span-4 text-muted-foreground">{project.description}</div>
+                    <div className="col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground">{project.stat}</div>
+                    <div className="col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end">
+                      {project.tech.map((t) => (
+                        <span key={t} className="tech-tag">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <div className="col-span-12 md:col-span-4 text-muted-foreground">{project.description}</div>
-                  <div className="col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground">{project.stat}</div>
-                  <div className="col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end">
-                    {project.tech.map((t) => (
-                      <span key={t} className="tech-tag">
-                        {t}
-                      </span>
-                    ))}
+                </ScrollReveal>
+              ))
+            ) : activeTab === "clients" ? (
+              clients.map((client, index) => (
+                <ScrollReveal key={client.name} delay={index * 50}>
+                  <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
+                    <div className="col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                      {client.name}
+                      <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                    </div>
+                    <div className="col-span-12 md:col-span-4 text-muted-foreground">{client.description}</div>
+                    <div className="col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground">{client.stat}</div>
+                    <div className="col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end">
+                      {client.tech.map((t) => (
+                        <span key={t} className="tech-tag">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </ScrollReveal>
-            ))}
+                </ScrollReveal>
+              ))
+            ) : (
+              team.map((member, index) => (
+                <ScrollReveal key={member.name} delay={index * 50}>
+                  <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
+                    <div className="col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                      {member.name}
+                      <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                    </div>
+                    <div className="col-span-12 md:col-span-4 text-muted-foreground">{member.description}</div>
+                    <div className="col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground">{member.stat}</div>
+                    <div className="col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end">
+                      {member.tech.map((t) => (
+                        <span key={t} className="tech-tag">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </ScrollReveal>
+              ))
+            )}
           </div>
 
           <ScrollReveal delay={300}>
