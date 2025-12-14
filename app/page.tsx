@@ -6,6 +6,7 @@ import { ScrollReveal } from "@/components/scroll-reveal"
 import { Logo } from "@/components/logo"
 import { HeroWallpaper } from "@/components/HeroWallpaper"
 import { ArrowUpRight, Mail } from "lucide-react"
+import Image from "next/image"
 
 const services = [
   {
@@ -48,20 +49,6 @@ const projects = [
   },
   {
     year: "2024",
-    name: "Bid My Brace",
-    description: "Multi-modal customer service automation",
-    stat: "80% faster",
-    tech: ["NLP", "React"],
-  },
-  {
-    year: "2025",
-    name: "Crew Cam",
-    description: "ML models reducing logistics costs",
-    stat: "35% savings",
-    tech: ["TensorFlow"],
-  },
-  {
-    year: "2024",
     name: "ProShop24/7",
     description: "IoT integration reducing operational downtime",
     stat: "45% reduction",
@@ -77,6 +64,13 @@ const projects = [
 ]
 
 const clients = [
+  {
+    name: "PayPro",
+    description: "Payment processing and AI-powered business solutions",
+    stat: "Trusted payment partner",
+    tech: ["AI", "Payments"],
+    url: "https://teampaypro.com",
+  },
   {
     name: "Beehive Rental and Sales",
     description: "Professional equipment rental and sales platform",
@@ -270,7 +264,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {/* AI Consulting */}
             <ScrollReveal delay={100}>
-              <div className="group p-8 border border-border angled-border-subtle h-full flex flex-col transition-colors duration-200 hover:border-foreground">
+              <div className="group p-8 h-full flex flex-col transition-all duration-200 angled-border-subtle" style={{ border: '2px solid #1ebda5' }}>
                 <div className="w-12 h-12 rounded-lg mb-6 flex items-center justify-center" style={{ background: 'rgba(30, 189, 165, 0.1)' }}>
                   <svg className="w-6 h-6" style={{ color: '#1ebda5' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -322,7 +316,7 @@ export default function Home() {
 
             {/* AI Agent Building */}
             <ScrollReveal delay={200}>
-              <div className="group p-8 border border-border angled-border-subtle h-full flex flex-col transition-colors duration-200 hover:border-foreground">
+              <div className="group p-8 h-full flex flex-col transition-all duration-200 angled-border-subtle" style={{ border: '2px solid #e26a00' }}>
                 <div className="w-12 h-12 rounded-lg mb-6 flex items-center justify-center" style={{ background: 'rgba(226, 106, 0, 0.1)' }}>
                   <svg className="w-6 h-6" style={{ color: '#e26a00' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
@@ -374,7 +368,7 @@ export default function Home() {
 
             {/* Web App & Design */}
             <ScrollReveal delay={300}>
-              <div className="group p-8 border border-border angled-border-subtle h-full flex flex-col transition-colors duration-200 hover:border-foreground">
+              <div className="group p-8 h-full flex flex-col transition-all duration-200 angled-border-subtle" style={{ border: '2px solid #c49f00' }}>
                 <div className="w-12 h-12 rounded-lg mb-6 flex items-center justify-center" style={{ background: 'rgba(255, 224, 70, 0.2)' }}>
                   <svg className="w-6 h-6" style={{ color: '#c49f00' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
@@ -421,6 +415,147 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </a>
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section id="process" className="py-16 relative overflow-hidden">
+        <div className="section-divider" />
+
+        {/* Animated Gradient Background */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(-45deg, #1ebda5, #2dd4bf, #fbbf24, #f59e0b, #ffe046, #1ebda5)',
+            backgroundSize: '600% 600%',
+            animation: 'gradientFlow 25s ease-in-out infinite',
+            zIndex: 0,
+          }}
+        />
+
+        {/* Overlay for depth */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.1) 100%)',
+            zIndex: 0,
+          }}
+        />
+
+        {/* CSS Animation */}
+        <style jsx>{`
+          @keyframes gradientFlow {
+            0% {
+              background-position: 0% 50%;
+            }
+            25% {
+              background-position: 100% 50%;
+            }
+            50% {
+              background-position: 50% 100%;
+            }
+            75% {
+              background-position: 0% 50%;
+            }
+            100% {
+              background-position: 0% 50%;
+            }
+          }
+        `}</style>
+
+        <div className="max-w-[1200px] mx-auto px-6 pt-16 relative" style={{ zIndex: 1 }}>
+          {/* Header */}
+          <div className="text-center mb-12">
+            <ScrollReveal>
+              <div className="inline-block px-6 py-2 rounded-full mb-6" style={{ background: 'rgba(255, 255, 255, 0.9)' }}>
+                <p className="text-sm font-medium tracking-wider text-gray-700">HOW WE WORK</p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={100}>
+              <h2 className="font-heading text-5xl md:text-6xl font-medium tracking-tight mb-4 text-white drop-shadow-lg">
+                Our Process
+              </h2>
+            </ScrollReveal>
+            <ScrollReveal delay={200}>
+              <p className="text-xl text-white/90 max-w-3xl mx-auto drop-shadow">
+                From idea to implementation, we guide you every step of the way
+              </p>
+            </ScrollReveal>
+          </div>
+
+          {/* Process Cards */}
+          <div className="grid md:grid-cols-4 gap-6 relative">
+            {/* Connecting Line */}
+            <div className="hidden md:block absolute top-20 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent" style={{ zIndex: 0 }} />
+
+            {/* Card 1 - Discover */}
+            <ScrollReveal delay={100}>
+              <div className="relative bg-white rounded-2xl p-8 text-center shadow-xl hover:shadow-2xl transition-shadow duration-300" style={{ zIndex: 1 }}>
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)' }}>
+                  <svg className="w-10 h-10 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                </div>
+                <p className="text-sm font-medium text-gray-500 mb-2">01</p>
+                <h3 className="font-heading text-2xl font-semibold text-gray-900 mb-4">Discover</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  We learn your business, challenges, and goals
+                </p>
+                <div className="mt-6 h-1 bg-gray-200 rounded-full" />
+              </div>
+            </ScrollReveal>
+
+            {/* Card 2 - Design */}
+            <ScrollReveal delay={200}>
+              <div className="relative bg-white rounded-2xl p-8 text-center shadow-xl hover:shadow-2xl transition-shadow duration-300" style={{ zIndex: 1 }}>
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)' }}>
+                  <svg className="w-10 h-10 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                  </svg>
+                </div>
+                <p className="text-sm font-medium text-gray-500 mb-2">02</p>
+                <h3 className="font-heading text-2xl font-semibold text-gray-900 mb-4">Design</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  We create a tailored solution and strategy
+                </p>
+                <div className="mt-6 h-1 bg-gray-200 rounded-full" />
+              </div>
+            </ScrollReveal>
+
+            {/* Card 3 - Develop */}
+            <ScrollReveal delay={300}>
+              <div className="relative bg-white rounded-2xl p-8 text-center shadow-xl hover:shadow-2xl transition-shadow duration-300" style={{ zIndex: 1 }}>
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)' }}>
+                  <svg className="w-10 h-10 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                </div>
+                <p className="text-sm font-medium text-gray-500 mb-2">03</p>
+                <h3 className="font-heading text-2xl font-semibold text-gray-900 mb-4">Develop</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  We build and refine your AI solution
+                </p>
+                <div className="mt-6 h-1 bg-gray-200 rounded-full" />
+              </div>
+            </ScrollReveal>
+
+            {/* Card 4 - Deploy */}
+            <ScrollReveal delay={400}>
+              <div className="relative bg-white rounded-2xl p-8 text-center shadow-xl hover:shadow-2xl transition-shadow duration-300" style={{ zIndex: 1 }}>
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%)' }}>
+                  <svg className="w-10 h-10 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                  </svg>
+                </div>
+                <p className="text-sm font-medium text-gray-500 mb-2">04</p>
+                <h3 className="font-heading text-2xl font-semibold text-gray-900 mb-4">Deploy</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  We launch and support your success
+                </p>
+                <div className="mt-6 h-1 bg-gray-200 rounded-full" />
               </div>
             </ScrollReveal>
           </div>
@@ -504,41 +639,163 @@ export default function Home() {
             ) : activeTab === "clients" ? (
               clients.map((client, index) => (
                 <ScrollReveal key={client.name} delay={index * 50}>
-                  <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
-                    <div className="col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
-                      {client.name}
-                      <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                  {(client.name === "PayPro" || client.name === "Beehive Rental and Sales" || client.name === "Custom Branded Screen Cleaners") ? (
+                    <div className="group relative grid grid-cols-12 gap-4 py-8 border-b border-border transition-colors duration-200 -mx-6 px-6 cursor-pointer overflow-hidden">
+                      {/* Client Image - only visible on hover */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out rounded-2xl overflow-hidden" style={{ zIndex: 0 }}>
+                        <Image
+                          src={
+                            client.name === "PayPro"
+                              ? "/clients/paypro.png"
+                              : client.name === "Beehive Rental and Sales"
+                              ? "/clients/beehive.png"
+                              : "/clients/custom-branded.png"
+                          }
+                          alt={client.name}
+                          fill
+                          className="object-cover object-center rounded-2xl"
+                          style={{ objectFit: 'cover' }}
+                        />
+                      </div>
+
+                      {/* Gradient Curtain - sweeps left to right on hover */}
+                      <div
+                        className="absolute inset-0 opacity-100 group-hover:opacity-0 transition-opacity duration-500 ease-out"
+                        style={{
+                          background: 'linear-gradient(90deg, #1ebda5 0%, #e26a00 50%, #ffe046 100%)',
+                          animation: 'curtainSweep 0.6s ease-out forwards',
+                          zIndex: 1,
+                        }}
+                      />
+
+                      {/* Content - hidden on hover */}
+                      <div className="relative z-10 col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2 group-hover:opacity-0 transition-opacity duration-300">
+                        {client.name}
+                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      </div>
+                      <div className="relative z-10 col-span-12 md:col-span-4 text-muted-foreground group-hover:opacity-0 transition-opacity duration-300">
+                        {client.description}
+                      </div>
+                      <div className="relative z-10 col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground group-hover:opacity-0 transition-opacity duration-300">
+                        {client.stat}
+                      </div>
+                      <div className="relative z-10 col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end group-hover:opacity-0 transition-opacity duration-300">
+                        {client.tech.map((t) => (
+                          <span key={t} className="tech-tag">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+
+                      <style jsx>{`
+                        @keyframes curtainSweep {
+                          0% {
+                            transform: translateX(0);
+                          }
+                          100% {
+                            transform: translateX(100%);
+                          }
+                        }
+                      `}</style>
                     </div>
-                    <div className="col-span-12 md:col-span-4 text-muted-foreground">{client.description}</div>
-                    <div className="col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground">{client.stat}</div>
-                    <div className="col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end">
-                      {client.tech.map((t) => (
-                        <span key={t} className="tech-tag">
-                          {t}
-                        </span>
-                      ))}
+                  ) : (
+                    <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
+                      <div className="col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                        {client.name}
+                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      </div>
+                      <div className="col-span-12 md:col-span-4 text-muted-foreground">{client.description}</div>
+                      <div className="col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground">{client.stat}</div>
+                      <div className="col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end">
+                        {client.tech.map((t) => (
+                          <span key={t} className="tech-tag">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </ScrollReveal>
               ))
             ) : (
               team.map((member, index) => (
                 <ScrollReveal key={member.name} delay={index * 50}>
-                  <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
-                    <div className="col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
-                      {member.name}
-                      <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                  {(member.name === "Crew Cam" || member.name === "BidMyBrace" || member.name === "BeWeddy") ? (
+                    <div className="group relative grid grid-cols-12 gap-4 py-8 border-b border-border transition-colors duration-200 -mx-6 px-6 cursor-pointer overflow-hidden">
+                      {/* Team Image - only visible on hover */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out rounded-2xl overflow-hidden" style={{ zIndex: 0 }}>
+                        <Image
+                          src={
+                            member.name === "Crew Cam"
+                              ? "/team/crew-cam.png"
+                              : member.name === "BidMyBrace"
+                              ? "/team/bidmybrace.png"
+                              : "/team/beweddy.png"
+                          }
+                          alt={member.name}
+                          fill
+                          className="object-cover object-center rounded-2xl"
+                          style={{ objectFit: 'cover' }}
+                        />
+                      </div>
+
+                      {/* Gradient Curtain - sweeps left to right on hover */}
+                      <div
+                        className="absolute inset-0 opacity-100 group-hover:opacity-0 transition-opacity duration-500 ease-out"
+                        style={{
+                          background: 'linear-gradient(90deg, #1ebda5 0%, #e26a00 50%, #ffe046 100%)',
+                          animation: 'curtainSweep 0.6s ease-out forwards',
+                          zIndex: 1,
+                        }}
+                      />
+
+                      {/* Content - hidden on hover */}
+                      <div className="relative z-10 col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2 group-hover:opacity-0 transition-opacity duration-300">
+                        {member.name}
+                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      </div>
+                      <div className="relative z-10 col-span-12 md:col-span-4 text-muted-foreground group-hover:opacity-0 transition-opacity duration-300">
+                        {member.description}
+                      </div>
+                      <div className="relative z-10 col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground group-hover:opacity-0 transition-opacity duration-300">
+                        {member.stat}
+                      </div>
+                      <div className="relative z-10 col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end group-hover:opacity-0 transition-opacity duration-300">
+                        {member.tech.map((t) => (
+                          <span key={t} className="tech-tag">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+
+                      <style jsx>{`
+                        @keyframes curtainSweep {
+                          0% {
+                            transform: translateX(0);
+                          }
+                          100% {
+                            transform: translateX(100%);
+                          }
+                        }
+                      `}</style>
                     </div>
-                    <div className="col-span-12 md:col-span-4 text-muted-foreground">{member.description}</div>
-                    <div className="col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground">{member.stat}</div>
-                    <div className="col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end">
-                      {member.tech.map((t) => (
-                        <span key={t} className="tech-tag">
-                          {t}
-                        </span>
-                      ))}
+                  ) : (
+                    <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
+                      <div className="col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                        {member.name}
+                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      </div>
+                      <div className="col-span-12 md:col-span-4 text-muted-foreground">{member.description}</div>
+                      <div className="col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground">{member.stat}</div>
+                      <div className="col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end">
+                        {member.tech.map((t) => (
+                          <span key={t} className="tech-tag">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </ScrollReveal>
               ))
             )}
