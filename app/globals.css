@@ -453,3 +453,90 @@ section {
 .swipe-indicator {
   animation: swipeHint 2s ease-in-out infinite;
 }
+
+/* ============================================
+   APPLE-STANDARD MOBILE DESIGN SYSTEM
+   ============================================ */
+
+/* Mobile Typography Scale (iOS Human Interface Guidelines) */
+.text-mobile-xs { font-size: 12px; line-height: 16px; } /* Captions */
+.text-mobile-sm { font-size: 14px; line-height: 20px; } /* Secondary text */
+.text-mobile-base { font-size: 16px; line-height: 24px; } /* Body text */
+.text-mobile-lg { font-size: 18px; line-height: 28px; } /* Subheadings */
+.text-mobile-xl { font-size: 20px; line-height: 28px; } /* Card titles */
+.text-mobile-2xl { font-size: 24px; line-height: 32px; } /* Section headings */
+.text-mobile-3xl { font-size: 28px; line-height: 36px; } /* Page titles */
+.text-mobile-4xl { font-size: 32px; line-height: 40px; } /* Hero (small) */
+.text-mobile-5xl { font-size: 36px; line-height: 44px; } /* Hero (large) */
+.text-mobile-hero { font-size: 40px; line-height: 48px; } /* Max hero size */
+
+/* Apple Spacing System (16px base unit) */
+.space-mobile-xs { margin: 8px; }
+.space-mobile-sm { margin: 16px; }
+.space-mobile-md { margin: 24px; }
+.space-mobile-lg { margin: 32px; }
+.space-mobile-xl { margin: 48px; }
+
+.p-mobile-xs { padding: 8px; }
+.p-mobile-sm { padding: 16px; }
+.p-mobile-md { padding: 24px; }
+.p-mobile-lg { padding: 32px; }
+.p-mobile-xl { padding: 48px; }
+
+/* Touch Targets (44px minimum per Apple HIG) */
+.touch-target-sm { min-height: 44px; min-width: 44px; }
+.touch-target-md { min-height: 48px; min-width: 48px; }
+.touch-target-lg { min-height: 56px; min-width: 56px; }
+.touch-target-xl { min-height: 64px; min-width: 64px; }
+
+/* Apple-Standard Buttons */
+.btn-mobile-primary {
+  min-height: 50px;
+  padding: 14px 24px;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-mobile-secondary {
+  min-height: 48px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-mobile-tertiary {
+  min-height: 44px;
+  padding: 10px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Apple Card Style */
+.card-mobile {
+  padding: 20px;
+  border-radius: 16px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Mobile Section Padding */
+@media (max-width: 768px) {
+  .section-mobile {
+    padding: 48px 20px;
+  }
+
+  .section-mobile-sm {
+    padding: 32px 20px;
+  }
+
+  .section-mobile-lg {
+    padding: 64px 20px;
+  }
+}

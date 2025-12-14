@@ -198,31 +198,31 @@ export default function Home() {
         <HeroWallpaper />
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="py-32 relative">
+      {/* Services Section - Apple Standard Mobile */}
+      <section id="services" className="py-16 sm:py-24 md:py-32 relative">
         <div className="section-divider" />
-        <div className="max-w-[1200px] mx-auto px-6 pt-32">
+        <div className="max-w-[1200px] mx-auto px-5 sm:px-6 pt-16 sm:pt-24 md:pt-32">
           {/* Header */}
-          <div className="text-center mb-20">
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
             <ScrollReveal>
-              <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight mb-8">
+              <h2 className="font-heading text-mobile-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight mb-6 sm:mb-8 px-4 sm:px-0">
                 Transform Your Business{" "}
                 <span style={{ color: '#1ebda5' }}>with AI</span>
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-12">
+              <p className="text-mobile-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 sm:mb-12 px-4 sm:px-0">
                 We don't just talk AI. We build it. Real solutions. Real results.
               </p>
             </ScrollReveal>
             <ScrollReveal delay={200}>
-              <p className="text-sm font-mono tracking-[0.2em] text-muted-foreground mb-6">WHAT WE OFFER</p>
+              <p className="text-mobile-xs sm:text-sm font-mono tracking-[0.2em] text-muted-foreground mb-4 sm:mb-6">WHAT WE OFFER</p>
             </ScrollReveal>
             <ScrollReveal delay={300}>
-              <h3 className="font-heading text-4xl md:text-5xl font-medium tracking-tight mb-4">Our Services</h3>
+              <h3 className="font-heading text-mobile-3xl sm:text-4xl md:text-5xl font-medium tracking-tight mb-3 sm:mb-4 px-4 sm:px-0">Our Services</h3>
             </ScrollReveal>
             <ScrollReveal delay={400}>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-mobile-base sm:text-lg text-muted-foreground px-4 sm:px-0">
                 Comprehensive AI solutions tailored to your business needs
               </p>
             </ScrollReveal>

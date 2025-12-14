@@ -72,15 +72,15 @@ export function Header() {
           transition: 'all 0.3s ease',
         }}
       >
-        <div className="px-4 sm:px-6 md:px-8 py-3 sm:py-4 flex items-center justify-between">
-          {/* Logo */}
-          <a href="#hero" onClick={(e) => handleNavClick(e, "#hero")} className="flex items-center flex-shrink-0">
+        <div className="px-5 sm:px-6 md:px-8 py-3 sm:py-4 flex items-center justify-between">
+          {/* Logo - Apple Standard: 56px touch target on mobile */}
+          <a href="#hero" onClick={(e) => handleNavClick(e, "#hero")} className="flex items-center flex-shrink-0 touch-target-lg">
             <Image
               src="/header-icon.png"
               alt="Haestus"
               width={56}
               height={56}
-              className="rounded-full hover:scale-105 transition-transform duration-200 w-12 h-12 sm:w-14 sm:h-14"
+              className="rounded-full hover:scale-105 transition-transform duration-200 w-14 h-14 sm:w-14 sm:h-14"
               style={{
                 borderRadius: '50%',
                 objectFit: 'cover',
@@ -124,9 +124,9 @@ export function Header() {
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button - Apple Standard: 48px touch target */}
           <button
-            className="md:hidden p-2 text-foreground flex-shrink-0"
+            className="md:hidden touch-target-md p-3 text-foreground flex-shrink-0 flex items-center justify-center"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -135,14 +135,14 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Apple Standard Spacing */}
       <div
         className={`md:hidden transition-opacity duration-300 ${
           mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         style={{
           position: 'fixed',
-          top: '76px',
+          top: '80px',
           left: 0,
           right: 0,
           bottom: 0,
@@ -151,26 +151,26 @@ export function Header() {
           backdropFilter: 'blur(10px)',
         }}
       >
-        <nav className="flex flex-col p-6 gap-3">
-          {/* Main Navigation Links */}
-          <div className="flex flex-col gap-3 pb-4 border-b border-border">
+        <nav className="flex flex-col px-5 py-6 gap-2">
+          {/* Main Navigation Links - Apple Standard: 48px touch targets */}
+          <div className="flex flex-col gap-1 pb-6 mb-6 border-b border-border">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href, link.external)}
-                className="text-lg font-medium text-foreground hover:text-[#1ebda5] transition-colors py-2"
+                className="touch-target-md flex items-center text-mobile-lg font-semibold text-foreground hover:text-[#1ebda5] transition-colors px-4 rounded-lg"
               >
                 {link.label}
               </a>
             ))}
           </div>
 
-          {/* Prominent Clients Button */}
+          {/* Prominent Clients Button - Apple Standard: 50px height */}
           <Link
             href="/portal"
             onClick={() => setMobileMenuOpen(false)}
-            className="enhanced-button rounded-button mt-2 px-8 py-5 text-center font-semibold text-lg w-full shadow-lg"
+            className="btn-mobile-primary enhanced-button text-center w-full shadow-lg mb-3"
             style={{
               background: 'linear-gradient(45deg, #1ebda5 0%, #e26a00 50%, #ffe046 100%)',
               color: 'white',
@@ -179,11 +179,11 @@ export function Header() {
             🔐 Client Portal
           </Link>
 
-          {/* Secondary CTA */}
+          {/* Secondary CTA - Apple Standard: 48px height */}
           <a
             href="#connect"
             onClick={(e) => handleNavClick(e, "#connect")}
-            className="enhanced-button rounded-button px-6 py-4 text-center text-base font-medium border-2 border-foreground text-foreground hover:bg-foreground hover:text-background"
+            className="btn-mobile-secondary enhanced-button text-center border-2 border-foreground text-foreground hover:bg-foreground hover:text-background w-full"
           >
             Get In Touch
           </a>

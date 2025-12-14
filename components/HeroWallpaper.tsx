@@ -55,7 +55,7 @@ export function HeroWallpaper() {
 
           {/* Hero Content */}
           <div className="absolute inset-0 flex items-center justify-center z-[7] pointer-events-none">
-              <div className="max-w-[1200px] mx-auto px-6 py-32 text-center pointer-events-auto">
+              <div className="max-w-[1200px] mx-auto px-5 sm:px-6 py-24 sm:py-32 text-center pointer-events-auto">
 
                 {/* Animated Logo */}
                 <div
@@ -78,7 +78,7 @@ export function HeroWallpaper() {
                         alt="Haestus"
                         width={813}
                         height={244}
-                        className="h-auto w-full max-w-[700px] px-4"
+                        className="h-auto w-full max-w-[280px] sm:max-w-[400px] md:max-w-[700px] px-4"
                         priority
                         style={{
                           filter: 'drop-shadow(0 10px 40px rgba(0, 0, 0, 0.08))',
@@ -181,20 +181,21 @@ export function HeroWallpaper() {
                   }
                 `}</style>
 
-                {/* Tagline */}
+                {/* Tagline - Apple Standard Mobile */}
                 <div
-                  className="inline-block px-4 py-2 rounded-lg backdrop-blur-sm bg-foreground/5 border border-border mb-8"
+                  className="inline-block px-4 py-2 rounded-lg backdrop-blur-sm bg-foreground/5 border border-border mb-6 sm:mb-8"
                   style={{
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
                     transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s',
                   }}
                 >
-                  <p className="text-sm font-mono tracking-[0.3em] text-muted-foreground">AI ARCHITECTURE STUDIO</p>
+                  <p className="text-mobile-xs sm:text-sm font-mono tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground">AI ARCHITECTURE STUDIO</p>
                 </div>
 
+                {/* Hero Heading - Apple Standard: Max 40px on mobile */}
                 <h1
-                  className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-medium tracking-tight mb-8 text-foreground"
+                  className="font-heading text-mobile-hero sm:text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight mb-6 sm:mb-8 text-foreground px-4 sm:px-0"
                   style={{
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -206,9 +207,9 @@ export function HeroWallpaper() {
                   Intelligence
                 </h1>
 
-                {/* Subtitle */}
+                {/* Subtitle - Apple Standard: 16px body text on mobile */}
                 <div
-                  className="inline-block px-6 py-3 rounded-full backdrop-blur-sm mb-12"
+                  className="inline-block px-5 sm:px-6 py-3 rounded-full backdrop-blur-sm mb-10 sm:mb-12"
                   style={{
                     background: "radial-gradient(ellipse at center, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.01) 70%, transparent 100%)",
                     opacity: isVisible ? 1 : 0,
@@ -216,13 +217,14 @@ export function HeroWallpaper() {
                     transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s',
                   }}
                 >
-                  <p className="text-lg text-muted-foreground max-w-xl">
+                  <p className="text-mobile-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed">
                     We architect AI systems that amplify human capability and compound competitive advantage.
                   </p>
                 </div>
 
+                {/* CTA Buttons - Apple Standard: 50px mobile buttons */}
                 <div
-                  className="flex flex-col sm:flex-row items-center justify-center gap-4"
+                  className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 px-5 sm:px-0"
                   style={{
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -231,13 +233,13 @@ export function HeroWallpaper() {
                 >
                   <a
                     href="#portfolio"
-                    className="enhanced-button rounded-button px-8 py-4 bg-foreground text-background font-medium"
+                    className="btn-mobile-primary enhanced-button bg-foreground text-background text-center"
                   >
                     View My Work →
                   </a>
                   <a
                     href="/portal"
-                    className="enhanced-button rounded-button px-8 py-4 border font-medium hover:bg-[#1ebda5] hover:text-white"
+                    className="btn-mobile-primary enhanced-button border-2 hover:bg-[#1ebda5] hover:text-white hover:border-[#1ebda5] text-center"
                     style={{
                       borderColor: '#1ebda5',
                       color: '#1ebda5',
