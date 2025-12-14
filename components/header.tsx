@@ -93,14 +93,14 @@ export function Header() {
           <div className="hidden md:flex items-center gap-3 flex-shrink-0">
             <Link
               href="/portal"
-              className="text-sm font-medium px-4 py-2 rounded-full text-[#1ebda5] hover:bg-gray-50 transition-colors duration-200"
+              className="enhanced-button text-sm font-medium px-5 py-2.5 rounded-full text-[#1ebda5] border border-[#1ebda5] hover:bg-[#1ebda5] hover:text-white transition-all duration-200"
             >
               Clients
             </Link>
             <a
               href="#connect"
               onClick={(e) => handleNavClick(e, "#connect")}
-              className="text-sm font-medium px-5 py-2 rounded-full bg-black text-white hover:bg-gray-800 transition-colors duration-200"
+              className="enhanced-button text-sm font-medium px-5 py-2.5 rounded-full bg-black text-white hover:bg-gray-800 transition-all duration-200"
             >
               Get In Touch
             </a>
@@ -168,14 +168,14 @@ export function Header() {
             <Link
               href="/portal"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center rounded-full text-center w-full active:opacity-80 transition-opacity touch-target-lg bg-[#1ebda5] text-white font-semibold"
+              className="btn-mobile-primary enhanced-button flex items-center justify-center rounded-full text-center w-full active:opacity-80 transition-opacity bg-[#1ebda5] text-white font-semibold"
             >
               Client Portal
             </Link>
             <a
               href="#connect"
               onClick={(e) => handleNavClick(e, "#connect")}
-              className="flex items-center justify-center rounded-full text-center w-full active:opacity-80 transition-opacity touch-target-lg border-2 border-black text-black font-semibold bg-white"
+              className="btn-mobile-primary enhanced-button flex items-center justify-center rounded-full text-center w-full active:opacity-80 transition-opacity border-2 border-black text-black font-semibold bg-white"
             >
               Get In Touch
             </a>
