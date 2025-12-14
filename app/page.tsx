@@ -230,40 +230,40 @@ export default function Home() {
 
           {/* Three Service Cards */}
           <div className="grid md:grid-cols-3 gap-8">
-            {/* AI Consulting */}
+            {/* AI Consulting - Apple Mobile Standards */}
             <ScrollReveal delay={100}>
-              <div className="card-entrance card-entrance-delay-1 group p-8 h-full flex flex-col transition-all duration-200 angled-border-subtle" style={{ border: '2px solid #1ebda5' }}>
-                <div className="w-12 h-12 rounded-lg mb-6 flex items-center justify-center" style={{ background: 'rgba(30, 189, 165, 0.1)' }}>
+              <div className="card-entrance card-entrance-delay-1 group p-5 sm:p-6 md:p-8 h-full flex flex-col transition-all duration-200 angled-border-subtle" style={{ border: '2px solid #1ebda5' }}>
+                <div className="w-12 h-12 rounded-lg mb-5 sm:mb-6 flex items-center justify-center" style={{ background: 'rgba(30, 189, 165, 0.1)' }}>
                   <svg className="w-6 h-6" style={{ color: '#1ebda5' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                   </svg>
                 </div>
-                <h3 className="font-heading text-2xl font-medium text-foreground mb-2">AI Consulting</h3>
-                <p className="text-sm font-medium mb-6" style={{ color: '#1ebda5' }}>Strategy & Implementation</p>
-                <p className="text-muted-foreground leading-relaxed mb-8 flex-grow">
+                <h3 className="font-heading text-mobile-xl sm:text-2xl font-semibold text-foreground mb-2">AI Consulting</h3>
+                <p className="text-mobile-sm sm:text-sm font-semibold mb-5 sm:mb-6" style={{ color: '#1ebda5' }}>Strategy & Implementation</p>
+                <p className="text-mobile-sm sm:text-base text-muted-foreground leading-relaxed mb-6 sm:mb-8 flex-grow">
                   We help you understand where AI fits in your business and develop clear implementation strategies.
                 </p>
-                <ul className="space-y-3 mb-8">
-                  <li className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <svg className="w-5 h-5 flex-shrink-0" style={{ color: '#1ebda5' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <ul className="space-y-2.5 sm:space-y-3 mb-6 sm:mb-8">
+                  <li className="flex items-center gap-3 text-mobile-sm sm:text-sm text-muted-foreground">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" style={{ color: '#1ebda5' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     AI Strategy & Roadmap
                   </li>
-                  <li className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <svg className="w-5 h-5 flex-shrink-0" style={{ color: '#1ebda5' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <li className="flex items-center gap-3 text-mobile-sm sm:text-sm text-muted-foreground">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" style={{ color: '#1ebda5' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Process Audits
                   </li>
-                  <li className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <svg className="w-5 h-5 flex-shrink-0" style={{ color: '#1ebda5' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <li className="flex items-center gap-3 text-mobile-sm sm:text-sm text-muted-foreground">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" style={{ color: '#1ebda5' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Implementation Planning
                   </li>
-                  <li className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <svg className="w-5 h-5 flex-shrink-0" style={{ color: '#1ebda5' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <li className="flex items-center gap-3 text-mobile-sm sm:text-sm text-muted-foreground">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" style={{ color: '#1ebda5' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Team Training
@@ -271,7 +271,7 @@ export default function Home() {
                 </ul>
                 <a
                   href="#connect"
-                  className="enhanced-button inline-flex items-center justify-center gap-2 rounded-button px-6 py-3 font-medium w-full"
+                  className="btn-mobile-secondary enhanced-button flex items-center justify-center gap-2 w-full"
                   style={{ background: '#1ebda5', color: 'white' }}
                 >
                   Contact Us
