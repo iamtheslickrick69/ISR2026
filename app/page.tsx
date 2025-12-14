@@ -271,13 +271,9 @@ export default function Home() {
                 </ul>
                 <a
                   href="#connect"
-                  className="btn-mobile-secondary enhanced-button flex items-center justify-center gap-2 w-full"
-                  style={{ background: '#1ebda5', color: 'white' }}
+                  className="enhanced-button text-sm lg:text-base font-medium px-6 py-3 rounded-full bg-[#1ebda5] text-white hover:bg-[#19a693] transition-all duration-200 text-center w-full"
                 >
-                  Contact Us
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
+                  Contact Us →
                 </a>
               </div>
             </ScrollReveal>
@@ -323,13 +319,9 @@ export default function Home() {
                 </ul>
                 <a
                   href="#connect"
-                  className="btn-mobile-secondary enhanced-button flex items-center justify-center gap-2 w-full"
-                  style={{ background: '#e26a00', color: 'white' }}
+                  className="enhanced-button text-sm lg:text-base font-medium px-6 py-3 rounded-full bg-[#e26a00] text-white hover:bg-[#c85d00] transition-all duration-200 text-center w-full"
                 >
-                  Contact Us
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
+                  Contact Us →
                 </a>
               </div>
             </ScrollReveal>
@@ -375,13 +367,9 @@ export default function Home() {
                 </ul>
                 <a
                   href="#connect"
-                  className="btn-mobile-secondary enhanced-button flex items-center justify-center gap-2 w-full"
-                  style={{ background: '#c49f00', color: 'white' }}
+                  className="enhanced-button text-sm lg:text-base font-medium px-6 py-3 rounded-full bg-[#c49f00] text-white hover:bg-[#a88600] transition-all duration-200 text-center w-full"
                 >
-                  Contact Us
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
+                  Contact Us →
                 </a>
               </div>
             </ScrollReveal>
