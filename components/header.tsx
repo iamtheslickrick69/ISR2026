@@ -51,28 +51,28 @@ export function Header() {
       className="flex justify-center pointer-events-none"
       style={{
         position: 'fixed',
-        top: isScrolled ? '8px' : '12px',
+        top: 0,
         left: 0,
         right: 0,
         zIndex: 999999,
         isolation: 'isolate',
-        paddingLeft: '16px',
-        paddingRight: '16px',
-        transform: `translateZ(0) scale(${isScrolled ? 0.97 : 1})`,
+        paddingLeft: '0',
+        paddingRight: '0',
+        transform: 'translateZ(0)',
         willChange: 'transform',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       }}
     >
       <div
-        className="w-full max-w-[900px] rounded-xl pointer-events-auto"
+        className="w-full rounded-none md:max-w-[900px] md:rounded-xl md:mt-3 md:mx-4 pointer-events-auto"
         style={{
-          background: 'rgba(255, 255, 255, 0.95)',
-          border: '1px solid rgba(0, 0, 0, 0.08)',
-          boxShadow: '0 4px 16px 0 rgba(0, 0, 0, 0.08)',
+          background: '#ffffff',
+          border: 'none',
+          borderBottom: '1px solid #e5e5e5',
+          boxShadow: isScrolled ? '0 2px 8px rgba(0, 0, 0, 0.08)' : 'none',
           transition: 'all 0.3s ease',
         }}
       >
-        <div className="px-5 sm:px-6 md:px-8 py-3 sm:py-4 flex items-center justify-between">
+        <div className="px-5 sm:px-6 md:px-8 py-4 flex items-center justify-between" style={{ minHeight: '64px' }}>
           {/* Logo - Apple Standard: 56px touch target on mobile */}
           <a href="#hero" onClick={(e) => handleNavClick(e, "#hero")} className="flex items-center flex-shrink-0 touch-target-lg">
             <Image
@@ -135,55 +135,95 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu - Apple Standard Spacing */}
+      {/* Mobile Menu - iOS SOLID WHITE Background */}
       <div
-        className={`md:hidden transition-opacity duration-300 ${
+        className={`md:hidden transition-all duration-300 ${
           mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         style={{
           position: 'fixed',
-          top: '80px',
+          top: '0',
           left: 0,
           right: 0,
           bottom: 0,
-          zIndex: 999998,
-          background: 'rgba(255, 255, 255, 0.98)',
-          backdropFilter: 'blur(10px)',
+          zIndex: 999997,
+          background: '#ffffff',
         }}
       >
-        <nav className="flex flex-col px-5 py-6 gap-2">
-          {/* Main Navigation Links - Apple Standard: 48px touch targets */}
-          <div className="flex flex-col gap-1 pb-6 mb-6 border-b border-border">
+        {/* iOS-style header */}
+        <div
+          className="flex items-center justify-between px-5 py-4"
+          style={{
+            borderBottom: '1px solid #e5e5e5',
+            height: '64px',
+            background: '#ffffff',
+          }}
+        >
+          <div className="text-xl font-semibold">Menu</div>
+          <button
+            className="p-3 flex items-center justify-center"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close menu"
+            style={{ minHeight: '48px', minWidth: '48px' }}
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        <nav className="flex flex-col px-5 py-6 gap-2 overflow-y-auto bg-white" style={{ maxHeight: 'calc(100vh - 64px)' }}>
+          {/* iOS Navigation Links */}
+          <div className="flex flex-col gap-2 pb-6 mb-6" style={{ borderBottom: '1px solid #e5e5e5' }}>
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href, link.external)}
-                className="touch-target-md flex items-center text-mobile-lg font-semibold text-foreground hover:text-[#1ebda5] transition-colors px-4 rounded-lg"
+                className="flex items-center justify-between px-4 py-4 rounded-xl active:bg-gray-100 transition-colors"
+                style={{
+                  minHeight: '56px',
+                  fontSize: '17px',
+                  fontWeight: '600',
+                  color: '#000000',
+                }}
               >
-                {link.label}
+                <span>{link.label}</span>
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </a>
             ))}
           </div>
 
-          {/* Prominent Clients Button - Apple Standard: 50px height */}
+          {/* iOS Button */}
           <Link
             href="/portal"
             onClick={() => setMobileMenuOpen(false)}
-            className="btn-mobile-primary enhanced-button text-center w-full shadow-lg mb-3"
+            className="flex items-center justify-center rounded-xl text-center w-full mb-4 active:opacity-80 transition-opacity"
             style={{
+              minHeight: '56px',
               background: 'linear-gradient(45deg, #1ebda5 0%, #e26a00 50%, #ffe046 100%)',
               color: 'white',
+              fontSize: '17px',
+              fontWeight: '600',
+              boxShadow: '0 2px 8px rgba(30, 189, 165, 0.3)',
             }}
           >
             🔐 Client Portal
           </Link>
 
-          {/* Secondary CTA - Apple Standard: 48px height */}
+          {/* iOS Secondary Button */}
           <a
             href="#connect"
             onClick={(e) => handleNavClick(e, "#connect")}
-            className="btn-mobile-secondary enhanced-button text-center border-2 border-foreground text-foreground hover:bg-foreground hover:text-background w-full"
+            className="flex items-center justify-center rounded-xl text-center w-full active:opacity-80 transition-opacity"
+            style={{
+              minHeight: '56px',
+              border: '2px solid #000000',
+              color: '#000000',
+              fontSize: '17px',
+              fontWeight: '600',
+              background: '#ffffff',
+            }}
           >
             Get In Touch
           </a>
