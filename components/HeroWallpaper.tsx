@@ -1,11 +1,12 @@
 "use client"
 
-import { ArrowDown } from "lucide-react"
+import { ArrowDown, ChevronRight, X } from "lucide-react"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 
 export function HeroWallpaper() {
   const [isVisible, setIsVisible] = useState(false)
+  const [showOriginStory, setShowOriginStory] = useState(false)
 
   useEffect(() => {
     setIsVisible(true)
@@ -27,7 +28,7 @@ export function HeroWallpaper() {
         style={{
           top: "0",
           height: "33vh",
-          background: "linear-gradient(45deg, #121521, #38476b, #b6192e, #ffc1ac)",
+          background: "linear-gradient(45deg, #1ebda5, #e26a00, #ffe046)",
           opacity: 0.6,
           filter: "blur(60px)",
           transform: "scale(1.2)",
@@ -65,20 +66,120 @@ export function HeroWallpaper() {
                     transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
                 >
-                  <div className="relative">
-                    <Image
-                      src="/line.png"
-                      alt="Haestus"
-                      width={813}
-                      height={244}
-                      className="h-auto w-full max-w-[700px] px-4"
-                      priority
+                  <div className="relative inline-block">
+                    <div
                       style={{
-                        filter: 'drop-shadow(0 10px 40px rgba(0, 0, 0, 0.08))',
+                        transform: showOriginStory ? 'translateX(-80px)' : 'translateX(0)',
+                        transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
                       }}
-                    />
+                    >
+                      <Image
+                        src="/line.png"
+                        alt="Haestus"
+                        width={813}
+                        height={244}
+                        className="h-auto w-full max-w-[700px] px-4"
+                        priority
+                        style={{
+                          filter: 'drop-shadow(0 10px 40px rgba(0, 0, 0, 0.08))',
+                        }}
+                      />
+                    </div>
+
+                    {/* Subtle Chevron Icon */}
+                    <button
+                      onClick={() => setShowOriginStory(true)}
+                      className="absolute top-1/2 -translate-y-1/2 -right-4 p-2.5 rounded-full transition-all duration-300"
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.08)',
+                        backdropFilter: 'blur(12px)',
+                        border: '1px solid rgba(255, 255, 255, 0.12)',
+                        animation: 'subtle-pulse 3.5s ease-in-out infinite',
+                      }}
+                      aria-label="Learn about our origin story"
+                    >
+                      <ChevronRight className="w-4 h-4 text-foreground/70" />
+                    </button>
+
+                    {/* White Widget */}
+                    {showOriginStory && (
+                      <div
+                        className="absolute top-0 left-full ml-8"
+                        style={{
+                          width: '420px',
+                          animation: 'liquid-morph 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                          transformOrigin: 'left center',
+                        }}
+                      >
+                        <div
+                          className="relative p-8 rounded-2xl bg-white"
+                          style={{
+                            border: '1px solid rgba(0, 0, 0, 0.08)',
+                            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06)',
+                          }}
+                        >
+                          {/* Close Button */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setShowOriginStory(false)
+                            }}
+                            className="absolute top-3 right-3 p-1.5 rounded-full transition-all duration-200 hover:bg-gray-100"
+                            aria-label="Close"
+                          >
+                            <X className="w-4 h-4 text-gray-500 hover:text-black" />
+                          </button>
+
+                          {/* Content */}
+                          <p className="text-xs font-mono tracking-[0.25em] text-gray-500 mb-4">ORIGIN STORY</p>
+                          <h3 className="font-heading text-xl font-medium tracking-tight mb-4 text-black">
+                            Why We're Called Haestus
+                          </h3>
+                          <p className="text-sm text-gray-700 leading-relaxed mb-4">
+                            Hephaestus was the Greek god of fire, craftsmanship, and invention—the quiet architect who forged the
+                            armor, tools, and machines that empowered both gods and humans.
+                          </p>
+                          <p className="text-sm text-gray-700 leading-relaxed mb-4">
+                            We believe AI can make the world a better place—if we build it with intention. We create tools that
+                            help humanity rise with the tide of AI, not get swept away by it.
+                          </p>
+                          <p className="text-sm text-black font-medium">— Rocky, Founder</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
+
+                {/* CSS Animations */}
+                <style jsx>{`
+                  @keyframes subtle-pulse {
+                    0%, 100% {
+                      opacity: 0.7;
+                      transform: scale(1);
+                    }
+                    50% {
+                      opacity: 0.95;
+                      transform: scale(1.02);
+                    }
+                  }
+
+                  @keyframes liquid-morph {
+                    0% {
+                      opacity: 0;
+                      transform: scale(0.3) translateX(-100px);
+                      filter: blur(10px);
+                    }
+                    60% {
+                      opacity: 0.8;
+                      filter: blur(2px);
+                    }
+                    100% {
+                      opacity: 1;
+                      transform: scale(1) translateX(0);
+                      filter: blur(0);
+                    }
+                  }
+                `}</style>
 
                 {/* Tagline */}
                 <div

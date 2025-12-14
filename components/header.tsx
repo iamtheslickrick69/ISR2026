@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Menu, X } from "lucide-react"
 import { LogoWithText } from "./logo"
 import Image from "next/image"
@@ -13,7 +13,6 @@ type NavLink = {
 }
 
 const navLinks: NavLink[] = [
-  { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
   { href: "#portfolio", label: "Work" },
   { href: "/agent-builder", label: "AI Builder", external: true },
@@ -23,6 +22,16 @@ const navLinks: NavLink[] = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, external?: boolean) => {
     if (external) {
@@ -42,22 +51,27 @@ export function Header() {
       className="flex justify-center pointer-events-none"
       style={{
         position: 'fixed',
-        top: '16px',
+        top: isScrolled ? '12px' : '16px',
         left: 0,
         right: 0,
         zIndex: 999999,
         isolation: 'isolate',
         paddingLeft: '24px',
         paddingRight: '24px',
-        transform: 'translateZ(0)',
+        transform: `translateZ(0) scale(${isScrolled ? 0.93 : 1})`,
         willChange: 'transform',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       }}
     >
       <div
-        className="w-full max-w-[1200px] rounded-xl border bg-background/95 backdrop-blur-md pointer-events-auto"
+        className="w-full max-w-[1200px] rounded-xl pointer-events-auto"
         style={{
-          borderColor: 'rgba(0, 0, 0, 0.12)',
-          boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04)',
+          background: 'rgba(255, 255, 255, 0.08)',
+          backdropFilter: 'blur(40px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+          border: '1px solid rgba(255, 255, 255, 0.18)',
+          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.08)',
+          transition: 'all 0.3s ease',
         }}
       >
         <div className="px-8 py-4 flex items-center justify-between">
@@ -117,7 +131,7 @@ export function Header() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden bg-background/95 backdrop-blur-xl transition-opacity duration-300 ${
+        className={`md:hidden transition-opacity duration-300 ${
           mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         style={{
@@ -127,6 +141,9 @@ export function Header() {
           right: 0,
           bottom: 0,
           zIndex: 999998,
+          background: 'rgba(255, 255, 255, 0.08)',
+          backdropFilter: 'blur(40px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(40px) saturate(180%)',
         }}
       >
         <nav className="flex flex-col p-6 gap-4">
