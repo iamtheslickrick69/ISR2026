@@ -606,61 +606,64 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Portfolio Section */}
-      <section id="portfolio" className="py-32 relative">
+      {/* Portfolio Section - iOS Mobile */}
+      <section id="portfolio" className="py-16 sm:py-24 md:py-32 relative">
         <div className="section-divider" />
-        <div className="max-w-[1200px] mx-auto px-6 pt-32">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 gap-6">
+        <div className="max-w-[1200px] mx-auto px-5 sm:px-6 pt-16 sm:pt-24 md:pt-32">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 sm:mb-16 gap-4 sm:gap-6">
             <div>
               <ScrollReveal>
-                <p className="text-sm font-mono tracking-[0.2em] text-muted-foreground mb-6">OUR WORK</p>
+                <p className="text-mobile-xs sm:text-sm font-mono tracking-[0.2em] text-muted-foreground mb-4 sm:mb-6">OUR WORK</p>
               </ScrollReveal>
               <ScrollReveal delay={100}>
-                <h2 className="font-heading text-4xl md:text-5xl font-medium tracking-tight">Portfolio</h2>
+                <h2 className="font-heading text-mobile-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight">Portfolio</h2>
               </ScrollReveal>
             </div>
             <ScrollReveal delay={200}>
-              <p className="text-muted-foreground max-w-md">We don't do MVPs. We ship products that feel inevitable.</p>
+              <p className="text-mobile-sm sm:text-base text-muted-foreground max-w-md">We don't do MVPs. We ship products that feel inevitable.</p>
             </ScrollReveal>
           </div>
 
-          {/* Tabs with Mobile Swipe Hint */}
-          <div className="relative">
-            <div className="flex gap-4 mb-8 border-b border-border">
+          {/* iOS-Style Tabs */}
+          <div className="relative mb-8">
+            <div className="flex gap-2 sm:gap-4 mb-6 sm:mb-8 pb-2" style={{ borderBottom: '1px solid #e5e5e5', overflowX: 'auto' }}>
               <button
                 onClick={() => setActiveTab("projects")}
-                className={`px-4 py-4 font-medium transition-colors duration-200 ${
+                className={`px-4 sm:px-6 py-3 font-semibold transition-all duration-200 whitespace-nowrap ${
                   activeTab === "projects"
                     ? "text-foreground border-b-2 border-foreground -mb-px"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-gray-400 hover:text-foreground"
                 }`}
+                style={{ fontSize: '15px', minHeight: '44px' }}
               >
                 Projects
               </button>
               <button
                 onClick={() => setActiveTab("clients")}
-                className={`px-4 py-4 font-medium transition-colors duration-200 ${
+                className={`px-4 sm:px-6 py-3 font-semibold transition-all duration-200 whitespace-nowrap ${
                   activeTab === "clients"
                     ? "text-foreground border-b-2 border-foreground -mb-px"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-gray-400 hover:text-foreground"
                 }`}
+                style={{ fontSize: '15px', minHeight: '44px' }}
               >
                 Clients
               </button>
               <button
                 onClick={() => setActiveTab("team")}
-                className={`px-4 py-4 font-medium transition-colors duration-200 ${
+                className={`px-4 sm:px-6 py-3 font-semibold transition-all duration-200 whitespace-nowrap ${
                   activeTab === "team"
                     ? "text-foreground border-b-2 border-foreground -mb-px"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-gray-400 hover:text-foreground"
                 }`}
+                style={{ fontSize: '15px', minHeight: '44px' }}
               >
                 Team
               </button>
             </div>
 
-            {/* Mobile Swipe Indicator */}
-            <div className="md:hidden flex items-center justify-center gap-2 mb-4 text-xs text-muted-foreground">
+            {/* iOS Swipe Hint */}
+            <div className="md:hidden flex items-center justify-center gap-2 mb-6 text-mobile-xs text-gray-400">
               <svg className="w-4 h-4 swipe-indicator" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
               </svg>
