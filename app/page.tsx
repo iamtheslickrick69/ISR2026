@@ -113,7 +113,56 @@ const insights = [
 ]
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<"projects" | "clients" | "team">("projects")
+  const [activeTab, setActiveTab] = useState<"projects" | "clients" | "team">(() => {
+    // Smart default: Remember last visited tab from localStorage
+    if (typeof window !== 'undefined') {
+      const savedTab = localStorage.getItem('portfolioTab')
+      if (savedTab === 'projects' || savedTab === 'clients' || savedTab === 'team') {
+        return savedTab
+      }
+    }
+    return "projects"
+  })
+  const [touchStart, setTouchStart] = useState<number>(0)
+  const [touchEnd, setTouchEnd] = useState<number>(0)
+
+  // Minimum swipe distance (in px)
+  const minSwipeDistance = 50
+
+  // Save tab preference when it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('portfolioTab', activeTab)
+    }
+  }, [activeTab])
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(0) // Reset on new touch
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+
+    if (isLeftSwipe) {
+      // Swipe left: next tab
+      if (activeTab === "projects") setActiveTab("clients")
+      else if (activeTab === "clients") setActiveTab("team")
+    }
+    if (isRightSwipe) {
+      // Swipe right: previous tab
+      if (activeTab === "team") setActiveTab("clients")
+      else if (activeTab === "clients") setActiveTab("projects")
+    }
+  }
 
   useEffect(() => {
     const reveals = document.querySelectorAll(".fade-in")
@@ -183,7 +232,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {/* AI Consulting */}
             <ScrollReveal delay={100}>
-              <div className="group p-8 h-full flex flex-col transition-all duration-200 angled-border-subtle" style={{ border: '2px solid #1ebda5' }}>
+              <div className="card-entrance card-entrance-delay-1 group p-8 h-full flex flex-col transition-all duration-200 angled-border-subtle" style={{ border: '2px solid #1ebda5' }}>
                 <div className="w-12 h-12 rounded-lg mb-6 flex items-center justify-center" style={{ background: 'rgba(30, 189, 165, 0.1)' }}>
                   <svg className="w-6 h-6" style={{ color: '#1ebda5' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -222,7 +271,7 @@ export default function Home() {
                 </ul>
                 <a
                   href="#connect"
-                  className="inline-flex items-center justify-center gap-2 rounded-button px-6 py-3 font-medium transition-all duration-200 w-full"
+                  className="enhanced-button inline-flex items-center justify-center gap-2 rounded-button px-6 py-3 font-medium w-full"
                   style={{ background: '#1ebda5', color: 'white' }}
                 >
                   Contact Us
@@ -235,7 +284,7 @@ export default function Home() {
 
             {/* AI Agent Building */}
             <ScrollReveal delay={200}>
-              <div className="group p-8 h-full flex flex-col transition-all duration-200 angled-border-subtle" style={{ border: '2px solid #e26a00' }}>
+              <div className="card-entrance card-entrance-delay-2 group p-8 h-full flex flex-col transition-all duration-200 angled-border-subtle" style={{ border: '2px solid #e26a00' }}>
                 <div className="w-12 h-12 rounded-lg mb-6 flex items-center justify-center" style={{ background: 'rgba(226, 106, 0, 0.1)' }}>
                   <svg className="w-6 h-6" style={{ color: '#e26a00' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
@@ -274,7 +323,7 @@ export default function Home() {
                 </ul>
                 <a
                   href="#connect"
-                  className="inline-flex items-center justify-center gap-2 rounded-button px-6 py-3 font-medium transition-all duration-200 w-full"
+                  className="enhanced-button inline-flex items-center justify-center gap-2 rounded-button px-6 py-3 font-medium w-full"
                   style={{ background: '#e26a00', color: 'white' }}
                 >
                   Contact Us
@@ -287,7 +336,7 @@ export default function Home() {
 
             {/* Web App & Design */}
             <ScrollReveal delay={300}>
-              <div className="group p-8 h-full flex flex-col transition-all duration-200 angled-border-subtle" style={{ border: '2px solid #c49f00' }}>
+              <div className="card-entrance card-entrance-delay-3 group p-8 h-full flex flex-col transition-all duration-200 angled-border-subtle" style={{ border: '2px solid #c49f00' }}>
                 <div className="w-12 h-12 rounded-lg mb-6 flex items-center justify-center" style={{ background: 'rgba(255, 224, 70, 0.2)' }}>
                   <svg className="w-6 h-6" style={{ color: '#c49f00' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
@@ -326,7 +375,7 @@ export default function Home() {
                 </ul>
                 <a
                   href="#connect"
-                  className="inline-flex items-center justify-center gap-2 rounded-button px-6 py-3 font-medium transition-all duration-200 w-full"
+                  className="enhanced-button inline-flex items-center justify-center gap-2 rounded-button px-6 py-3 font-medium w-full"
                   style={{ background: '#c49f00', color: 'white' }}
                 >
                   Contact Us
@@ -575,48 +624,66 @@ export default function Home() {
             </ScrollReveal>
           </div>
 
-          {/* Tabs */}
-          <div className="flex gap-4 mb-8 border-b border-border">
-            <button
-              onClick={() => setActiveTab("projects")}
-              className={`px-4 py-4 font-medium transition-colors duration-200 ${
-                activeTab === "projects"
-                  ? "text-foreground border-b-2 border-foreground -mb-px"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Projects
-            </button>
-            <button
-              onClick={() => setActiveTab("clients")}
-              className={`px-4 py-4 font-medium transition-colors duration-200 ${
-                activeTab === "clients"
-                  ? "text-foreground border-b-2 border-foreground -mb-px"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Clients
-            </button>
-            <button
-              onClick={() => setActiveTab("team")}
-              className={`px-4 py-4 font-medium transition-colors duration-200 ${
-                activeTab === "team"
-                  ? "text-foreground border-b-2 border-foreground -mb-px"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Team
-            </button>
+          {/* Tabs with Mobile Swipe Hint */}
+          <div className="relative">
+            <div className="flex gap-4 mb-8 border-b border-border">
+              <button
+                onClick={() => setActiveTab("projects")}
+                className={`px-4 py-4 font-medium transition-colors duration-200 ${
+                  activeTab === "projects"
+                    ? "text-foreground border-b-2 border-foreground -mb-px"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Projects
+              </button>
+              <button
+                onClick={() => setActiveTab("clients")}
+                className={`px-4 py-4 font-medium transition-colors duration-200 ${
+                  activeTab === "clients"
+                    ? "text-foreground border-b-2 border-foreground -mb-px"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Clients
+              </button>
+              <button
+                onClick={() => setActiveTab("team")}
+                className={`px-4 py-4 font-medium transition-colors duration-200 ${
+                  activeTab === "team"
+                    ? "text-foreground border-b-2 border-foreground -mb-px"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Team
+              </button>
+            </div>
+
+            {/* Mobile Swipe Indicator */}
+            <div className="md:hidden flex items-center justify-center gap-2 mb-4 text-xs text-muted-foreground">
+              <svg className="w-4 h-4 swipe-indicator" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+              </svg>
+              <span>Swipe to navigate</span>
+              <svg className="w-4 h-4 swipe-indicator" style={{ transform: 'rotate(180deg)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+              </svg>
+            </div>
           </div>
 
-          <div className="space-y-0">
+          <div
+            className="space-y-0"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
             {activeTab === "projects" ? (
               projects.map((project, index) => (
                 <ScrollReveal key={project.name} delay={index * 50}>
                   {project.name === "promptlee" ? (
-                    <div className="group relative grid grid-cols-12 gap-4 py-8 border-b border-border transition-colors duration-200 -mx-6 px-6 cursor-pointer overflow-hidden">
-                      {/* Project Image - only visible on hover */}
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out rounded-2xl overflow-hidden" style={{ zIndex: 0 }}>
+                    <div className="group relative py-6 md:py-8 border-b border-border transition-colors duration-200 -mx-6 px-6 cursor-pointer overflow-hidden">
+                      {/* Project Image - only visible on hover on desktop */}
+                      <div className="hidden md:block absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out rounded-2xl overflow-hidden" style={{ zIndex: 0 }}>
                         <Image
                           src="/supa.png"
                           alt={project.name}
@@ -626,41 +693,82 @@ export default function Home() {
                         />
                       </div>
 
-                      {/* Content - hidden on hover */}
-                      <div className="relative z-10 col-span-2 md:col-span-1 text-muted-foreground font-mono text-sm group-hover:opacity-0 transition-opacity duration-300">{project.year}</div>
-                      <div className="relative z-10 col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2 group-hover:opacity-0 transition-opacity duration-300">
-                        {project.name}
-                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      {/* Mobile Layout - Stack Vertically */}
+                      <div className="md:hidden flex flex-col gap-3 relative z-10">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-mono text-muted-foreground">{project.year}</span>
+                          <div className="flex flex-wrap gap-2">
+                            {project.tech.map((t) => (
+                              <span key={t} className="tech-tag text-xs">
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <h3 className="font-heading text-xl font-medium text-foreground flex items-center gap-2">
+                          {project.name}
+                          <ArrowUpRight className="w-4 h-4" />
+                        </h3>
+                        <p className="text-sm text-muted-foreground">{project.description}</p>
+                        <span className="text-sm font-mono text-muted-foreground">{project.stat}</span>
                       </div>
-                      <div className="relative z-10 col-span-12 md:col-span-4 text-muted-foreground group-hover:opacity-0 transition-opacity duration-300">
-                        {project.description}
-                      </div>
-                      <div className="relative z-10 col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground group-hover:opacity-0 transition-opacity duration-300">
-                        {project.stat}
-                      </div>
-                      <div className="relative z-10 col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end group-hover:opacity-0 transition-opacity duration-300">
-                        {project.tech.map((t) => (
-                          <span key={t} className="tech-tag">
-                            {t}
-                          </span>
-                        ))}
+
+                      {/* Desktop Grid Layout */}
+                      <div className="hidden md:grid relative z-10 grid-cols-12 gap-4 group-hover:opacity-0 transition-opacity duration-300">
+                        <div className="col-span-1 text-muted-foreground font-mono text-sm">{project.year}</div>
+                        <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                          {project.name}
+                          <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                        </div>
+                        <div className="col-span-4 text-muted-foreground">{project.description}</div>
+                        <div className="col-span-2 text-sm font-mono text-muted-foreground">{project.stat}</div>
+                        <div className="col-span-2 flex flex-wrap gap-2 justify-end">
+                          {project.tech.map((t) => (
+                            <span key={t} className="tech-tag">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   ) : (
-                    <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
-                      <div className="col-span-2 md:col-span-1 text-muted-foreground font-mono text-sm">{project.year}</div>
-                      <div className="col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
-                        {project.name}
-                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                    <div className="group py-6 md:py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
+                      {/* Mobile Layout - Stack Vertically */}
+                      <div className="md:hidden flex flex-col gap-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-mono text-muted-foreground">{project.year}</span>
+                          <div className="flex flex-wrap gap-2">
+                            {project.tech.map((t) => (
+                              <span key={t} className="tech-tag text-xs">
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <h3 className="font-heading text-xl font-medium text-foreground flex items-center gap-2">
+                          {project.name}
+                          <ArrowUpRight className="w-4 h-4" />
+                        </h3>
+                        <p className="text-sm text-muted-foreground">{project.description}</p>
+                        <span className="text-sm font-mono text-muted-foreground">{project.stat}</span>
                       </div>
-                      <div className="col-span-12 md:col-span-4 text-muted-foreground">{project.description}</div>
-                      <div className="col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground">{project.stat}</div>
-                      <div className="col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end">
-                        {project.tech.map((t) => (
-                          <span key={t} className="tech-tag">
-                            {t}
-                          </span>
-                        ))}
+
+                      {/* Desktop Grid Layout */}
+                      <div className="hidden md:grid grid-cols-12 gap-4">
+                        <div className="col-span-1 text-muted-foreground font-mono text-sm">{project.year}</div>
+                        <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                          {project.name}
+                          <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                        </div>
+                        <div className="col-span-4 text-muted-foreground">{project.description}</div>
+                        <div className="col-span-2 text-sm font-mono text-muted-foreground">{project.stat}</div>
+                        <div className="col-span-2 flex flex-wrap gap-2 justify-end">
+                          {project.tech.map((t) => (
+                            <span key={t} className="tech-tag">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -670,9 +778,9 @@ export default function Home() {
               clients.map((client, index) => (
                 <ScrollReveal key={client.name} delay={index * 50}>
                   {(client.name === "PayPro" || client.name === "Beehive Rental and Sales" || client.name === "Custom Branded Screen Cleaners") ? (
-                    <div className="group relative grid grid-cols-12 gap-4 py-8 border-b border-border transition-colors duration-200 -mx-6 px-6 cursor-pointer overflow-hidden">
-                      {/* Client Image - only visible on hover */}
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out rounded-2xl overflow-hidden" style={{ zIndex: 0 }}>
+                    <div className="group relative py-6 md:py-8 border-b border-border transition-colors duration-200 -mx-6 px-6 cursor-pointer overflow-hidden">
+                      {/* Client Image - only visible on hover on desktop */}
+                      <div className="hidden md:block absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out rounded-2xl overflow-hidden" style={{ zIndex: 0 }}>
                         <Image
                           src={
                             client.name === "PayPro"
@@ -688,39 +796,77 @@ export default function Home() {
                         />
                       </div>
 
-                      {/* Content - hidden on hover */}
-                      <div className="relative z-10 col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2 group-hover:opacity-0 transition-opacity duration-300">
-                        {client.name}
-                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      {/* Mobile Layout - Stack Vertically */}
+                      <div className="md:hidden flex flex-col gap-3 relative z-10">
+                        <div className="flex items-center justify-between">
+                          <h3 className="font-heading text-xl font-medium text-foreground">{client.name}</h3>
+                        </div>
+                        <p className="text-sm text-muted-foreground">{client.description}</p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-mono text-muted-foreground">{client.stat}</span>
+                          <div className="flex flex-wrap gap-2">
+                            {client.tech.map((t) => (
+                              <span key={t} className="tech-tag text-xs">
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                      <div className="relative z-10 col-span-12 md:col-span-4 text-muted-foreground group-hover:opacity-0 transition-opacity duration-300">
-                        {client.description}
-                      </div>
-                      <div className="relative z-10 col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground group-hover:opacity-0 transition-opacity duration-300">
-                        {client.stat}
-                      </div>
-                      <div className="relative z-10 col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end group-hover:opacity-0 transition-opacity duration-300">
-                        {client.tech.map((t) => (
-                          <span key={t} className="tech-tag">
-                            {t}
-                          </span>
-                        ))}
+
+                      {/* Desktop Grid Layout */}
+                      <div className="hidden md:grid relative z-10 grid-cols-12 gap-4 group-hover:opacity-0 transition-opacity duration-300">
+                        <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                          {client.name}
+                          <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                        </div>
+                        <div className="col-span-4 text-muted-foreground">{client.description}</div>
+                        <div className="col-span-2 text-sm font-mono text-muted-foreground">{client.stat}</div>
+                        <div className="col-span-3 flex flex-wrap gap-2 justify-end">
+                          {client.tech.map((t) => (
+                            <span key={t} className="tech-tag">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   ) : (
-                    <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
-                      <div className="col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
-                        {client.name}
-                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                    <div className="group py-6 md:py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
+                      {/* Mobile Layout - Stack Vertically */}
+                      <div className="md:hidden flex flex-col gap-3">
+                        <h3 className="font-heading text-xl font-medium text-foreground flex items-center gap-2">
+                          {client.name}
+                          <ArrowUpRight className="w-4 h-4" />
+                        </h3>
+                        <p className="text-sm text-muted-foreground">{client.description}</p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-mono text-muted-foreground">{client.stat}</span>
+                          <div className="flex flex-wrap gap-2">
+                            {client.tech.map((t) => (
+                              <span key={t} className="tech-tag text-xs">
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                      <div className="col-span-12 md:col-span-4 text-muted-foreground">{client.description}</div>
-                      <div className="col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground">{client.stat}</div>
-                      <div className="col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end">
-                        {client.tech.map((t) => (
-                          <span key={t} className="tech-tag">
-                            {t}
-                          </span>
-                        ))}
+
+                      {/* Desktop Grid Layout */}
+                      <div className="hidden md:grid grid-cols-12 gap-4">
+                        <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                          {client.name}
+                          <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                        </div>
+                        <div className="col-span-4 text-muted-foreground">{client.description}</div>
+                        <div className="col-span-2 text-sm font-mono text-muted-foreground">{client.stat}</div>
+                        <div className="col-span-3 flex flex-wrap gap-2 justify-end">
+                          {client.tech.map((t) => (
+                            <span key={t} className="tech-tag">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -730,9 +876,9 @@ export default function Home() {
               team.map((member, index) => (
                 <ScrollReveal key={member.name} delay={index * 50}>
                   {(member.name === "Crew Cam" || member.name === "BidMyBrace" || member.name === "BeWeddy") ? (
-                    <div className="group relative grid grid-cols-12 gap-4 py-8 border-b border-border transition-colors duration-200 -mx-6 px-6 cursor-pointer overflow-hidden">
-                      {/* Team Image - only visible on hover */}
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out rounded-2xl overflow-hidden" style={{ zIndex: 0 }}>
+                    <div className="group relative py-6 md:py-8 border-b border-border transition-colors duration-200 -mx-6 px-6 cursor-pointer overflow-hidden">
+                      {/* Team Image - only visible on hover on desktop */}
+                      <div className="hidden md:block absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out rounded-2xl overflow-hidden" style={{ zIndex: 0 }}>
                         <Image
                           src={
                             member.name === "Crew Cam"
@@ -748,39 +894,75 @@ export default function Home() {
                         />
                       </div>
 
-                      {/* Content - hidden on hover */}
-                      <div className="relative z-10 col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2 group-hover:opacity-0 transition-opacity duration-300">
-                        {member.name}
-                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      {/* Mobile Layout - Stack Vertically */}
+                      <div className="md:hidden flex flex-col gap-3 relative z-10">
+                        <h3 className="font-heading text-xl font-medium text-foreground">{member.name}</h3>
+                        <p className="text-sm text-muted-foreground">{member.description}</p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-mono text-muted-foreground">{member.stat}</span>
+                          <div className="flex flex-wrap gap-2">
+                            {member.tech.map((t) => (
+                              <span key={t} className="tech-tag text-xs">
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                      <div className="relative z-10 col-span-12 md:col-span-4 text-muted-foreground group-hover:opacity-0 transition-opacity duration-300">
-                        {member.description}
-                      </div>
-                      <div className="relative z-10 col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground group-hover:opacity-0 transition-opacity duration-300">
-                        {member.stat}
-                      </div>
-                      <div className="relative z-10 col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end group-hover:opacity-0 transition-opacity duration-300">
-                        {member.tech.map((t) => (
-                          <span key={t} className="tech-tag">
-                            {t}
-                          </span>
-                        ))}
+
+                      {/* Desktop Grid Layout */}
+                      <div className="hidden md:grid relative z-10 grid-cols-12 gap-4 group-hover:opacity-0 transition-opacity duration-300">
+                        <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                          {member.name}
+                          <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                        </div>
+                        <div className="col-span-4 text-muted-foreground">{member.description}</div>
+                        <div className="col-span-2 text-sm font-mono text-muted-foreground">{member.stat}</div>
+                        <div className="col-span-3 flex flex-wrap gap-2 justify-end">
+                          {member.tech.map((t) => (
+                            <span key={t} className="tech-tag">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   ) : (
-                    <div className="group grid grid-cols-12 gap-4 py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
-                      <div className="col-span-10 md:col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
-                        {member.name}
-                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                    <div className="group py-6 md:py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
+                      {/* Mobile Layout - Stack Vertically */}
+                      <div className="md:hidden flex flex-col gap-3">
+                        <h3 className="font-heading text-xl font-medium text-foreground flex items-center gap-2">
+                          {member.name}
+                          <ArrowUpRight className="w-4 h-4" />
+                        </h3>
+                        <p className="text-sm text-muted-foreground">{member.description}</p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-mono text-muted-foreground">{member.stat}</span>
+                          <div className="flex flex-wrap gap-2">
+                            {member.tech.map((t) => (
+                              <span key={t} className="tech-tag text-xs">
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                      <div className="col-span-12 md:col-span-4 text-muted-foreground">{member.description}</div>
-                      <div className="col-span-6 md:col-span-2 text-sm font-mono text-muted-foreground">{member.stat}</div>
-                      <div className="col-span-6 md:col-span-2 flex flex-wrap gap-2 justify-end">
-                        {member.tech.map((t) => (
-                          <span key={t} className="tech-tag">
-                            {t}
-                          </span>
-                        ))}
+
+                      {/* Desktop Grid Layout */}
+                      <div className="hidden md:grid grid-cols-12 gap-4">
+                        <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                          {member.name}
+                          <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                        </div>
+                        <div className="col-span-4 text-muted-foreground">{member.description}</div>
+                        <div className="col-span-2 text-sm font-mono text-muted-foreground">{member.stat}</div>
+                        <div className="col-span-3 flex flex-wrap gap-2 justify-end">
+                          {member.tech.map((t) => (
+                            <span key={t} className="tech-tag">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -904,15 +1086,15 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
                   href="#portfolio"
-                  className="rounded-button px-10 py-5 bg-foreground text-background font-medium transition-opacity duration-200 hover:opacity-80 w-full sm:w-auto"
+                  className="enhanced-button rounded-button px-10 py-5 bg-foreground text-background font-medium w-full sm:w-auto"
                 >
                   View My Work →
                 </a>
                 <a
-                  href="mailto:hello@haestus.dev?subject=Project Inquiry"
-                  className="rounded-button px-10 py-5 border border-foreground text-foreground font-medium transition-colors duration-200 hover:bg-foreground hover:text-background w-full sm:w-auto"
+                  href="/portal"
+                  className="enhanced-button rounded-button px-10 py-5 border border-foreground text-foreground font-medium hover:bg-foreground hover:text-background w-full sm:w-auto"
                 >
-                  Get In Touch
+                  Clients
                 </a>
               </div>
             </ScrollReveal>

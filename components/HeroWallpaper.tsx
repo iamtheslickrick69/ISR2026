@@ -231,15 +231,19 @@ export function HeroWallpaper() {
                 >
                   <a
                     href="#portfolio"
-                    className="rounded-button px-8 py-4 bg-foreground text-background font-medium transition-all duration-200 hover:opacity-90"
+                    className="enhanced-button rounded-button px-8 py-4 bg-foreground text-background font-medium"
                   >
                     View My Work →
                   </a>
                   <a
-                    href="#connect"
-                    className="rounded-button px-8 py-4 border border-foreground text-foreground font-medium transition-all duration-200 hover:bg-foreground hover:text-background"
+                    href="/portal"
+                    className="enhanced-button rounded-button px-8 py-4 border font-medium hover:bg-[#1ebda5] hover:text-white"
+                    style={{
+                      borderColor: '#1ebda5',
+                      color: '#1ebda5',
+                    }}
                   >
-                    Get In Touch
+                    Clients
                   </a>
                 </div>
 

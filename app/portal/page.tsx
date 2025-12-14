@@ -122,7 +122,7 @@ export default function PortalPage() {
 
           <button
             type="submit"
-            className="w-full rounded-xl px-6 py-5 font-semibold text-white text-lg transition-all duration-200 hover:opacity-90 hover:scale-[1.02] active:scale-[0.98]"
+            className="enhanced-button w-full rounded-xl px-6 py-5 font-semibold text-white text-lg"
             style={{
               background: 'linear-gradient(45deg, #1ebda5 0%, #e26a00 50%, #ffe046 100%)',
               boxShadow: '0 10px 30px rgba(30, 189, 165, 0.3)',
