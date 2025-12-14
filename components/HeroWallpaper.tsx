@@ -207,7 +207,7 @@ export function HeroWallpaper() {
                   Intelligence
                 </h1>
 
-                {/* Subtitle - Apple Standard: 16px body text on mobile */}
+                {/* Subtitle - Desktop Optimized */}
                 <div
                   className="inline-block px-5 sm:px-6 py-3 rounded-full backdrop-blur-sm mb-10 sm:mb-12"
                   style={{
@@ -217,12 +217,12 @@ export function HeroWallpaper() {
                     transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s',
                   }}
                 >
-                  <p className="text-mobile-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed">
+                  <p className="text-mobile-base sm:text-lg lg:text-xl text-gray-700 max-w-xl leading-relaxed">
                     We architect AI systems that amplify human capability and compound competitive advantage.
                   </p>
                 </div>
 
-                {/* CTA Buttons - Apple Standard: 50px mobile buttons */}
+                {/* CTA Buttons - Desktop Optimized */}
                 <div
                   className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 px-5 sm:px-0"
                   style={{
@@ -233,17 +233,13 @@ export function HeroWallpaper() {
                 >
                   <a
                     href="#portfolio"
-                    className="btn-mobile-primary enhanced-button bg-foreground text-background text-center"
+                    className="enhanced-button text-sm lg:text-base font-medium px-6 lg:px-8 py-3 lg:py-3.5 rounded-full bg-black text-white hover:bg-gray-800 transition-all duration-200 text-center"
                   >
                     View My Work →
                   </a>
                   <a
                     href="/portal"
-                    className="btn-mobile-primary enhanced-button border-2 hover:bg-[#1ebda5] hover:text-white hover:border-[#1ebda5] text-center"
-                    style={{
-                      borderColor: '#1ebda5',
-                      color: '#1ebda5',
-                    }}
+                    className="enhanced-button text-sm lg:text-base font-medium px-6 lg:px-8 py-3 lg:py-3.5 rounded-full border-2 border-[#1ebda5] text-[#1ebda5] hover:bg-[#1ebda5] hover:text-white transition-all duration-200 text-center"
                   >
                     Clients
                   </a>
