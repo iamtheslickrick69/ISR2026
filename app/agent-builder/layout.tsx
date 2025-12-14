@@ -144,20 +144,17 @@ export default function AgentBuilderLayout({
         >
           {/* Logo */}
           <div className="flex h-16 items-center justify-between border-b border-white/5 px-4">
-            <Link href="/" className="flex items-center gap-3">
-              <Logo className="h-9 w-9 text-white" />
+            <Link href="/" className="flex items-center">
               <AnimatePresence mode="wait">
-                {!isCollapsed && (
-                  <motion.span
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="text-lg font-bold text-white"
-                  >
-                    HAESTUS
-                  </motion.span>
-                )}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className={isCollapsed ? "w-12" : "w-32"}
+                >
+                  <Logo className="w-full h-auto" />
+                </motion.div>
               </AnimatePresence>
             </Link>
           </div>
@@ -259,9 +256,8 @@ export default function AgentBuilderLayout({
               >
                 {/* Mobile Logo */}
                 <div className="flex h-16 items-center justify-between border-b border-white/5 px-4">
-                  <Link href="/" className="flex items-center gap-3">
-                    <Logo className="h-9 w-9 text-white" />
-                    <span className="text-lg font-bold text-white">HAESTUS</span>
+                  <Link href="/" className="flex items-center">
+                    <Logo className="w-32 h-auto" />
                   </Link>
                   <Button
                     variant="ghost"

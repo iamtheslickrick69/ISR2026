@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: "#ffffff",
 }
 
 export default function RootLayout({
@@ -31,8 +31,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="font-sans antialiased bg-background text-foreground">{children}</body>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} style={{ overflow: 'visible' }}>
+      <body className="font-sans antialiased bg-background text-foreground" style={{ overflow: 'visible', position: 'relative' }}>
+        {children}
+      </body>
     </html>
   )
 }

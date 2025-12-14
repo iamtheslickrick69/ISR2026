@@ -115,7 +115,7 @@ export default function PremiumHeader() {
             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           }}
         >
-          {/* Haestus Anvil Icon - Home Link */}
+          {/* Haestus Logo - Home Link */}
           <Link href="/" aria-label="Go to home">
             <motion.div
               className="flex items-center justify-center"
@@ -124,7 +124,7 @@ export default function PremiumHeader() {
                 padding: '4px 8px',
               }}
               whileHover={{
-                scale: 1.1,
+                scale: 1.05,
               }}
               whileTap={{ scale: 0.95 }}
               transition={{
@@ -134,17 +134,11 @@ export default function PremiumHeader() {
               }}
             >
               <Image
-                src="/haestus-anvil-icon.png"
+                src="/line.png"
                 alt="Haestus"
-                width={46}
-                height={46}
-                className="object-contain"
-                style={{
-                  height: '46px',
-                  width: '46px',
-                  display: 'block',
-                  objectFit: 'contain',
-                }}
+                width={813}
+                height={244}
+                className="h-auto"
                 priority
               />
             </motion.div>

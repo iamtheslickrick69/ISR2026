@@ -50,17 +50,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-4">
-            <Link href="/" className="inline-flex items-center gap-2">
-              <div className="w-6 h-6 flex items-center justify-center">
-                <Image
-                  src="/haestus-anvil-icon.png"
-                  alt="Haestus"
-                  width={24}
-                  height={24}
-                  className="object-contain"
-                />
-              </div>
-              <span className="text-lg font-medium text-foreground">HAESTUS</span>
+            <Link href="/" className="inline-flex items-center">
+              <Image
+                src="/line.png"
+                alt="Haestus"
+                width={813}
+                height={244}
+                className="h-auto max-w-[300px]"
+              />
             </Link>
             <p className="text-sm text-muted-foreground">
               AI architecture studio crafting digital intelligence.

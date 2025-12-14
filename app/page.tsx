@@ -138,11 +138,19 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ position: 'relative' }}>
       <Header />
 
       {/* Hero Section */}
-      <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      <section
+        id="hero"
+        className="min-h-screen flex items-center justify-center relative"
+        style={{
+          overflow: 'visible',
+          zIndex: 0,
+          isolation: 'isolate',
+        }}
+      >
         {/* Magical 3D Hero Wallpaper Background with integrated content */}
         <HeroWallpaper />
       </section>
@@ -179,8 +187,8 @@ export default function Home() {
             </div>
 
             <ScrollReveal delay={200}>
-              <div className="p-12 border border-border">
-                <Logo className="w-12 h-12 text-foreground opacity-20 mb-8" />
+              <div className="p-12 border border-border angled-border">
+                <Logo className="opacity-20 mb-8 w-full max-w-md" />
                 <blockquote className="text-2xl md:text-3xl font-heading font-light leading-relaxed text-foreground">
                   "He didn't replace heroes—he forged the tools that made them legendary."
                 </blockquote>
@@ -206,7 +214,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {services.map((service, index) => (
               <ScrollReveal key={service.number} delay={index * 100}>
-                <div className="group p-8 border border-border h-full flex flex-col transition-colors duration-200 hover:border-foreground">
+                <div className="group p-8 border border-border angled-border-subtle h-full flex flex-col transition-colors duration-200 hover:border-foreground">
                   <span className="text-5xl font-heading font-light text-muted-foreground mb-6">{service.number}</span>
                   <h3 className="font-heading text-2xl font-medium text-foreground mb-4">{service.title}</h3>
                   <p className="text-muted-foreground leading-relaxed mb-8 flex-grow">{service.description}</p>
@@ -343,7 +351,7 @@ export default function Home() {
           </div>
 
           <ScrollReveal delay={300}>
-            <div className="mt-16 p-8 border border-border text-center">
+            <div className="mt-16 p-8 border border-border angled-border-subtle text-center">
               <p className="text-muted-foreground italic">
                 More projects launching soon. We're selective about what we build.
               </p>
@@ -371,7 +379,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6">
             {insights.map((post, index) => (
               <ScrollReveal key={post.title} delay={index * 100}>
-                <div className="group p-8 border border-border cursor-pointer h-full flex flex-col transition-colors duration-200 hover:border-foreground">
+                <div className="group p-8 border border-border angled-border-subtle cursor-pointer h-full flex flex-col transition-colors duration-200 hover:border-foreground">
                   <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4">
                     <span>{post.date}</span>
                     <span className="w-1 h-1 bg-muted-foreground rounded-full" />
@@ -410,7 +418,7 @@ export default function Home() {
             </ScrollReveal>
 
             <ScrollReveal delay={300}>
-              <div className="p-12 border border-border mb-8">
+              <div className="p-12 border border-border angled-border mb-8">
                 <Mail className="w-8 h-8 text-foreground mx-auto mb-6" />
                 <a
                   href="mailto:hello@haestus.dev"
@@ -425,16 +433,16 @@ export default function Home() {
             <ScrollReveal delay={400}>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
-                  href="mailto:hello@haestus.dev?subject=Project Inquiry"
-                  className="px-10 py-5 bg-foreground text-background font-medium transition-opacity duration-200 hover:opacity-80 w-full sm:w-auto"
+                  href="#portfolio"
+                  className="rounded-button px-10 py-5 bg-foreground text-background font-medium transition-opacity duration-200 hover:opacity-80 w-full sm:w-auto"
                 >
-                  Start a Project
+                  View My Work →
                 </a>
                 <a
-                  href="mailto:hello@haestus.dev?subject=Partnership Inquiry"
-                  className="px-10 py-5 border border-foreground text-foreground font-medium transition-colors duration-200 hover:bg-foreground hover:text-background w-full sm:w-auto"
+                  href="mailto:hello@haestus.dev?subject=Project Inquiry"
+                  className="rounded-button px-10 py-5 border border-foreground text-foreground font-medium transition-colors duration-200 hover:bg-foreground hover:text-background w-full sm:w-auto"
                 >
-                  Become a Partner
+                  Get In Touch
                 </a>
               </div>
             </ScrollReveal>
