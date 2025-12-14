@@ -45,34 +45,34 @@ export function Footer() {
 
   return (
     <footer className="border-t border-border bg-background text-foreground">
-      <div className="max-w-[1200px] mx-auto px-6 py-16">
+      <div className="max-w-[1200px] mx-auto px-5 sm:px-6 py-12 sm:py-16">
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-12 mb-8 sm:mb-12">
           {/* Brand */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             <Link href="/" className="inline-flex items-center">
               <Image
                 src="/line.png"
                 alt="Haestus"
                 width={813}
                 height={244}
-                className="h-auto max-w-[300px]"
+                className="h-auto max-w-[200px] sm:max-w-[300px]"
               />
             </Link>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-mobile-sm sm:text-sm text-muted-foreground">
               AI architecture studio crafting digital intelligence.
             </p>
           </div>
 
           {/* Navigation 1 */}
           <div>
-            <h4 className="text-sm font-medium text-foreground mb-4">Navigation</h4>
+            <h4 className="text-mobile-sm sm:text-sm font-medium text-foreground mb-3 sm:mb-4">Navigation</h4>
             <ul className="space-y-2">
               {navigation.slice(0, 3).map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-mobile-sm sm:text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -83,13 +83,13 @@ export function Footer() {
 
           {/* Navigation 2 */}
           <div>
-            <h4 className="text-sm font-medium text-foreground mb-4">More</h4>
+            <h4 className="text-mobile-sm sm:text-sm font-medium text-foreground mb-3 sm:mb-4">More</h4>
             <ul className="space-y-2">
               {navigation.slice(3).map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-mobile-sm sm:text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -99,27 +99,27 @@ export function Footer() {
           </div>
 
           {/* Social & Contact */}
-          <div className="space-y-4">
-            <h4 className="text-sm font-medium text-foreground">Connect</h4>
-            <div className="flex gap-4">
+          <div className="space-y-3 sm:space-y-4">
+            <h4 className="text-mobile-sm sm:text-sm font-medium text-foreground">Connect</h4>
+            <div className="flex gap-3 sm:gap-4">
               {social.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-muted-foreground hover:text-foreground transition-colors touch-target-sm"
                   aria-label={item.name}
                 >
                   {item.icon}
                 </a>
               ))}
             </div>
-            <div className="pt-4">
-              <p className="text-xs text-muted-foreground mb-2">Email</p>
+            <div className="pt-3 sm:pt-4">
+              <p className="text-mobile-xs text-muted-foreground mb-2">Email</p>
               <a
                 href="mailto:hello@haestus.dev"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors break-all"
+                className="text-mobile-sm sm:text-sm text-muted-foreground hover:text-foreground transition-colors break-all"
               >
                 hello@haestus.dev
               </a>
@@ -128,8 +128,8 @@ export function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-border pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+        <div className="border-t border-border pt-6 sm:pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4 text-mobile-xs text-muted-foreground">
             <p>© {new Date().getFullYear()} Haestus. All rights reserved.</p>
             <p>Crafted with intention.</p>
           </div>
