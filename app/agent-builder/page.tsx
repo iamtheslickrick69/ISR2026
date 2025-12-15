@@ -41,33 +41,39 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 // Mock data for demonstration
-const stats = [
+const stats: Array<{
+  name: string
+  value: string
+  change: string
+  changeType: "positive" | "neutral" | "negative"
+  icon: React.ComponentType<{ className?: string }>
+}> = [
   {
     name: "Total Conversations",
     value: "1,234",
     change: "+12%",
-    changeType: "positive" as const,
+    changeType: "positive",
     icon: MessageSquare,
   },
   {
     name: "Leads Captured",
     value: "89",
     change: "+23%",
-    changeType: "positive" as const,
+    changeType: "positive",
     icon: Users,
   },
   {
     name: "Response Rate",
     value: "94%",
     change: "+2%",
-    changeType: "positive" as const,
+    changeType: "positive",
     icon: TrendingUp,
   },
   {
     name: "Active Bots",
     value: "3",
     change: "of 5",
-    changeType: "neutral" as const,
+    changeType: "neutral",
     icon: Bot,
   },
 ]
@@ -135,7 +141,7 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: "easeOut" },
+    transition: { duration: 0.4 },
   },
 }
 

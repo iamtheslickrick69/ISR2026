@@ -89,6 +89,7 @@ export async function PATCH(
     }
 
     if (Object.keys(botUpdates).length > 0) {
+      // @ts-ignore - Supabase types unavailable in demo mode
       const { error: botError } = await supabase
         .from('bots')
         .update(botUpdates)
@@ -111,6 +112,7 @@ export async function PATCH(
       if (body.appearance.position !== undefined) appearanceUpdates.position = body.appearance.position
 
       if (Object.keys(appearanceUpdates).length > 0) {
+        // @ts-ignore - Supabase types unavailable in demo mode
         await supabase
           .from('bot_appearance')
           .update(appearanceUpdates)
@@ -132,6 +134,7 @@ export async function PATCH(
       if (body.leadCapture.triggerAfterMessages !== undefined) leadCaptureUpdates.trigger_after_messages = body.leadCapture.triggerAfterMessages
 
       if (Object.keys(leadCaptureUpdates).length > 0) {
+        // @ts-ignore - Supabase types unavailable in demo mode
         await supabase
           .from('lead_capture_settings')
           .update(leadCaptureUpdates)

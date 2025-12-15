@@ -44,35 +44,42 @@ export function Footer() {
   ];
 
   return (
-    <footer className="border-t border-border bg-background text-foreground">
-      <div className="max-w-[1200px] mx-auto px-5 sm:px-6 py-12 sm:py-16">
+    <footer className="border-t border-border text-foreground" style={{ background: '#E5DDD0' }}>
+      <div className="max-w-[1200px] mx-auto px-5 sm:px-6 py-10 sm:py-13">
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-12 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-10 mb-6 sm:mb-10">
           {/* Brand */}
-          <div className="space-y-3 sm:space-y-4">
-            <Link href="/" className="inline-flex items-center">
+          <div className="space-y-2 sm:space-y-3">
+            <Link href="/" className="block">
               <Image
-                src="/line.png"
+                src="/trans1.png"
                 alt="Haestus"
-                width={813}
-                height={244}
-                className="h-auto max-w-[200px] sm:max-w-[300px]"
+                width={600}
+                height={600}
+                className="h-auto max-w-[200px] sm:max-w-[240px]"
+                style={{ filter: 'brightness(0)' }}
               />
             </Link>
-            <p className="text-mobile-sm sm:text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               AI architecture studio crafting digital intelligence.
             </p>
           </div>
 
           {/* Navigation 1 */}
           <div>
-            <h4 className="text-mobile-sm sm:text-sm font-medium text-foreground mb-3 sm:mb-4">Navigation</h4>
-            <ul className="space-y-2">
+            <h4 className="text-xs sm:text-sm font-medium text-foreground mb-2 sm:mb-3">Navigation</h4>
+            <ul className="space-y-1.5">
               {navigation.slice(0, 3).map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-mobile-sm sm:text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors inline-block"
+                    style={{
+                      minHeight: '44px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      WebkitTapHighlightColor: 'transparent',
+                    }}
                   >
                     {item.name}
                   </Link>
@@ -83,13 +90,19 @@ export function Footer() {
 
           {/* Navigation 2 */}
           <div>
-            <h4 className="text-mobile-sm sm:text-sm font-medium text-foreground mb-3 sm:mb-4">More</h4>
-            <ul className="space-y-2">
+            <h4 className="text-xs sm:text-sm font-medium text-foreground mb-2 sm:mb-3">More</h4>
+            <ul className="space-y-1.5">
               {navigation.slice(3).map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-mobile-sm sm:text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors inline-block"
+                    style={{
+                      minHeight: '44px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      WebkitTapHighlightColor: 'transparent',
+                    }}
                   >
                     {item.name}
                   </Link>
@@ -99,27 +112,35 @@ export function Footer() {
           </div>
 
           {/* Social & Contact */}
-          <div className="space-y-3 sm:space-y-4">
-            <h4 className="text-mobile-sm sm:text-sm font-medium text-foreground">Connect</h4>
-            <div className="flex gap-3 sm:gap-4">
+          <div className="space-y-2 sm:space-y-3">
+            <h4 className="text-xs sm:text-sm font-medium text-foreground">Connect</h4>
+            <div className="flex gap-2 sm:gap-3">
               {social.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground transition-colors touch-target-sm"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
                   aria-label={item.name}
+                  style={{
+                    minWidth: '44px',
+                    minHeight: '44px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    WebkitTapHighlightColor: 'transparent',
+                  }}
                 >
                   {item.icon}
                 </a>
               ))}
             </div>
-            <div className="pt-3 sm:pt-4">
-              <p className="text-mobile-xs text-muted-foreground mb-2">Email</p>
+            <div className="pt-2 sm:pt-3">
+              <p className="text-xs text-muted-foreground mb-1.5">Email</p>
               <a
                 href="mailto:hello@haestus.dev"
-                className="text-mobile-sm sm:text-sm text-muted-foreground hover:text-foreground transition-colors break-all"
+                className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors break-all"
               >
                 hello@haestus.dev
               </a>
@@ -128,8 +149,8 @@ export function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-border pt-6 sm:pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4 text-mobile-xs text-muted-foreground">
+        <div className="border-t border-border pt-5 sm:pt-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-2 sm:gap-3 text-xs text-muted-foreground">
             <p>© {new Date().getFullYear()} Haestus. All rights reserved.</p>
             <p>Crafted with intention.</p>
           </div>

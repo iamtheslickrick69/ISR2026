@@ -79,6 +79,7 @@ export async function POST(
     const { type, name, content, url } = body
 
     // Create knowledge source
+    // @ts-ignore - Supabase types unavailable in demo mode
     const { data: source, error: sourceError } = await supabase
       .from('knowledge_sources')
       .insert({
@@ -118,6 +119,7 @@ async function processKnowledgeSource(
 ) {
   try {
     // Update status to processing
+    // @ts-ignore - Supabase types unavailable in demo mode
     await supabase
       .from('knowledge_sources')
       .update({ status: 'processing' })
@@ -139,6 +141,7 @@ async function processKnowledgeSource(
           .trim()
       } catch (fetchError) {
         console.error('Error fetching URL:', fetchError)
+        // @ts-ignore - Supabase types unavailable in demo mode
         await supabase
           .from('knowledge_sources')
           .update({
@@ -159,6 +162,7 @@ async function processKnowledgeSource(
       try {
         const embedding = await generateEmbedding(chunk)
 
+        // @ts-ignore - Supabase types unavailable in demo mode
         await supabase.from('knowledge_chunks').insert({
           source_id: sourceId,
           bot_id: botId,

@@ -34,7 +34,7 @@ export default function PortalPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative"
       style={{
-        background: 'linear-gradient(135deg, #1ebda5 0%, #e26a00 50%, #ffe046 100%)',
+        background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
       }}
     >
       {/* Background Pattern Overlay */}
@@ -64,12 +64,12 @@ export default function PortalPage() {
         {/* Logo */}
         <div className="flex justify-center mb-10">
           <Image
-            src="/line.png"
+            src="/trans1.png"
             alt="Haestus"
-            width={280}
-            height={84}
+            width={120}
+            height={120}
             className="h-auto"
-            style={{ maxWidth: '280px' }}
+            style={{ maxWidth: '120px' }}
             priority
           />
         </div>
@@ -101,8 +101,8 @@ export default function PortalPage() {
               }}
               onFocus={(e) => {
                 if (!error) {
-                  e.target.style.boxShadow = '0 0 0 3px rgba(30, 189, 165, 0.2)'
-                  e.target.style.borderColor = '#1ebda5'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(217, 119, 87, 0.2)'
+                  e.target.style.borderColor = '#d97757'
                 }
               }}
               onBlur={(e) => {
@@ -124,8 +124,8 @@ export default function PortalPage() {
             type="submit"
             className="enhanced-button w-full rounded-xl px-6 py-5 font-semibold text-white text-lg"
             style={{
-              background: 'linear-gradient(45deg, #1ebda5 0%, #e26a00 50%, #ffe046 100%)',
-              boxShadow: '0 10px 30px rgba(30, 189, 165, 0.3)',
+              background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
+              boxShadow: '0 10px 30px rgba(217, 119, 87, 0.3)',
             }}
           >
             Access Portal
@@ -134,7 +134,7 @@ export default function PortalPage() {
 
         {/* Help Text */}
         <p className="text-center text-sm text-muted-foreground mt-8">
-          Need help? <a href="/#connect" className="text-[#1ebda5] hover:underline font-medium">Contact us</a>
+          Need help? <a href="/#connect" className="text-[#d97757] hover:underline font-medium">Contact us</a>
         </p>
       </div>
 

@@ -36,7 +36,7 @@ import { Logo } from "@/components/logo"
 interface NavItem {
   name: string
   href: string
-  icon: React.ElementType
+  icon: React.ComponentType<{ className?: string }>
   badge?: string
 }
 
