@@ -66,47 +66,37 @@ export function Header() {
 
   return (
     <header
-      className="fixed z-50 md:left-1/2 md:-translate-x-1/2 left-0 right-0"
+      className="fixed z-50 left-0 right-0 md:left-1/2 md:-translate-x-1/2"
       style={{
-        top: isScrolled ? 'max(12px, env(safe-area-inset-top))' : 'env(safe-area-inset-top)',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        width: 'auto',
+        top: isScrolled ? 'env(safe-area-inset-top)' : 'env(safe-area-inset-top)',
+        transition: 'all 0.3s ease',
+        width: '100%',
         maxWidth: 'none',
       }}
     >
-      {/* Dark Liquid Glass Header */}
-      <div
-        className="md:rounded-2xl rounded-none p-[1px] mx-0 md:mx-0"
-        style={{
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05))',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-        }}
-      >
+      {/* Header Container */}
+      <div className="md:rounded-2xl rounded-none md:p-[1px] md:mx-0">
         <nav
-          className="flex items-center justify-between md:rounded-2xl rounded-none px-4 md:px-6"
+          className="flex items-center justify-between px-4 md:px-6 md:rounded-2xl"
           style={{
-            gap: '12px',
-            paddingTop: '12px',
-            paddingBottom: '12px',
-            background: 'rgba(20, 20, 20, 0.95)',
-            backdropFilter: 'blur(40px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(40px) saturate(180%)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            paddingTop: '14px',
+            paddingBottom: '14px',
+            background: 'rgba(0, 0, 0, 0.95)',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
           }}
         >
-        {/* Logo Icon */}
+        {/* Logo */}
         <a
           href="#hero"
           onClick={(e) => handleNavClick(e, "#hero")}
-          className="flex items-center flex-shrink-0"
+          className="flex items-center"
         >
           <Image
             src="/blackmm.png"
             alt="Haestus"
-            width={40}
-            height={40}
-            className="w-8 h-8 md:w-10 md:h-10 hover:opacity-80 transition-opacity duration-200"
+            width={36}
+            height={36}
+            className="w-9 h-9 md:w-10 md:h-10"
             style={{ filter: 'brightness(0) invert(1)' }}
             priority
           />
@@ -160,121 +150,86 @@ export function Header() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-white flex items-center justify-center"
-          style={{
-            minWidth: '44px',
-            minHeight: '44px',
-            WebkitTapHighlightColor: 'transparent'
-          }}
+          className="md:hidden text-white p-2"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
-          {mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
         </nav>
       </div>
 
-      {/* Mobile Menu - Full Screen Overlay */}
+      {/* Mobile Menu */}
       <div
-        className={`md:hidden fixed inset-0 transition-all duration-300 ${
-          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        className={`md:hidden fixed inset-0 bg-black transition-opacity duration-300 ${
+          mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         style={{
-          background: '#000000',
-          paddingTop: 'env(safe-area-inset-top)',
-          paddingBottom: 'env(safe-area-inset-bottom)',
-          zIndex: 9999,
+          top: 'env(safe-area-inset-top)',
+          zIndex: 9998,
         }}
       >
-        {/* Mobile Menu Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+        {/* Menu Header */}
+        <div className="flex items-center justify-between px-4 py-4 border-b border-white/10">
           <Image
             src="/blackmm.png"
             alt="Haestus"
-            width={32}
-            height={32}
-            className="w-8 h-8"
+            width={36}
+            height={36}
+            className="w-9 h-9"
             style={{ filter: 'brightness(0) invert(1)' }}
           />
           <button
-            className="flex items-center justify-center text-white"
+            className="text-white p-2"
             onClick={() => setMobileMenuOpen(false)}
             aria-label="Close menu"
-            style={{
-              minWidth: '44px',
-              minHeight: '44px',
-              WebkitTapHighlightColor: 'transparent',
-            }}
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        {/* Mobile Navigation */}
-        <nav
-          className="flex flex-col px-5 py-6 overflow-y-auto"
-          style={{
-            maxHeight: 'calc(100vh - 64px - env(safe-area-inset-top) - env(safe-area-inset-bottom))',
-            WebkitOverflowScrolling: 'touch',
-          }}
-        >
+        {/* Menu Content */}
+        <nav className="flex flex-col p-4 space-y-1">
           {/* Navigation Links */}
-          <div className="flex flex-col gap-0.5 mb-6">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href, link.external)}
-                className="flex items-center justify-between px-4 rounded-xl active:bg-white/10 active:scale-[0.98] transition-all duration-150"
-                style={{
-                  minHeight: '48px',
-                  WebkitTapHighlightColor: 'transparent',
-                }}
-              >
-                <span className="text-lg font-semibold text-white uppercase tracking-wide">{link.label}</span>
-                <svg className="w-5 h-5 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-            ))}
-          </div>
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={(e) => handleNavClick(e, link.href, link.external)}
+              className="text-white text-lg py-4 px-3 hover:bg-white/5 rounded-lg transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+
+
+          {/* Divider */}
+          <div className="border-t border-white/10 my-4"></div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col gap-2.5 pt-3 border-t border-white/10">
+          <div className="flex flex-col gap-3 px-3">
             <a
               href="#connect"
               onClick={(e) => handleNavClick(e, "#connect")}
-              className="flex items-center justify-center rounded-xl text-center w-full active:scale-[0.97] transition-all duration-150 bg-transparent text-white font-bold uppercase tracking-wide"
-              style={{
-                border: '2px solid rgba(255, 255, 255, 0.3)',
-                minHeight: '50px',
-                WebkitTapHighlightColor: 'transparent',
-              }}
+              className="text-center py-3 px-4 rounded-lg border border-white/30 text-white font-medium"
             >
               Get Started
             </a>
             <a
               href="sms:4353136230"
-              className="flex items-center justify-center rounded-xl text-center w-full active:scale-[0.97] transition-all duration-150 bg-transparent text-white font-bold uppercase tracking-wide"
-              style={{
-                border: '2px solid rgba(255, 255, 255, 0.3)',
-                minHeight: '50px',
-                WebkitTapHighlightColor: 'transparent',
-              }}
+              className="text-center py-3 px-4 rounded-lg border border-white/30 text-white font-medium"
             >
-              Text
+              Text Us
             </a>
             <Link
               href="/portal"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center rounded-xl text-center w-full active:scale-[0.97] transition-all duration-150 text-white font-bold uppercase tracking-wide"
+              className="text-center py-3 px-4 rounded-lg text-white font-medium"
               style={{
                 background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
-                minHeight: '50px',
-                WebkitTapHighlightColor: 'transparent',
               }}
             >
-              Clients
+              Client Portal
             </Link>
           </div>
         </nav>
