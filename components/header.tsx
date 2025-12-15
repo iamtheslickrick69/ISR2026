@@ -74,14 +74,23 @@ export function Header() {
         maxWidth: 'none',
       }}
     >
-      {/* Header Container */}
-      <div className="md:rounded-2xl rounded-none md:p-[1px] md:mx-0">
+      {/* Desktop Premium Glass / Mobile Simple */}
+      <div
+        className="rounded-none md:rounded-2xl md:p-[1px] md:mx-0"
+        style={{
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05))',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+        }}
+      >
         <nav
-          className="flex items-center justify-between px-4 md:px-6 md:rounded-2xl"
+          className="flex items-center justify-between px-4 md:px-6 rounded-none md:rounded-2xl"
           style={{
             paddingTop: '14px',
             paddingBottom: '14px',
             background: 'rgba(0, 0, 0, 0.95)',
+            backdropFilter: 'blur(40px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
             borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
           }}
         >
