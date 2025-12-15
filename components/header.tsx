@@ -74,23 +74,24 @@ export function Header() {
         maxWidth: 'none',
       }}
     >
-      {/* Professional Black Header with White Border */}
+      {/* Dark Liquid Glass Header */}
       <div
         className="rounded-2xl p-[1px]"
         style={{
-          background: 'rgba(255, 255, 255, 0.2)',
-          boxShadow: '0 4px 24px rgba(0, 0, 0, 0.1)',
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05))',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
         }}
       >
         <nav
-          className="flex items-center rounded-2xl px-7 sm:px-10"
+          className="flex items-center rounded-2xl px-4 sm:px-6"
           style={{
-            gap: '42px',
-            paddingTop: '10px',
-            paddingBottom: '10px',
-            background: '#000000',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
+            gap: '20px',
+            paddingTop: '8px',
+            paddingBottom: '8px',
+            background: 'rgba(20, 20, 20, 0.7)',
+            backdropFilter: 'blur(40px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           }}
         >
@@ -103,22 +104,22 @@ export function Header() {
           <Image
             src="/blackmm.png"
             alt="Haestus"
-            width={48}
-            height={48}
-            className="w-12 h-12 hover:opacity-80 transition-opacity duration-200"
+            width={40}
+            height={40}
+            className="w-10 h-10 hover:opacity-80 transition-opacity duration-200"
             style={{ filter: 'brightness(0) invert(1)' }}
             priority
           />
         </a>
 
         {/* Desktop Nav Links */}
-        <div className="hidden md:flex items-center" style={{ gap: '36px' }}>
+        <div className="hidden md:flex items-center" style={{ gap: '20px' }}>
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href, link.external)}
-              className="text-base font-semibold text-white/70 hover:text-white transition-colors duration-200 uppercase tracking-wide"
+              className="text-sm font-semibold text-white/70 hover:text-white transition-colors duration-200 uppercase tracking-wide whitespace-nowrap"
             >
               {link.label}
             </a>
@@ -126,20 +127,29 @@ export function Header() {
         </div>
 
         {/* Desktop CTA Buttons */}
-        <div className="hidden md:flex items-center gap-3 flex-shrink-0 ml-6">
+        <div className="hidden md:flex items-center gap-2 flex-shrink-0">
           <a
             href="#connect"
             onClick={(e) => handleNavClick(e, "#connect")}
-            className="text-sm font-bold px-6 py-3 rounded-lg bg-transparent text-white hover:bg-white/10 transition-all duration-200 uppercase tracking-wide"
+            className="text-xs font-bold px-4 py-2 rounded-lg bg-transparent text-white hover:bg-white/10 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
             style={{
               border: '1.5px solid rgba(255, 255, 255, 0.3)',
             }}
           >
             Get Started
           </a>
+          <a
+            href="sms:4353136230"
+            className="text-xs font-bold px-4 py-2 rounded-lg bg-transparent text-white hover:bg-white/10 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
+            style={{
+              border: '1.5px solid rgba(255, 255, 255, 0.3)',
+            }}
+          >
+            Text
+          </a>
           <Link
             href="/portal"
-            className="text-sm font-bold px-6 py-3 rounded-lg text-white hover:opacity-90 transition-all duration-200 uppercase tracking-wide"
+            className="text-xs font-bold px-4 py-2 rounded-lg text-white hover:opacity-90 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
             style={{
               background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
             }}
@@ -241,6 +251,17 @@ export function Header() {
               }}
             >
               Get Started
+            </a>
+            <a
+              href="sms:4353136230"
+              className="flex items-center justify-center rounded-lg text-center w-full active:opacity-80 transition-opacity bg-transparent text-white font-bold uppercase tracking-wide"
+              style={{
+                border: '2px solid rgba(255, 255, 255, 0.3)',
+                minHeight: '56px',
+                WebkitTapHighlightColor: 'transparent',
+              }}
+            >
+              Text
             </a>
             <Link
               href="/portal"

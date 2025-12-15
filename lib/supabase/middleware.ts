@@ -7,8 +7,8 @@ export async function updateSession(request: NextRequest) {
   })
 
   // Check if using placeholder/demo credentials
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-  const isPlaceholder = supabaseUrl.includes('placeholder') || supabaseUrl === 'your_supabase_project_url'
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+  const isPlaceholder = !supabaseUrl || supabaseUrl.includes('placeholder') || supabaseUrl === 'your_supabase_project_url'
 
   // In development mode with placeholders, skip auth checks
   if (isPlaceholder) {

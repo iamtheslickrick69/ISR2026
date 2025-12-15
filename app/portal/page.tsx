@@ -66,10 +66,10 @@ export default function PortalPage() {
           <Image
             src="/trans1.png"
             alt="Haestus"
-            width={120}
-            height={120}
+            width={360}
+            height={360}
             className="h-auto"
-            style={{ maxWidth: '120px' }}
+            style={{ maxWidth: '360px', filter: 'brightness(0)' }}
             priority
           />
         </div>

@@ -12,10 +12,10 @@ const tools = [
   {
     id: 1,
     name: "AI Statement Analyzer",
-    description: "No login or credit card required. Designed to help small business owners receive clarity and third-party, non-biased understanding of their payment processing fees.",
+    description: "Free tool. No login required. Clear, unbiased analysis of payment processing fees for small business owners.",
     image: "/analyze.png",
     tags: ["Free Forever", "No Login", "Unbiased"],
-    tagColors: ["bg-green-100 text-green-700", "bg-blue-100 text-blue-700", "bg-purple-100 text-purple-700"]
+    tagColors: ["bg-white/90 text-gray-800", "bg-white/80 text-gray-800", "bg-white/70 text-gray-800"]
   },
   {
     id: 2,
@@ -23,15 +23,15 @@ const tools = [
     description: "Master prompt engineering for everyone. We bring the menu out to you so you can really order what you want, not just tell a chef \"Make me a grilled cheese.\"",
     image: "/supab.png",
     tags: ["Advanced", "Multi-LLM", "Easy"],
-    tagColors: ["bg-orange-100 text-orange-700", "bg-indigo-100 text-indigo-700", "bg-pink-100 text-pink-700"]
+    tagColors: ["bg-white/90 text-gray-800", "bg-white/80 text-gray-800", "bg-white/70 text-gray-800"]
   },
   {
     id: 3,
     name: "ubill.io",
-    description: "Free, no-login energy bill analysis. Every homeowner deserves to understand their energy needs as clearly as they understand price per gallon at the pump.",
+    description: "Free energy bill analysis. No login required. Understand your energy needs as clearly as you understand price per gallon at the pump.",
     image: "/ubill.png",
     tags: ["100% Free", "No Signup", "Transparent"],
-    tagColors: ["bg-green-100 text-green-700", "bg-teal-100 text-teal-700", "bg-cyan-100 text-cyan-700"]
+    tagColors: ["bg-white/90 text-gray-800", "bg-white/80 text-gray-800", "bg-white/70 text-gray-800"]
   }
 ]
 
@@ -124,14 +124,15 @@ function ToolCarousel() {
               onClick={() => goToSlide(index)}
               className={`transition-all duration-300 rounded-full ${
                 index === currentIndex
-                  ? 'w-8 h-2.5 bg-gray-900'
-                  : 'w-2.5 h-2.5 bg-gray-400 hover:bg-gray-500'
+                  ? 'w-8 h-2.5'
+                  : 'w-2.5 h-2.5 bg-white/60 hover:bg-white/80'
               }`}
               style={{
                 minHeight: '44px',
                 paddingTop: '20px',
                 paddingBottom: '20px',
                 WebkitTapHighlightColor: 'transparent',
+                ...(index === currentIndex ? { background: '#d97757' } : {}),
               }}
               aria-label={`Go to tool ${index + 1}`}
             />
@@ -169,9 +170,37 @@ const services = [
 const projects = [
   {
     year: "2025",
+    name: "Alfred Eats",
+    description: "AI-powered restaurant ordering and delivery platform",
+    stat: "Seamless ordering",
+    tech: ["AI", "Mobile"],
+  },
+  {
+    year: "2025",
+    name: "Sidekick",
+    description: "AI productivity assistant for streamlined workflows",
+    stat: "Smart automation",
+    tech: ["AI", "Next.js"],
+  },
+  {
+    year: "2025",
+    name: "LoopSync",
+    description: "Automated customer engagement and retention platform",
+    stat: "3x higher retention",
+    tech: ["AI", "Automation"],
+  },
+  {
+    year: "2025",
+    name: "MachineMate Nate",
+    description: "AI-powered voice assistant for business automation",
+    stat: "24/7 availability",
+    tech: ["Voice AI", "NLP"],
+  },
+  {
+    year: "2025",
     name: "ubill.io",
     description: "Real-time analytics and predictive modeling",
-    stat: "500K+ daily insights",
+    stat: "Energy bill analysis",
     tech: ["Next.js", "AI/ML"],
   },
   {
@@ -198,6 +227,18 @@ const projects = [
 ]
 
 const clients = [
+  {
+    name: "TRS Homes",
+    description: "Residential construction and home building services",
+    stat: "Quality craftsmanship",
+    tech: ["Construction", "Real Estate"],
+  },
+  {
+    name: "Hillside Palms",
+    description: "Premium hospitality and property management services",
+    stat: "Elevated guest experiences",
+    tech: ["Hospitality", "Management"],
+  },
   {
     name: "PayPro",
     description: "Payment processing and AI-powered business solutions",
@@ -241,10 +282,9 @@ const team = [
 ]
 
 const insights = [
-  { date: "Dec 2024", title: "AI: The Rematch of David and Goliath", readTime: "12 min" },
-  { date: "Dec 2024", title: "Why 30% of AI Projects Fail After POC", readTime: "8 min" },
-  { date: "Dec 2024", title: "The Architecture-First Approach to AI", readTime: "6 min" },
-  { date: "Nov 2024", title: "Humans Over Automation: A Framework", readTime: "10 min" },
+  { date: "Dec 2025", title: "Why 30% of AI Projects Fail After POC", readTime: "8 min" },
+  { date: "Nov 2025", title: "The Architecture-First Approach to AI", readTime: "6 min" },
+  { date: "Nov 2025", title: "Humans Over Automation: A Framework", readTime: "10 min" },
 ]
 
 export default function Home() {
@@ -390,15 +430,14 @@ export default function Home() {
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <p className="text-lg sm:text-xl lg:text-2xl xl:text-3xl text-gray-700 max-w-5xl mx-auto px-4 sm:px-0 font-medium leading-relaxed">
-                We don't do MVPs or proof-of-concepts. We architect production AI systems that compound competitive advantage.{" "}
-                <span className="text-foreground font-semibold">Three projects per month. Enterprise-grade standards.</span>
+              <p className="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto px-4 sm:px-0 mb-8 sm:mb-10 lg:mb-12">
+                We don't sell AI. We don't develop AI. We architect it. Every day new models and tools are deployed to the market, and most business owners can't keep up.
               </p>
             </ScrollReveal>
           </div>
 
           {/* Three Service Cards */}
-          <div className="grid md:grid-cols-3 gap-5 lg:gap-6">
+          <div className="grid md:grid-cols-3 gap-5 lg:gap-6 mb-8 sm:mb-10 lg:mb-12">
             {/* AI Consulting - Compact */}
             <ScrollReveal delay={100}>
               <div className="card-entrance card-entrance-delay-1 group p-4 sm:p-5 lg:p-6 h-full flex flex-col transition-all duration-300 angled-border-subtle bg-white shadow-md hover:shadow-xl hover:-translate-y-1" style={{ border: '2px solid #fef5ef' }}>
@@ -438,13 +477,6 @@ export default function Home() {
                     Team Training
                   </li>
                 </ul>
-                <a
-                  href="#connect"
-                  className="enhanced-button text-xs sm:text-sm font-medium px-5 py-2.5 rounded-full text-white hover:opacity-90 transition-all duration-200 text-center w-full"
-                  style={{ background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)' }}
-                >
-                  Contact Us →
-                </a>
               </div>
             </ScrollReveal>
 
@@ -461,7 +493,7 @@ export default function Home() {
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 flex-grow">
                   Custom AI agents tailored to your specific business needs and workflows.
                 </p>
-                <ul className="space-y-1.5 sm:space-y-2 mb-4">
+                <ul className="space-y-1.5 sm:space-y-2">
                   <li className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
                     <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -487,13 +519,6 @@ export default function Home() {
                     Ongoing Support
                   </li>
                 </ul>
-                <a
-                  href="#connect"
-                  className="enhanced-button text-xs sm:text-sm font-medium px-5 py-2.5 rounded-full text-white hover:opacity-90 transition-all duration-200 text-center w-full"
-                  style={{ background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)' }}
-                >
-                  Contact Us →
-                </a>
               </div>
             </ScrollReveal>
 
@@ -536,16 +561,24 @@ export default function Home() {
                     SEO Optimized
                   </li>
                 </ul>
-                <a
-                  href="#connect"
-                  className="enhanced-button text-xs sm:text-sm font-medium px-5 py-2.5 rounded-full text-white hover:opacity-90 transition-all duration-200 text-center w-full"
-                  style={{ background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)' }}
-                >
-                  Contact Us →
-                </a>
               </div>
             </ScrollReveal>
           </div>
+
+          {/* CTA Button - Below Cards */}
+          <ScrollReveal delay={100}>
+            <div className="text-center mt-8">
+              <a
+                href="#connect"
+                className="inline-block text-base sm:text-lg font-bold px-8 py-4 rounded-lg text-white hover:opacity-90 transition-all duration-200 uppercase tracking-wide shadow-lg"
+                style={{
+                  background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
+                }}
+              >
+                See what the latest AI tools could do for your business
+              </a>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -555,17 +588,12 @@ export default function Home() {
           {/* Header */}
           <div className="text-center mb-12 sm:mb-14 lg:mb-16">
             <ScrollReveal>
-              <div className="inline-block px-4 py-1.5 rounded-full mb-3 sm:mb-4" style={{ background: 'rgba(255, 255, 255, 0.08)', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
-                <p className="text-xs sm:text-sm font-semibold tracking-widest uppercase text-gray-400">How We Work</p>
-              </div>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
-              <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight mb-3 sm:mb-4 text-white px-4 sm:px-0">
+              <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-4 sm:mb-6 text-white px-4 sm:px-0">
                 Our Process
               </h2>
             </ScrollReveal>
-            <ScrollReveal delay={200}>
-              <p className="text-base sm:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto px-4 sm:px-0">
+            <ScrollReveal delay={100}>
+              <p className="text-lg sm:text-xl lg:text-2xl text-white/80 max-w-3xl mx-auto px-4 sm:px-0 font-medium">
                 From idea to implementation, we guide you every step of the way
               </p>
             </ScrollReveal>
@@ -680,29 +708,25 @@ export default function Home() {
       <section id="portfolio" className="py-16 sm:py-24 lg:py-40 xl:py-48 relative">
         <div className="section-divider" />
         <div className="max-w-[1200px] mx-auto px-5 sm:px-6 pt-16 sm:pt-24 lg:pt-32">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-12 sm:mb-16 lg:mb-20 gap-4 sm:gap-6">
-            <div className="flex flex-col sm:flex-row sm:items-end sm:gap-6">
-              <ScrollReveal>
-                <p className="text-sm sm:text-base lg:text-lg font-mono tracking-[0.2em] lg:tracking-[0.3em] text-muted-foreground font-medium mb-3 sm:mb-0">OUR WORK</p>
-              </ScrollReveal>
+          <div className="mb-12 sm:mb-16 lg:mb-20">
+            <ScrollReveal>
+              <p className="text-center text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem] font-mono tracking-[0.2em] lg:tracking-[0.3em] text-muted-foreground font-medium mb-4 sm:mb-6">OUR WORK</p>
+            </ScrollReveal>
+            <div className="flex items-center justify-between mb-6 sm:mb-8">
               <ScrollReveal delay={100}>
-                <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight">Portfolio</h2>
+                <h2 className="font-heading text-[1.5rem] sm:text-[1.8rem] lg:text-[2.25rem] xl:text-[3rem] font-bold tracking-tight">Portfolio</h2>
               </ScrollReveal>
             </div>
 
-            {/* Tagline pill - aligned right */}
-            <ScrollReveal delay={200}>
-              <div className="inline-block">
-                <div className="relative px-7 sm:px-10 py-4 sm:py-5 rounded-full text-white font-semibold text-base sm:text-lg lg:text-xl tracking-wide overflow-hidden"
+            {/* Tagline pill - full width below title */}
+            <ScrollReveal delay={100}>
+              <div className="inline-block max-w-fit">
+                <div className="relative px-6 sm:px-8 py-3 sm:py-4 rounded-full text-white font-semibold text-sm sm:text-base lg:text-lg overflow-hidden"
                   style={{
                     background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
                     boxShadow: '0 4px 20px rgba(217, 119, 87, 0.3)',
                   }}
                 >
-                  <div className="absolute inset-0 opacity-20" style={{
-                    backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-                    backgroundSize: '16px 16px',
-                  }}></div>
                   <span className="relative z-10">The future belongs to those who automate today.</span>
                 </div>
               </div>
@@ -802,17 +826,16 @@ export default function Home() {
                       </div>
 
                       {/* Desktop Grid Layout */}
-                      <div className="hidden md:grid relative z-10 grid-cols-12 gap-5 group-hover:opacity-0 transition-opacity duration-300">
-                        <div className="col-span-1 text-muted-foreground font-mono text-lg">{project.year}</div>
-                        <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-3 text-lg">
+                      <div className="hidden md:grid relative z-10 grid-cols-12 gap-6 items-center group-hover:opacity-0 transition-opacity duration-300">
+                        <div className="col-span-1 text-gray-500 font-mono text-base font-medium">{project.year}</div>
+                        <div className="col-span-2 font-heading text-foreground font-bold flex items-center gap-2 text-xl">
                           {project.name}
-                          <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                         </div>
-                        <div className="col-span-4 text-muted-foreground text-lg">{project.description}</div>
-                        <div className="col-span-2 text-lg font-mono text-muted-foreground">{project.stat}</div>
+                        <div className="col-span-4 text-gray-600 text-base leading-relaxed">{project.description}</div>
+                        <div className="col-span-3 text-base font-mono text-gray-700 font-semibold">{project.stat}</div>
                         <div className="col-span-2 flex flex-wrap gap-2 justify-end">
                           {project.tech.map((t) => (
-                            <span key={t} className="tech-tag text-base">
+                            <span key={t} className="px-3 py-1 rounded-md text-xs font-semibold border border-gray-300 text-gray-700 bg-white">
                               {t}
                             </span>
                           ))}
@@ -842,17 +865,16 @@ export default function Home() {
                       </div>
 
                       {/* Desktop Grid Layout */}
-                      <div className="hidden md:grid grid-cols-12 gap-5">
-                        <div className="col-span-1 text-muted-foreground font-mono text-lg">{project.year}</div>
-                        <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-3 text-lg">
+                      <div className="hidden md:grid grid-cols-12 gap-6 items-center">
+                        <div className="col-span-1 text-gray-500 font-mono text-base font-medium">{project.year}</div>
+                        <div className="col-span-2 font-heading text-foreground font-bold flex items-center gap-2 text-xl">
                           {project.name}
-                          <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                         </div>
-                        <div className="col-span-4 text-muted-foreground text-lg">{project.description}</div>
-                        <div className="col-span-2 text-lg font-mono text-muted-foreground">{project.stat}</div>
+                        <div className="col-span-4 text-gray-600 text-base leading-relaxed">{project.description}</div>
+                        <div className="col-span-3 text-base font-mono text-gray-700 font-semibold">{project.stat}</div>
                         <div className="col-span-2 flex flex-wrap gap-2 justify-end">
                           {project.tech.map((t) => (
-                            <span key={t} className="tech-tag text-base">
+                            <span key={t} className="px-3 py-1 rounded-md text-xs font-semibold border border-gray-300 text-gray-700 bg-white">
                               {t}
                             </span>
                           ))}
@@ -1058,22 +1080,14 @@ export default function Home() {
               ))
             )}
           </div>
-
-          <ScrollReveal delay={300}>
-            <div className="mt-16 p-8 border border-border angled-border-subtle text-center">
-              <p className="text-muted-foreground italic">
-                More projects launching soon. We're selective about what we build.
-              </p>
-            </div>
-          </ScrollReveal>
         </div>
       </section>
 
       {/* Insights Section - Compact */}
-      <section id="insights" className="py-12 sm:py-16 lg:py-20 xl:py-24 relative overflow-hidden">
+      <section id="insights" className="py-10 sm:py-12 lg:py-16 relative overflow-hidden">
         <div className="section-divider" />
 
-        {/* Video Background */}
+        {/* Video Background with Overlay */}
         <div className="absolute inset-0" style={{ zIndex: 0 }}>
           <video
             autoPlay
@@ -1085,32 +1099,32 @@ export default function Home() {
           >
             <source src="https://pub-7824dae2ffd24193b52760c54972be1d.r2.dev/111peachbaby.mp4" type="video/mp4" />
           </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
         </div>
 
         <div className="max-w-[1200px] mx-auto px-5 sm:px-6 relative" style={{ zIndex: 1 }}>
-          <ScrollReveal>
-            <p className="text-mobile-xs sm:text-xs font-mono tracking-[0.2em] text-white mb-3 sm:mb-4 drop-shadow-lg font-medium">INSIGHTS</p>
-          </ScrollReveal>
-          <ScrollReveal delay={100}>
-            <h2 className="font-heading text-mobile-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-3 sm:mb-4 text-white drop-shadow-lg px-4 sm:px-0">Recent Thoughts</h2>
-          </ScrollReveal>
-          <ScrollReveal delay={200}>
-            <p className="text-mobile-sm sm:text-base lg:text-lg text-white max-w-2xl mb-8 sm:mb-10 lg:mb-12 drop-shadow-lg px-4 sm:px-0 font-medium">
-              Personal research on where AI is, where it's going, and what matters.
-            </p>
-          </ScrollReveal>
+          <div className="text-center mb-6 sm:mb-8">
+            <ScrollReveal>
+              <h2 className="font-heading text-[1.75rem] sm:text-[2.1rem] lg:text-[2.625rem] font-bold tracking-tight mb-2 text-white drop-shadow-2xl">Insights</h2>
+            </ScrollReveal>
+            <ScrollReveal delay={100}>
+              <p className="text-sm sm:text-base text-white/90 max-w-xl mx-auto drop-shadow-lg font-medium">
+                Personal research on where AI is, where it's going, and what matters.
+              </p>
+            </ScrollReveal>
+          </div>
 
-          <div className="grid md:grid-cols-3 gap-4 lg:gap-6">
+          <div className="grid md:grid-cols-3 gap-3 lg:gap-4">
             {insights.map((post, index) => (
               <ScrollReveal key={post.title} delay={index * 100}>
-                <div className="group p-4 sm:p-5 lg:p-6 border border-white/30 angled-border-subtle cursor-pointer h-full flex flex-col transition-all duration-300 hover:border-white/70 bg-white/10 backdrop-blur-md hover:bg-white/20 hover:-translate-y-1 hover:shadow-xl">
-                  <div className="flex items-center gap-2 text-xs text-white/90 mb-3">
+                <div className="group p-4 sm:p-5 rounded-xl cursor-pointer h-full flex flex-col transition-all duration-300 bg-white/95 backdrop-blur-sm hover:bg-white hover:-translate-y-1 hover:shadow-2xl border border-white/20">
+                  <div className="flex items-center gap-2 text-xs text-gray-600 mb-2 font-medium">
                     <span>{post.date}</span>
-                    <span className="w-1 h-1 bg-white/90 rounded-full" />
+                    <span className="w-1 h-1 bg-gray-400 rounded-full" />
                     <span>{post.readTime}</span>
                   </div>
-                  <h3 className="font-heading text-base sm:text-lg font-semibold text-white flex-grow">{post.title}</h3>
-                  <div className="mt-4 flex items-center gap-2 text-xs sm:text-sm text-white/90 group-hover:text-white transition-colors duration-200">
+                  <h3 className="font-heading text-base sm:text-lg font-bold text-gray-900 flex-grow leading-snug">{post.title}</h3>
+                  <div className="mt-3 flex items-center gap-2 text-sm font-semibold transition-colors duration-200" style={{ color: '#d97757' }}>
                     Read more
                     <ArrowUpRight className="w-4 h-4" />
                   </div>
@@ -1140,7 +1154,7 @@ export default function Home() {
             </ScrollReveal>
             <ScrollReveal delay={200}>
               <p className="text-lg lg:text-xl xl:text-2xl text-gray-700 max-w-2xl mx-auto px-4 sm:px-0 font-medium leading-relaxed">
-                Three projects per month. Enterprise-grade standards. No inflated promises—only real capabilities, real results.
+                We are passionate of delivering sustainable solutions and valuable tools to businesses. Let's connect and see if there's something you didn't know you needed.
               </p>
             </ScrollReveal>
           </div>
@@ -1154,8 +1168,8 @@ export default function Home() {
                   alt="Tree"
                   width={600}
                   height={600}
-                  className="w-full h-auto opacity-30"
-                  style={{ objectFit: 'contain', filter: 'sepia(100%) saturate(200%) brightness(1.1) hue-rotate(-15deg)' }}
+                  className="w-full h-auto"
+                  style={{ objectFit: 'contain', filter: 'brightness(0)' }}
                   priority
                 />
               </div>
