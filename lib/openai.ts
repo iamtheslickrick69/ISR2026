@@ -1,8 +1,25 @@
 import OpenAI from 'openai'
 
-// OpenAI client for chat completions and embeddings
-export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+// OpenAI client for chat completions and embeddings (lazy-loaded)
+let openaiInstance: OpenAI | null = null
+
+export function getOpenAI(): OpenAI {
+  if (!openaiInstance) {
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('Missing credentials. Please pass an `apiKey`, or set the `OPENAI_API_KEY` environment variable.')
+    }
+    openaiInstance = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  }
+  return openaiInstance
+}
+
+// For backwards compatibility
+export const openai = new Proxy({} as OpenAI, {
+  get(target, prop) {
+    return getOpenAI()[prop as keyof OpenAI]
+  }
 })
 
 // Generate embeddings for text

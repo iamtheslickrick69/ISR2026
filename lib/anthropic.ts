@@ -1,14 +1,45 @@
 import Anthropic from '@anthropic-ai/sdk'
 import OpenAI from 'openai'
 
-// Anthropic client for chat completions
-export const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+// Lazy-loaded clients to avoid build-time initialization
+let anthropicInstance: Anthropic | null = null
+let openaiInstance: OpenAI | null = null
+
+export function getAnthropic(): Anthropic {
+  if (!anthropicInstance) {
+    if (!process.env.ANTHROPIC_API_KEY) {
+      throw new Error('ANTHROPIC_API_KEY is not set')
+    }
+    anthropicInstance = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+    })
+  }
+  return anthropicInstance
+}
+
+export function getOpenAI(): OpenAI {
+  if (!openaiInstance) {
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY is not set')
+    }
+    openaiInstance = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  }
+  return openaiInstance
+}
+
+// For backwards compatibility
+export const anthropic = new Proxy({} as Anthropic, {
+  get(target, prop) {
+    return getAnthropic()[prop as keyof Anthropic]
+  }
 })
 
-// OpenAI client for embeddings only (Anthropic doesn't provide embeddings)
-export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+export const openai = new Proxy({} as OpenAI, {
+  get(target, prop) {
+    return getOpenAI()[prop as keyof OpenAI]
+  }
 })
 
 // Generate embeddings for text using OpenAI
