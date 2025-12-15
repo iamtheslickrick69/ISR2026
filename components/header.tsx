@@ -93,8 +93,8 @@ export function Header() {
         <nav
           className="flex items-center justify-between px-4 md:px-6 rounded-none md:rounded-2xl"
           style={{
-            paddingTop: '8px',
-            paddingBottom: '8px',
+            paddingTop: '12px',
+            paddingBottom: '12px',
             background: 'rgba(0, 0, 0, 0.95)',
             backdropFilter: 'blur(40px) saturate(180%)',
             WebkitBackdropFilter: 'blur(40px) saturate(180%)',
