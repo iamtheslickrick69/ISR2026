@@ -45,37 +45,37 @@ export function Footer() {
 
   return (
     <footer className="border-t border-border text-foreground" style={{ background: '#E5DDD0' }}>
-      <div className="max-w-[1200px] mx-auto px-5 sm:px-6 py-10 sm:py-13">
+      <div className="max-w-[1200px] mx-auto px-5 sm:px-6 py-6 md:py-10">
         {/* Main Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-10 mb-6 sm:mb-10">
-          {/* Brand */}
-          <div className="space-y-2 sm:space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-10 mb-5 md:mb-10">
+          {/* Brand - Compact on Mobile */}
+          <div className="space-y-2">
             <Link href="/" className="block">
               <Image
                 src="/trans1.png"
                 alt="Haestus"
                 width={600}
                 height={600}
-                className="h-auto max-w-[200px] sm:max-w-[240px]"
+                className="h-auto max-w-[140px] md:max-w-[240px]"
                 style={{ filter: 'brightness(0)' }}
               />
             </Link>
-            <p className="text-xs sm:text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground hidden md:block">
               AI architecture studio crafting digital intelligence.
             </p>
           </div>
 
           {/* Navigation 1 */}
           <div>
-            <h4 className="text-xs sm:text-sm font-medium text-foreground mb-2 sm:mb-3">Navigation</h4>
-            <ul className="space-y-1.5">
+            <h4 className="text-xs font-medium text-foreground mb-1.5 md:mb-2">Navigation</h4>
+            <ul className="space-y-0.5 md:space-y-1.5">
               {navigation.slice(0, 3).map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors inline-block"
+                    className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-block"
                     style={{
-                      minHeight: '44px',
+                      minHeight: '36px',
                       display: 'flex',
                       alignItems: 'center',
                       WebkitTapHighlightColor: 'transparent',
@@ -90,15 +90,15 @@ export function Footer() {
 
           {/* Navigation 2 */}
           <div>
-            <h4 className="text-xs sm:text-sm font-medium text-foreground mb-2 sm:mb-3">More</h4>
-            <ul className="space-y-1.5">
+            <h4 className="text-xs font-medium text-foreground mb-1.5 md:mb-2">More</h4>
+            <ul className="space-y-0.5 md:space-y-1.5">
               {navigation.slice(3).map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors inline-block"
+                    className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-block"
                     style={{
-                      minHeight: '44px',
+                      minHeight: '36px',
                       display: 'flex',
                       alignItems: 'center',
                       WebkitTapHighlightColor: 'transparent',
@@ -112,9 +112,9 @@ export function Footer() {
           </div>
 
           {/* Social & Contact */}
-          <div className="space-y-2 sm:space-y-3">
-            <h4 className="text-xs sm:text-sm font-medium text-foreground">Connect</h4>
-            <div className="flex gap-2 sm:gap-3">
+          <div className="space-y-1.5 md:space-y-3">
+            <h4 className="text-xs font-medium text-foreground">Connect</h4>
+            <div className="flex gap-1.5 md:gap-3">
               {social.map((item) => (
                 <a
                   key={item.name}
@@ -124,8 +124,8 @@ export function Footer() {
                   className="text-muted-foreground hover:text-foreground transition-colors"
                   aria-label={item.name}
                   style={{
-                    minWidth: '44px',
-                    minHeight: '44px',
+                    minWidth: '36px',
+                    minHeight: '36px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -136,11 +136,11 @@ export function Footer() {
                 </a>
               ))}
             </div>
-            <div className="pt-2 sm:pt-3">
-              <p className="text-xs text-muted-foreground mb-1.5">Email</p>
+            <div className="pt-1 md:pt-3">
+              <p className="text-xs text-muted-foreground mb-1">Email</p>
               <a
                 href="mailto:hello@haestus.dev"
-                className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors break-all"
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors break-all"
               >
                 hello@haestus.dev
               </a>
@@ -149,10 +149,10 @@ export function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-border pt-5 sm:pt-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-2 sm:gap-3 text-xs text-muted-foreground">
+        <div className="border-t border-border pt-3 md:pt-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-1 md:gap-3 text-xs text-muted-foreground">
             <p>© {new Date().getFullYear()} Haestus. All rights reserved.</p>
-            <p>Crafted with intention.</p>
+            <p className="hidden md:block">Crafted with intention.</p>
           </div>
         </div>
       </div>

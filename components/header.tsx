@@ -66,9 +66,9 @@ export function Header() {
 
   return (
     <header
-      className="fixed left-1/2 -translate-x-1/2 z-50"
+      className="fixed z-50 md:left-1/2 md:-translate-x-1/2 left-0 right-0"
       style={{
-        top: isScrolled ? 'max(12px, env(safe-area-inset-top))' : 'max(16px, env(safe-area-inset-top))',
+        top: isScrolled ? 'max(12px, env(safe-area-inset-top))' : 'env(safe-area-inset-top)',
         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         width: 'auto',
         maxWidth: 'none',
@@ -76,19 +76,19 @@ export function Header() {
     >
       {/* Dark Liquid Glass Header */}
       <div
-        className="rounded-2xl p-[1px]"
+        className="md:rounded-2xl rounded-none p-[1px] mx-0 md:mx-0"
         style={{
           background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05))',
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
         }}
       >
         <nav
-          className="flex items-center rounded-2xl px-4 sm:px-6"
+          className="flex items-center justify-between md:rounded-2xl rounded-none px-4 md:px-6"
           style={{
-            gap: '20px',
-            paddingTop: '8px',
-            paddingBottom: '8px',
-            background: 'rgba(20, 20, 20, 0.7)',
+            gap: '12px',
+            paddingTop: '12px',
+            paddingBottom: '12px',
+            background: 'rgba(20, 20, 20, 0.95)',
             backdropFilter: 'blur(40px) saturate(180%)',
             WebkitBackdropFilter: 'blur(40px) saturate(180%)',
             border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -106,20 +106,20 @@ export function Header() {
             alt="Haestus"
             width={40}
             height={40}
-            className="w-10 h-10 hover:opacity-80 transition-opacity duration-200"
+            className="w-8 h-8 md:w-10 md:h-10 hover:opacity-80 transition-opacity duration-200"
             style={{ filter: 'brightness(0) invert(1)' }}
             priority
           />
         </a>
 
         {/* Desktop Nav Links */}
-        <div className="hidden md:flex items-center" style={{ gap: '20px' }}>
+        <div className="hidden md:flex items-center" style={{ gap: '24px' }}>
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href, link.external)}
-              className="text-sm font-semibold text-white/70 hover:text-white transition-colors duration-200 uppercase tracking-wide whitespace-nowrap"
+              className="text-sm font-bold text-white/80 hover:text-white transition-colors duration-200 uppercase tracking-wide whitespace-nowrap"
             >
               {link.label}
             </a>
@@ -127,11 +127,11 @@ export function Header() {
         </div>
 
         {/* Desktop CTA Buttons */}
-        <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+        <div className="hidden md:flex items-center gap-3 flex-shrink-0">
           <a
             href="#connect"
             onClick={(e) => handleNavClick(e, "#connect")}
-            className="text-xs font-bold px-4 py-2 rounded-lg bg-transparent text-white hover:bg-white/10 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
+            className="text-sm font-bold px-5 py-2.5 rounded-lg bg-transparent text-white hover:bg-white/10 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
             style={{
               border: '1.5px solid rgba(255, 255, 255, 0.3)',
             }}
@@ -140,7 +140,7 @@ export function Header() {
           </a>
           <a
             href="sms:4353136230"
-            className="text-xs font-bold px-4 py-2 rounded-lg bg-transparent text-white hover:bg-white/10 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
+            className="text-sm font-bold px-5 py-2.5 rounded-lg bg-transparent text-white hover:bg-white/10 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
             style={{
               border: '1.5px solid rgba(255, 255, 255, 0.3)',
             }}
@@ -149,7 +149,7 @@ export function Header() {
           </a>
           <Link
             href="/portal"
-            className="text-xs font-bold px-4 py-2 rounded-lg text-white hover:opacity-90 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
+            className="text-sm font-bold px-5 py-2.5 rounded-lg text-white hover:opacity-90 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
             style={{
               background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
             }}
@@ -174,25 +174,26 @@ export function Header() {
         </nav>
       </div>
 
-      {/* Mobile Menu - Starlink Style */}
+      {/* Mobile Menu - Full Screen Overlay */}
       <div
-        className={`md:hidden fixed inset-0 z-40 transition-all duration-300 ${
+        className={`md:hidden fixed inset-0 transition-all duration-300 ${
           mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         style={{
           background: '#000000',
           paddingTop: 'env(safe-area-inset-top)',
           paddingBottom: 'env(safe-area-inset-bottom)',
+          zIndex: 9999,
         }}
       >
         {/* Mobile Menu Header */}
-        <div className="flex items-center justify-between px-5 border-b border-white/10" style={{ height: '64px' }}>
+        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
           <Image
             src="/blackmm.png"
             alt="Haestus"
-            width={36}
-            height={36}
-            className="w-9 h-9"
+            width={32}
+            height={32}
+            className="w-8 h-8"
             style={{ filter: 'brightness(0) invert(1)' }}
           />
           <button
@@ -218,15 +219,15 @@ export function Header() {
           }}
         >
           {/* Navigation Links */}
-          <div className="flex flex-col gap-1 mb-8">
+          <div className="flex flex-col gap-0.5 mb-6">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href, link.external)}
-                className="flex items-center justify-between px-4 rounded-xl active:bg-white/10 transition-colors"
+                className="flex items-center justify-between px-4 rounded-xl active:bg-white/10 active:scale-[0.98] transition-all duration-150"
                 style={{
-                  minHeight: '56px',
+                  minHeight: '48px',
                   WebkitTapHighlightColor: 'transparent',
                 }}
               >
@@ -239,14 +240,14 @@ export function Header() {
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col gap-3 pt-4 border-t border-white/10">
+          <div className="flex flex-col gap-2.5 pt-3 border-t border-white/10">
             <a
               href="#connect"
               onClick={(e) => handleNavClick(e, "#connect")}
-              className="flex items-center justify-center rounded-lg text-center w-full active:opacity-80 transition-opacity bg-transparent text-white font-bold uppercase tracking-wide"
+              className="flex items-center justify-center rounded-xl text-center w-full active:scale-[0.97] transition-all duration-150 bg-transparent text-white font-bold uppercase tracking-wide"
               style={{
                 border: '2px solid rgba(255, 255, 255, 0.3)',
-                minHeight: '56px',
+                minHeight: '50px',
                 WebkitTapHighlightColor: 'transparent',
               }}
             >
@@ -254,10 +255,10 @@ export function Header() {
             </a>
             <a
               href="sms:4353136230"
-              className="flex items-center justify-center rounded-lg text-center w-full active:opacity-80 transition-opacity bg-transparent text-white font-bold uppercase tracking-wide"
+              className="flex items-center justify-center rounded-xl text-center w-full active:scale-[0.97] transition-all duration-150 bg-transparent text-white font-bold uppercase tracking-wide"
               style={{
                 border: '2px solid rgba(255, 255, 255, 0.3)',
-                minHeight: '56px',
+                minHeight: '50px',
                 WebkitTapHighlightColor: 'transparent',
               }}
             >
@@ -266,10 +267,10 @@ export function Header() {
             <Link
               href="/portal"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center rounded-lg text-center w-full active:opacity-80 transition-opacity text-white font-bold uppercase tracking-wide"
+              className="flex items-center justify-center rounded-xl text-center w-full active:scale-[0.97] transition-all duration-150 text-white font-bold uppercase tracking-wide"
               style={{
                 background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
-                minHeight: '56px',
+                minHeight: '50px',
                 WebkitTapHighlightColor: 'transparent',
               }}
             >
