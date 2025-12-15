@@ -66,14 +66,22 @@ export function Header() {
 
   return (
     <header
-      className="fixed z-50 left-0 right-0 md:left-1/2 md:-translate-x-1/2"
+      className="fixed left-0 right-0 md:left-1/2 md:-translate-x-1/2"
       style={{
-        top: isScrolled ? 'env(safe-area-inset-top)' : 'env(safe-area-inset-top)',
+        top: '0',
         transition: 'all 0.3s ease',
         width: '100%',
-        maxWidth: '800px',
+        zIndex: 999999,
       }}
     >
+      <style jsx>{`
+        @media (min-width: 768px) {
+          header {
+            max-width: 800px !important;
+            top: 20px !important;
+          }
+        }
+      `}</style>
       {/* Desktop Premium Glass / Mobile Simple */}
       <div
         className="rounded-none md:rounded-2xl md:p-[1px] md:mx-0"
@@ -150,9 +158,17 @@ export function Header() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-white p-2"
+          className="md:hidden text-white p-2 relative z-[1000000]"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
+          style={{
+            minWidth: '44px',
+            minHeight: '44px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            WebkitTapHighlightColor: 'transparent',
+          }}
         >
           {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -165,8 +181,9 @@ export function Header() {
           mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         style={{
-          top: 'env(safe-area-inset-top)',
-          zIndex: 9998,
+          top: '0',
+          zIndex: 999998,
+          paddingTop: 'env(safe-area-inset-top, 0)',
         }}
       >
         {/* Menu Header */}
@@ -183,6 +200,14 @@ export function Header() {
             className="text-white p-2"
             onClick={() => setMobileMenuOpen(false)}
             aria-label="Close menu"
+            style={{
+              minWidth: '44px',
+              minHeight: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              WebkitTapHighlightColor: 'transparent',
+            }}
           >
             <X className="w-6 h-6" />
           </button>
@@ -197,6 +222,12 @@ export function Header() {
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href, link.external)}
               className="text-white text-lg py-4 px-3 hover:bg-white/5 rounded-lg transition-colors"
+              style={{
+                minHeight: '56px',
+                display: 'flex',
+                alignItems: 'center',
+                WebkitTapHighlightColor: 'transparent',
+              }}
             >
               {link.label}
             </a>
@@ -211,16 +242,28 @@ export function Header() {
             <a
               href="#connect"
               onClick={(e) => handleNavClick(e, "#connect")}
-              className="text-center py-3 px-4 rounded-lg border border-white/30 text-white font-medium"
+              className="text-center py-4 px-4 rounded-lg border border-white/30 text-white font-medium"
+              style={{
+                minHeight: '50px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                WebkitTapHighlightColor: 'transparent',
+              }}
             >
               Get Started
             </a>
             <Link
               href="/portal"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-center py-3 px-4 rounded-lg text-white font-medium"
+              className="text-center py-4 px-4 rounded-lg text-white font-medium"
               style={{
                 background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
+                minHeight: '50px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                WebkitTapHighlightColor: 'transparent',
               }}
             >
               Client Portal

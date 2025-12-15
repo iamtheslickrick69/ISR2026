@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ScrollReveal } from "@/components/scroll-reveal"
+import { Parallax } from "@/components/parallax"
 import { Logo } from "@/components/logo"
 import { HeroWallpaper } from "@/components/HeroWallpaper"
 import { ArrowUpRight, Mail, ChevronLeft, ChevronRight } from "lucide-react"
@@ -439,8 +440,8 @@ export default function Home() {
           {/* Three Service Cards */}
           <div className="grid md:grid-cols-3 gap-5 lg:gap-6 mb-8 sm:mb-10 lg:mb-12">
             {/* AI Consulting - Compact */}
-            <ScrollReveal delay={100}>
-              <div className="card-entrance card-entrance-delay-1 group p-4 sm:p-5 lg:p-6 h-full flex flex-col transition-all duration-300 angled-border-subtle bg-white shadow-md hover:shadow-xl hover:-translate-y-1" style={{ border: '2px solid #fef5ef' }}>
+            <ScrollReveal delay={50}>
+              <div className="card-entrance card-entrance-delay-1 group p-4 sm:p-5 lg:p-6 h-full flex flex-col transition-all duration-300 angled-border-subtle bg-white shadow-md hover:shadow-xl hover:-translate-y-2 hover:scale-[1.02]" style={{ border: '2px solid #fef5ef' }}>
                 <div className="w-10 h-10 rounded-lg mb-3 sm:mb-4 flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.08)' }}>
                   <svg className="w-5 h-5" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -481,8 +482,8 @@ export default function Home() {
             </ScrollReveal>
 
             {/* AI Agent Building - Compact */}
-            <ScrollReveal delay={200}>
-              <div className="card-entrance card-entrance-delay-2 group p-4 sm:p-5 lg:p-6 h-full flex flex-col transition-all duration-300 angled-border-subtle bg-white shadow-md hover:shadow-xl hover:-translate-y-1" style={{ border: '2px solid #fef5ef' }}>
+            <ScrollReveal delay={100}>
+              <div className="card-entrance card-entrance-delay-2 group p-4 sm:p-5 lg:p-6 h-full flex flex-col transition-all duration-300 angled-border-subtle bg-white shadow-md hover:shadow-xl hover:-translate-y-2 hover:scale-[1.02]" style={{ border: '2px solid #fef5ef' }}>
                 <div className="w-10 h-10 rounded-lg mb-3 sm:mb-4 flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.08)' }}>
                   <svg className="w-5 h-5" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
@@ -523,8 +524,8 @@ export default function Home() {
             </ScrollReveal>
 
             {/* Web App & Design - Compact */}
-            <ScrollReveal delay={300}>
-              <div className="card-entrance card-entrance-delay-3 group p-4 sm:p-5 lg:p-6 h-full flex flex-col transition-all duration-300 angled-border-subtle bg-white shadow-md hover:shadow-xl hover:-translate-y-1" style={{ border: '2px solid #fef5ef' }}>
+            <ScrollReveal delay={150}>
+              <div className="card-entrance card-entrance-delay-3 group p-4 sm:p-5 lg:p-6 h-full flex flex-col transition-all duration-300 angled-border-subtle bg-white shadow-md hover:shadow-xl hover:-translate-y-2 hover:scale-[1.02]" style={{ border: '2px solid #fef5ef' }}>
                 <div className="w-10 h-10 rounded-lg mb-3 sm:mb-4 flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.08)' }}>
                   <svg className="w-5 h-5" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
@@ -566,11 +567,11 @@ export default function Home() {
           </div>
 
           {/* CTA Button - Below Cards */}
-          <ScrollReveal delay={100}>
+          <ScrollReveal delay={200}>
             <div className="text-center mt-8">
               <a
                 href="#connect"
-                className="inline-block text-base sm:text-lg font-bold px-8 py-4 rounded-lg text-white hover:opacity-90 transition-all duration-200 uppercase tracking-wide shadow-lg"
+                className="inline-block text-base sm:text-lg font-bold px-8 py-4 rounded-lg text-white spring-bounce enhanced-button transition-all duration-300 uppercase tracking-wide shadow-lg"
                 style={{
                   background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
                 }}
@@ -602,11 +603,12 @@ export default function Home() {
           {/* Process Cards - Light Gray on Dark */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {/* Card 1 - Discover */}
-            <ScrollReveal delay={100}>
-              <div className="rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group"
+            <ScrollReveal delay={50}>
+              <div className="rounded-2xl p-6 sm:p-8 transition-all duration-500 hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl group cursor-pointer"
                 style={{
                   background: '#f5f5f5',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                  transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
                 }}
               >
                 <div className="mb-6">
@@ -627,11 +629,12 @@ export default function Home() {
             </ScrollReveal>
 
             {/* Card 2 - Design */}
-            <ScrollReveal delay={200}>
-              <div className="rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group"
+            <ScrollReveal delay={100}>
+              <div className="rounded-2xl p-6 sm:p-8 transition-all duration-500 hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl group cursor-pointer"
                 style={{
                   background: '#f5f5f5',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                  transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
                 }}
               >
                 <div className="mb-6">
@@ -652,11 +655,12 @@ export default function Home() {
             </ScrollReveal>
 
             {/* Card 3 - Develop */}
-            <ScrollReveal delay={300}>
-              <div className="rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group"
+            <ScrollReveal delay={150}>
+              <div className="rounded-2xl p-6 sm:p-8 transition-all duration-500 hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl group cursor-pointer"
                 style={{
                   background: '#f5f5f5',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                  transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
                 }}
               >
                 <div className="mb-6">
@@ -677,11 +681,12 @@ export default function Home() {
             </ScrollReveal>
 
             {/* Card 4 - Deploy */}
-            <ScrollReveal delay={400}>
-              <div className="rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group"
+            <ScrollReveal delay={200}>
+              <div className="rounded-2xl p-6 sm:p-8 transition-all duration-500 hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl group cursor-pointer"
                 style={{
                   background: '#f5f5f5',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                  transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
                 }}
               >
                 <div className="mb-6">
@@ -1159,21 +1164,23 @@ export default function Home() {
             </ScrollReveal>
           </div>
 
-          {/* Tree - Dead Center */}
+          {/* Tree - Dead Center with Parallax */}
           <ScrollReveal delay={300}>
-            <div className="flex justify-center items-center my-16 sm:my-20 lg:my-24">
-              <div className="relative w-full max-w-md lg:max-w-lg">
-                <Image
-                  src="/oogway1.png"
-                  alt="Tree"
-                  width={600}
-                  height={600}
-                  className="w-full h-auto"
-                  style={{ objectFit: 'contain', filter: 'brightness(0)' }}
-                  priority
-                />
+            <Parallax speed={0.3}>
+              <div className="flex justify-center items-center my-16 sm:my-20 lg:my-24">
+                <div className="relative w-full max-w-md lg:max-w-lg">
+                  <Image
+                    src="/oogway1.png"
+                    alt="Tree"
+                    width={600}
+                    height={600}
+                    className="w-full h-auto"
+                    style={{ objectFit: 'contain', filter: 'brightness(0)' }}
+                    priority
+                  />
+                </div>
               </div>
-            </div>
+            </Parallax>
           </ScrollReveal>
 
           {/* Bottom Content - Below Tree */}

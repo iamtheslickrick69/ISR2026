@@ -88,8 +88,8 @@ export function HeroWallpaper() {
           }}
         >
 
-          {/* Hero Content - Clean Minimalist Layout */}
-          <div className="absolute inset-0 flex items-center justify-center z-[10] pointer-events-none" style={{ paddingTop: '100px', paddingBottom: '40px' }}>
+          {/* Hero Content - Clean Minimalist Layout with Dramatic Entrance */}
+          <div className="absolute inset-0 flex items-center justify-center z-[10] pointer-events-none hero-entrance" style={{ paddingTop: '100px', paddingBottom: '40px' }}>
               <div className="max-w-[1200px] mx-auto px-5 sm:px-6 py-4 pointer-events-auto w-full">
 
                 {/* Icon + Logo - Side by Side */}
