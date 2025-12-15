@@ -145,6 +145,14 @@ export function Footer() {
                 hello@haestus.dev
               </a>
             </div>
+            <div className="pt-3 md:pt-4">
+              <a
+                href="sms:4353136230"
+                className="inline-block text-xs font-bold px-4 py-2 rounded-lg bg-foreground text-background hover:opacity-80 transition-opacity uppercase tracking-wide"
+              >
+                Text Us
+              </a>
+            </div>
           </div>
         </div>
 

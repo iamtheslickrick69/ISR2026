@@ -71,7 +71,7 @@ export function Header() {
         top: isScrolled ? 'env(safe-area-inset-top)' : 'env(safe-area-inset-top)',
         transition: 'all 0.3s ease',
         width: '100%',
-        maxWidth: 'none',
+        maxWidth: '800px',
       }}
     >
       {/* Desktop Premium Glass / Mobile Simple */}
@@ -136,15 +136,6 @@ export function Header() {
             }}
           >
             Get Started
-          </a>
-          <a
-            href="sms:4353136230"
-            className="text-sm font-bold px-5 py-2.5 rounded-lg bg-transparent text-white hover:bg-white/10 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
-            style={{
-              border: '1.5px solid rgba(255, 255, 255, 0.3)',
-            }}
-          >
-            Text
           </a>
           <Link
             href="/portal"
@@ -223,12 +214,6 @@ export function Header() {
               className="text-center py-3 px-4 rounded-lg border border-white/30 text-white font-medium"
             >
               Get Started
-            </a>
-            <a
-              href="sms:4353136230"
-              className="text-center py-3 px-4 rounded-lg border border-white/30 text-white font-medium"
-            >
-              Text Us
             </a>
             <Link
               href="/portal"
