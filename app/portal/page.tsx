@@ -1,146 +1,155 @@
 "use client"
 
 import { useState } from "react"
-import { X } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
 export default function PortalPage() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   // Client password → subdomain mapping
-  // Add more clients here as needed
   const clientAccess: Record<string, string> = {
     "beehive2026": "https://beehive-2026.vercel.app",
-    // "hillside2026": "https://hillside-palms-rv-park.vercel.app",
-    // "koby2026": "https://koby2026.vercel.app",
-    // "sidekick": "https://sidekick2026.haestus.dev",
   }
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
+
     const redirectUrl = clientAccess[password.toLowerCase()]
 
-    if (redirectUrl) {
-      window.location.href = redirectUrl
-    } else {
-      setError(true)
-      setPassword("")
-      setTimeout(() => setError(false), 2000)
-    }
+    setTimeout(() => {
+      if (redirectUrl) {
+        window.location.href = redirectUrl
+      } else {
+        setError(true)
+        setPassword("")
+        setIsLoading(false)
+        setTimeout(() => setError(false), 2000)
+      }
+    }, 500)
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative"
+    <div
+      className="min-h-screen flex items-center justify-center p-4 relative"
       style={{
-        background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
+        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
       }}
     >
-      {/* Background Pattern Overlay */}
-      <div className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-          backgroundSize: '40px 40px',
-        }}
+      {/* Subtle Gradient Orbs */}
+      <div
+        className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-20 blur-3xl"
+        style={{ background: 'radial-gradient(circle, #d97757 0%, transparent 70%)' }}
+      />
+      <div
+        className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-10 blur-3xl"
+        style={{ background: 'radial-gradient(circle, #ffd7b5 0%, transparent 70%)' }}
       />
 
-      {/* Back to Home Link */}
+      {/* Back to Home */}
       <Link
         href="/"
-        className="absolute top-6 left-6 p-3 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm transition-all duration-200 group"
-        aria-label="Back to home"
+        className="absolute top-6 left-6 flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm"
       >
-        <X className="w-6 h-6 text-white group-hover:rotate-90 transition-transform duration-200" />
+        <ArrowLeft className="w-4 h-4" />
+        Back
       </Link>
 
       {/* Portal Card */}
-      <div className="relative rounded-3xl p-12 max-w-lg w-full z-10"
+      <div
+        className="relative rounded-2xl p-8 sm:p-10 max-w-md w-full z-10"
         style={{
-          background: 'white',
-          boxShadow: '0 25px 70px rgba(0, 0, 0, 0.3)',
+          background: 'rgba(0, 0, 0, 0.6)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
         }}
       >
         {/* Logo */}
-        <div className="flex justify-center mb-10">
+        <div className="flex justify-center mb-8">
           <Image
-            src="/55.png"
+            src="/yaya.png"
             alt="Haestus"
-            width={360}
-            height={360}
-            className="h-auto"
-            style={{ maxWidth: '360px', filter: 'brightness(0)', borderRadius: '6px' }}
+            width={120}
+            height={40}
+            className="h-10 w-auto"
+            style={{ filter: 'brightness(0) invert(1)' }}
             priority
           />
         </div>
 
-        {/* Welcome Message */}
-        <h1 className="text-3xl font-heading font-medium text-center mb-3 text-foreground">
-          Client Portal
-        </h1>
-        <p className="text-center text-muted-foreground mb-10">
-          Please enter your password to access the portal
-        </p>
+        {/* Title */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold text-white mb-2">
+            Client Portal
+          </h1>
+          <p className="text-white/50 text-sm">
+            Enter your access code to continue
+          </p>
+        </div>
 
         {/* Password Form */}
-        <form onSubmit={handlePasswordSubmit} className="space-y-6">
+        <form onSubmit={handlePasswordSubmit} className="space-y-5">
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
-              Password
-            </label>
             <input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              className="w-full px-5 py-4 rounded-xl border-2 border-border bg-white text-foreground placeholder:text-muted-foreground focus:outline-none transition-all text-lg"
+              placeholder="Access code"
+              className="w-full px-4 py-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all text-base"
               style={{
-                boxShadow: error ? '0 0 0 3px rgba(239, 68, 68, 0.3)' : undefined,
+                boxShadow: error ? '0 0 0 2px rgba(239, 68, 68, 0.5)' : undefined,
                 borderColor: error ? '#ef4444' : undefined,
               }}
-              onFocus={(e) => {
-                if (!error) {
-                  e.target.style.boxShadow = '0 0 0 3px rgba(217, 119, 87, 0.2)'
-                  e.target.style.borderColor = '#d97757'
-                }
-              }}
-              onBlur={(e) => {
-                if (!error) {
-                  e.target.style.boxShadow = 'none'
-                  e.target.style.borderColor = ''
-                }
-              }}
               autoFocus
+              disabled={isLoading}
             />
             {error && (
-              <p className="text-sm text-red-500 mt-3 font-medium">
-                Incorrect password. Please try again.
+              <p className="text-sm text-red-400 mt-2">
+                Invalid access code
               </p>
             )}
           </div>
 
           <button
             type="submit"
-            className="enhanced-button w-full rounded-xl px-6 py-5 font-semibold text-white text-lg"
+            disabled={isLoading || !password}
+            className="w-full rounded-xl px-6 py-4 font-semibold text-white text-base transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
-              background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
-              boxShadow: '0 10px 30px rgba(217, 119, 87, 0.3)',
+              background: 'linear-gradient(90deg, #d97757 0%, #e8956f 100%)',
             }}
           >
-            Access Portal
+            {isLoading ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                Verifying...
+              </span>
+            ) : (
+              'Continue'
+            )}
           </button>
         </form>
 
-        {/* Help Text */}
-        <p className="text-center text-sm text-muted-foreground mt-8">
-          Need help? <a href="/#connect" className="text-[#d97757] hover:underline font-medium">Contact us</a>
+        {/* Help */}
+        <p className="text-center text-xs text-white/40 mt-6">
+          Need access? <a href="mailto:hello@haestus.dev" className="text-white/60 hover:text-white transition-colors">Contact us</a>
         </p>
       </div>
 
-      {/* Decorative Elements */}
-      <div className="absolute top-20 right-20 w-32 h-32 rounded-full bg-white/10 blur-3xl" />
-      <div className="absolute bottom-20 left-20 w-40 h-40 rounded-full bg-white/10 blur-3xl" />
+      {/* Bottom Branding */}
+      <div className="absolute bottom-6 text-center">
+        <p className="text-white/30 text-xs">
+          © {new Date().getFullYear()} Haestus
+        </p>
+      </div>
     </div>
   )
 }

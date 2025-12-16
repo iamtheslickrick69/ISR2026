@@ -135,64 +135,114 @@ const services = [
   },
 ]
 
-const projects = [
+const portfolioProjects = [
   {
-    year: "2025",
-    name: "Alfred Eats",
-    description: "AI-powered restaurant ordering and delivery platform",
-    stat: "Seamless ordering",
-    tech: ["AI", "Mobile"],
-  },
-  {
-    year: "2025",
-    name: "Sidekick",
-    description: "AI productivity assistant for streamlined workflows",
-    stat: "Smart automation",
-    tech: ["AI", "Next.js"],
-  },
-  {
-    year: "2025",
-    name: "LoopSync",
-    description: "Automated customer engagement and retention platform",
-    stat: "3x higher retention",
-    tech: ["AI", "Automation"],
-  },
-  {
-    year: "2025",
+    id: 1,
     name: "MachineMate Nate",
-    description: "AI-powered voice assistant for business automation",
-    stat: "24/7 availability",
-    tech: ["Voice AI", "NLP"],
-  },
-  {
+    category: "AI Agents",
+    shortDesc: "AI-powered voice assistant for business automation",
+    fullDesc: "24/7 voice AI assistant that handles customer inquiries, schedules appointments, and manages business operations with natural language processing",
+    client: "MachineMate",
     year: "2025",
+    results: "24/7 availability, 80% reduced response time",
+    tech: ["Voice AI", "NLP", "Next.js"],
+    image: "/portfolio/nate.jpg",
+    featured: true,
+  },
+  {
+    id: 2,
+    name: "Sidekick",
+    category: "AI Agents",
+    shortDesc: "AI productivity assistant for streamlined workflows",
+    fullDesc: "Smart AI agent that automates repetitive tasks, manages emails, and optimizes daily workflows for maximum productivity",
+    client: "Internal",
+    year: "2025",
+    results: "3x faster task completion",
+    tech: ["AI", "Next.js", "Automation"],
+    image: "/portfolio/sidekick.jpg",
+    featured: false,
+  },
+  {
+    id: 3,
     name: "ubill.io",
-    description: "Real-time analytics and predictive modeling",
-    stat: "Energy bill analysis",
-    tech: ["Next.js", "AI/ML"],
+    category: "Dashboards",
+    shortDesc: "Real-time energy analytics dashboard",
+    fullDesc: "Comprehensive energy bill analysis platform with predictive modeling and real-time cost tracking",
+    client: "uBill",
+    year: "2025",
+    results: "35% cost savings identified",
+    tech: ["Next.js", "AI/ML", "Charts"],
+    image: "/portfolio/ubill.jpg",
+    featured: false,
   },
   {
-    year: "2024",
-    name: "pestctrl.ai",
-    description: "Automated extraction with industry-leading accuracy",
-    stat: "99.2% accuracy",
-    tech: ["Computer Vision"],
-  },
-  {
-    year: "2024",
+    id: 4,
     name: "ProShop24/7",
-    description: "IoT integration reducing operational downtime",
-    stat: "45% reduction",
-    tech: ["IoT", "Real-time"],
+    category: "Dashboards",
+    shortDesc: "IoT operations monitoring dashboard",
+    fullDesc: "Real-time IoT integration dashboard reducing operational downtime with predictive maintenance alerts",
+    client: "ProShop",
+    year: "2024",
+    results: "45% downtime reduction",
+    tech: ["IoT", "Real-time", "React"],
+    image: "/portfolio/proshop.jpg",
+    featured: false,
   },
   {
+    id: 5,
+    name: "LoopSync",
+    category: "Automation",
+    shortDesc: "Automated customer engagement platform",
+    fullDesc: "End-to-end customer engagement automation with intelligent retention workflows and personalized communications",
+    client: "LoopSync",
+    year: "2025",
+    results: "3x higher retention rate",
+    tech: ["AI", "Automation", "Next.js"],
+    image: "/portfolio/loopsync.jpg",
+    featured: false,
+  },
+  {
+    id: 6,
+    name: "pestctrl.ai",
+    category: "Automation",
+    shortDesc: "Automated data extraction system",
+    fullDesc: "Computer vision-powered document extraction with industry-leading accuracy for pest control operations",
+    client: "PestCtrl",
     year: "2024",
+    results: "99.2% accuracy rate",
+    tech: ["Computer Vision", "AI"],
+    image: "/portfolio/pestctrl.jpg",
+    featured: false,
+  },
+  {
+    id: 7,
+    name: "Alfred Eats",
+    category: "Full Stack",
+    shortDesc: "AI-powered restaurant ordering platform",
+    fullDesc: "Complete restaurant ordering and delivery platform with AI-driven menu recommendations and seamless checkout",
+    client: "Alfred Eats",
+    year: "2025",
+    results: "Seamless ordering experience",
+    tech: ["AI", "Mobile", "Next.js"],
+    image: "/portfolio/alfred.jpg",
+    featured: false,
+  },
+  {
+    id: 8,
     name: "promptlee",
-    description: "Fine-tuned language models for domain-specific apps",
-    stat: "10x faster",
-    tech: ["LLMs", "API"],
+    category: "Full Stack",
+    shortDesc: "Fine-tuned LLM platform",
+    fullDesc: "Custom language model platform for domain-specific applications with API integration and fine-tuning capabilities",
+    client: "Promptlee",
+    year: "2024",
+    results: "10x faster responses",
+    tech: ["LLMs", "API", "React"],
+    image: "/portfolio/promptlee.jpg",
+    featured: false,
   },
 ]
+
+const projects = portfolioProjects
 
 const clients = [
   {
@@ -256,10 +306,29 @@ const insights = [
 ]
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<"projects" | "clients" | "team">("projects")
+  const [activeTab, setActiveTab] = useState<"projects" | "clients" | "team" | "save">("projects")
   const [expandedStep, setExpandedStep] = useState<number | null>(null)
   const [completedSteps, setCompletedSteps] = useState<number[]>([])
   const [touchStart, setTouchStart] = useState<number>(0)
+  const [portfolioCategory, setPortfolioCategory] = useState<"All" | "AI Agents" | "Dashboards" | "Automation" | "Full Stack">("All")
+  const [portfolioSearch, setPortfolioSearch] = useState("")
+
+  // Keyboard navigation for Our Process section
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const steps = ['projects', 'clients', 'team', 'save'] as const;
+      const currentIndex = steps.indexOf(activeTab);
+
+      if (e.key === 'ArrowRight' && currentIndex < steps.length - 1) {
+        setActiveTab(steps[currentIndex + 1]);
+      } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        setActiveTab(steps[currentIndex - 1]);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeTab])
   const [touchEnd, setTouchEnd] = useState<number>(0)
 
   // Minimum swipe distance (in px)
@@ -346,6 +415,16 @@ export default function Home() {
     return () => observer.disconnect()
   }, [])
 
+  // Filter portfolio projects
+  const filteredPortfolio = portfolioProjects.filter(project => {
+    const matchesCategory = portfolioCategory === "All" || project.category === portfolioCategory
+    const matchesSearch = project.name.toLowerCase().includes(portfolioSearch.toLowerCase()) ||
+                         project.shortDesc.toLowerCase().includes(portfolioSearch.toLowerCase())
+    return matchesCategory && matchesSearch
+  })
+
+  const featuredProject = portfolioProjects.find(p => p.featured)
+
   return (
     <div
       className="min-h-screen"
@@ -373,225 +452,418 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Process Section - Gamified with Vertical Timeline */}
-      <section id="process" className="py-16 sm:py-20 lg:py-24 xl:py-28 relative overflow-hidden" style={{ background: '#ffffff' }}>
-        <div className="max-w-[900px] mx-auto px-5 sm:px-6 relative" style={{ zIndex: 1 }}>
+      {/* Our Process Section - Split View */}
+      <section
+        id="our-process-interactive"
+        className="relative py-12 sm:py-14 lg:py-16 bg-white"
+      >
+        <div className="max-w-[1200px] mx-auto px-6 sm:px-8">
           {/* Header */}
-          <div className="text-center mb-16 sm:mb-20">
+          <div className="mb-8 text-center">
             <ScrollReveal>
-              <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4 text-gray-900">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4">
                 Our Process
               </h2>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
-              <p className="text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto font-medium">
-                Click each step to learn more. Scroll to see your progress.
-              </p>
+              {/* Progress Dots */}
+              <div className="flex items-center justify-center gap-1.5">
+                {[
+                  { key: 'projects', num: 1 },
+                  { key: 'clients', num: 2 },
+                  { key: 'team', num: 3 },
+                  { key: 'save', num: 4 }
+                ].map((step) => (
+                  <button
+                    key={step.key}
+                    onClick={() => setActiveTab(step.key as any)}
+                    className={`transition-all duration-300 ${
+                      activeTab === step.key
+                        ? 'w-6 h-1.5 rounded-full shadow-lg'
+                        : 'w-1.5 h-1.5 rounded-full border backdrop-blur-sm'
+                    }`}
+                    style={activeTab === step.key ? {
+                      background: 'rgba(0, 0, 0, 0.9)',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)'
+                    } : {
+                      background: 'rgba(0, 0, 0, 0.15)',
+                      border: '1px solid rgba(0, 0, 0, 0.2)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)'
+                    }}
+                    aria-label={`Go to step ${step.num}`}
+                  />
+                ))}
+              </div>
             </ScrollReveal>
           </div>
 
-          {/* Vertical Timeline with Interactive Cards */}
-          <div className="relative">
-            {/* Vertical Line */}
-            <div className="absolute left-6 top-8 bottom-8 w-0.5 bg-gray-200" style={{ zIndex: 0 }}></div>
-
-            {/* Step 1 - Discover */}
-            <div className="process-step relative mb-8" data-step="1">
-              <div
-                className={`relative pl-16 transition-all duration-300 ${expandedStep === 1 ? 'pb-6' : ''}`}
-                onClick={() => setExpandedStep(expandedStep === 1 ? null : 1)}
-                style={{ cursor: 'pointer' }}
-              >
-                {/* Checkpoint Circle */}
-                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
-                  completedSteps.includes(1) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
-                }`} style={{ zIndex: 1 }}>
-                  {completedSteps.includes(1) && (
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </div>
-
-                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 01</div>
-                      <h3 className="font-heading text-2xl font-bold text-gray-900">Discover</h3>
-                    </div>
-                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 1 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    We learn your business, challenges, and goals to build a foundation for success
-                  </p>
-                  {expandedStep === 1 && (
-                    <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-600 space-y-2 animate-in fade-in duration-300">
-                      <p>• Deep dive into your current workflows and pain points</p>
-                      <p>• Identify opportunities for AI integration</p>
-                      <p>• Define success metrics and KPIs</p>
-                      <p>• Stakeholder interviews and requirement gathering</p>
-                    </div>
-                  )}
-                </div>
-              </div>
+          {/* Horizontal Tabs */}
+          <ScrollReveal delay={100}>
+            <div className="flex flex-wrap justify-center gap-1.5 mb-7">
+              {[
+                { num: 1, title: 'Discover', key: 'projects' },
+                { num: 2, title: 'Design', key: 'clients' },
+                { num: 3, title: 'Develop', key: 'team' },
+                { num: 4, title: 'Deploy', key: 'save' }
+              ].map((step) => (
+                <button
+                  key={step.num}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 border`}
+                  style={activeTab === step.key ? {
+                    background: 'rgba(0, 0, 0, 0.85)',
+                    border: '1px solid rgba(0, 0, 0, 0.9)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)'
+                  } : {
+                    background: 'rgba(0, 0, 0, 0.04)',
+                    border: '1px solid rgba(0, 0, 0, 0.08)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)'
+                  }}
+                  onClick={() => setActiveTab(step.key as any)}
+                >
+                  <span className={`font-semibold text-xs ${
+                    activeTab === step.key ? 'text-white' : 'text-gray-600'
+                  }`}>
+                    {step.num}
+                  </span>
+                  <span className={`text-xs font-medium ${
+                    activeTab === step.key ? 'text-white' : 'text-gray-600'
+                  }`}>
+                    {step.title}
+                  </span>
+                </button>
+              ))}
             </div>
+          </ScrollReveal>
 
-            {/* Step 2 - Design */}
-            <div className="process-step relative mb-8" data-step="2">
-              <div
-                className={`relative pl-16 transition-all duration-300 ${expandedStep === 2 ? 'pb-6' : ''}`}
-                onClick={() => setExpandedStep(expandedStep === 2 ? null : 2)}
-                style={{ cursor: 'pointer' }}
-              >
-                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
-                  completedSteps.includes(2) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
-                }`} style={{ zIndex: 1 }}>
-                  {completedSteps.includes(2) && (
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </div>
-
-                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 02</div>
-                      <h3 className="font-heading text-2xl font-bold text-gray-900">Design</h3>
+          {/* Content Card */}
+          <ScrollReveal delay={150}>
+            <div
+              className="max-w-3xl mx-auto rounded-xl p-6 sm:p-7 border min-h-[300px] transition-all duration-500 ease-in-out"
+              style={{
+                background: 'rgba(0, 0, 0, 0.02)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                border: '1px solid rgba(0, 0, 0, 0.08)',
+                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04), inset 0 1px 0 0 rgba(255, 255, 255, 0.5)'
+              }}
+            >
+                {activeTab === "projects" && (
+                  <div className="space-y-4 animate-fade-in text-center">
+                    <div className="mb-1">
+                      <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>STEP 01</span>
                     </div>
-                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 2 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <h2 className="text-3xl sm:text-4xl font-bold text-black">Discover</h2>
+                    <p className="text-base text-gray-800 leading-relaxed max-w-2xl mx-auto">
+                      We learn your business, challenges, and goals to build a foundation for success
+                    </p>
+                    <div className="space-y-2.5 max-w-xl mx-auto">
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Deep dive into your current workflows and pain points</p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Identify opportunities for AI integration</p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Define success metrics and KPIs</p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Stakeholder interviews and requirement gathering</p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 pt-3 max-w-md mx-auto">
+                      <div
+                        className="p-3 rounded-lg border text-center"
+                        style={{
+                          background: 'rgba(0, 0, 0, 0.02)',
+                          backdropFilter: 'blur(12px)',
+                          WebkitBackdropFilter: 'blur(12px)',
+                          border: '1px solid rgba(0, 0, 0, 0.06)'
+                        }}
+                      >
+                        <div className="text-xl font-semibold mb-1 text-black">2-3</div>
+                        <div className="text-xs text-gray-700">Discovery Sessions</div>
+                      </div>
+                      <div
+                        className="p-3 rounded-lg border text-center"
+                        style={{
+                          background: 'rgba(0, 0, 0, 0.02)',
+                          backdropFilter: 'blur(12px)',
+                          WebkitBackdropFilter: 'blur(12px)',
+                          border: '1px solid rgba(0, 0, 0, 0.06)'
+                        }}
+                      >
+                        <div className="text-xl font-semibold mb-1 text-black">100%</div>
+                        <div className="text-xs text-gray-700">Custom Approach</div>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    We create a tailored solution and strategic roadmap aligned with your vision
-                  </p>
-                  {expandedStep === 2 && (
-                    <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-600 space-y-2 animate-in fade-in duration-300">
-                      <p>• Architecture design and technology selection</p>
-                      <p>• UI/UX mockups and user flow mapping</p>
-                      <p>• Data model and API specification</p>
-                      <p>• Security and compliance planning</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+                )}
 
-            {/* Step 3 - Develop */}
-            <div className="process-step relative mb-8" data-step="3">
-              <div
-                className={`relative pl-16 transition-all duration-300 ${expandedStep === 3 ? 'pb-6' : ''}`}
-                onClick={() => setExpandedStep(expandedStep === 3 ? null : 3)}
-                style={{ cursor: 'pointer' }}
-              >
-                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
-                  completedSteps.includes(3) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
-                }`} style={{ zIndex: 1 }}>
-                  {completedSteps.includes(3) && (
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </div>
-
-                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 03</div>
-                      <h3 className="font-heading text-2xl font-bold text-gray-900">Develop</h3>
+                {activeTab === "clients" && (
+                  <div className="space-y-4 animate-fade-in text-center">
+                    <div className="mb-1">
+                      <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>STEP 02</span>
                     </div>
-                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 3 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <h2 className="text-3xl sm:text-4xl font-bold text-black">Design</h2>
+                    <p className="text-base text-gray-800 leading-relaxed max-w-2xl mx-auto">
+                      We create a tailored solution and strategic roadmap aligned with your vision
+                    </p>
+                    <div className="space-y-2.5 max-w-xl mx-auto">
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Architecture design and technology selection</p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">UI/UX mockups and user flow mapping</p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Data model and API specification</p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Security and compliance planning</p>
+                      </div>
+                    </div>
+                    <div
+                      className="p-4 rounded-lg border max-w-md mx-auto"
+                      style={{
+                        background: 'rgba(0, 0, 0, 0.02)',
+                        backdropFilter: 'blur(12px)',
+                        WebkitBackdropFilter: 'blur(12px)',
+                        border: '1px solid rgba(0, 0, 0, 0.06)'
+                      }}
+                    >
+                      <div className="text-xs font-medium text-gray-700 mb-2.5">Tech Stack</div>
+                      <div className="flex flex-wrap gap-2 justify-center">
+                        {['Next.js', 'AI/ML', 'TypeScript', 'Supabase', 'Tailwind'].map((tech) => (
+                          <span key={tech} className="px-2.5 py-1 rounded text-xs font-medium bg-black text-white">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    We build and refine your AI solution with precision and attention to detail
-                  </p>
-                  {expandedStep === 3 && (
-                    <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-600 space-y-2 animate-in fade-in duration-300">
-                      <p>• Agile development with bi-weekly sprints</p>
-                      <p>• AI model training and fine-tuning</p>
-                      <p>• Continuous testing and quality assurance</p>
-                      <p>• Regular demos and feedback sessions</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+                )}
 
-            {/* Step 4 - Deploy */}
-            <div className="process-step relative" data-step="4">
-              <div
-                className={`relative pl-16 transition-all duration-300 ${expandedStep === 4 ? 'pb-6' : ''}`}
-                onClick={() => setExpandedStep(expandedStep === 4 ? null : 4)}
-                style={{ cursor: 'pointer' }}
-              >
-                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
-                  completedSteps.includes(4) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
-                }`} style={{ zIndex: 1 }}>
-                  {completedSteps.includes(4) && (
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </div>
-
-                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 04</div>
-                      <h3 className="font-heading text-2xl font-bold text-gray-900">Deploy</h3>
+                {activeTab === "team" && (
+                  <div className="space-y-4 animate-fade-in text-center">
+                    <div className="mb-1">
+                      <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>STEP 03</span>
                     </div>
-                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 4 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <h2 className="text-3xl sm:text-4xl font-bold text-black">Develop</h2>
+                    <p className="text-base text-gray-800 leading-relaxed max-w-2xl mx-auto">
+                      We build and refine your AI solution with precision and attention to detail
+                    </p>
+                    <div className="space-y-2.5 max-w-xl mx-auto">
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Agile development with bi-weekly sprints</p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">AI model training and fine-tuning</p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Continuous testing and quality assurance</p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Regular demos and feedback sessions</p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 pt-3 max-w-md mx-auto">
+                      <div
+                        className="p-3 rounded-lg border text-center"
+                        style={{
+                          background: 'rgba(0, 0, 0, 0.02)',
+                          backdropFilter: 'blur(12px)',
+                          WebkitBackdropFilter: 'blur(12px)',
+                          border: '1px solid rgba(0, 0, 0, 0.06)'
+                        }}
+                      >
+                        <div className="text-xl font-semibold mb-1 text-black">2-week</div>
+                        <div className="text-xs text-gray-700">Sprint Cycles</div>
+                      </div>
+                      <div
+                        className="p-3 rounded-lg border text-center"
+                        style={{
+                          background: 'rgba(0, 0, 0, 0.02)',
+                          backdropFilter: 'blur(12px)',
+                          WebkitBackdropFilter: 'blur(12px)',
+                          border: '1px solid rgba(0, 0, 0, 0.06)'
+                        }}
+                      >
+                        <div className="text-xl font-semibold mb-1 text-black">99.9%</div>
+                        <div className="text-xs text-gray-700">Uptime Target</div>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    We launch your solution and provide ongoing support for lasting success
-                  </p>
-                  {expandedStep === 4 && (
-                    <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-600 space-y-2 animate-in fade-in duration-300">
-                      <p>• Production deployment and monitoring setup</p>
-                      <p>• Team training and documentation</p>
-                      <p>• Performance optimization and scaling</p>
-                      <p>• Ongoing maintenance and support</p>
+                )}
+
+                {activeTab === "save" && (
+                  <div className="space-y-4 animate-fade-in text-center">
+                    <div className="mb-1">
+                      <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>STEP 04</span>
                     </div>
-                  )}
+                    <h2 className="text-3xl sm:text-4xl font-bold text-black">Deploy</h2>
+                    <p className="text-base text-gray-800 leading-relaxed max-w-2xl mx-auto">
+                      We launch your solution and provide ongoing support for lasting success
+                    </p>
+                    <div className="space-y-2.5 max-w-xl mx-auto">
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Production deployment and monitoring setup</p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Team training and documentation</p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Performance optimization and scaling</p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
+                        <p className="text-sm text-gray-900 text-left">Ongoing maintenance and support</p>
+                      </div>
+                    </div>
+                    <div
+                      className="p-4 rounded-lg border max-w-md mx-auto"
+                      style={{
+                        background: 'rgba(0, 0, 0, 0.02)',
+                        backdropFilter: 'blur(12px)',
+                        WebkitBackdropFilter: 'blur(12px)',
+                        border: '1px solid rgba(0, 0, 0, 0.06)'
+                      }}
+                    >
+                      <div className="text-xs font-medium text-gray-700 mb-2.5">What You Get</div>
+                      <div className="space-y-2">
+                        <div className="flex items-start gap-2.5">
+                          <span className="text-gray-900 mt-0.5 text-sm">✓</span>
+                          <p className="text-sm text-gray-900 text-left">Zero-downtime deployment</p>
+                        </div>
+                        <div className="flex items-start gap-2.5">
+                          <span className="text-gray-900 mt-0.5 text-sm">✓</span>
+                          <p className="text-sm text-gray-900 text-left">24/7 monitoring & alerts</p>
+                        </div>
+                        <div className="flex items-start gap-2.5">
+                          <span className="text-gray-900 mt-0.5 text-sm">✓</span>
+                          <p className="text-sm text-gray-900 text-left">Dedicated support channel</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Navigation Buttons */}
+                <div
+                  className="flex items-center justify-between mt-6 pt-4 border-t"
+                  style={{ borderColor: 'rgba(0, 0, 0, 0.08)' }}
+                >
+                  <button
+                    onClick={() => {
+                      const steps = ['projects', 'clients', 'team', 'save'];
+                      const currentIndex = steps.indexOf(activeTab);
+                      if (currentIndex > 0) {
+                        setActiveTab(steps[currentIndex - 1] as any);
+                      }
+                    }}
+                    disabled={activeTab === 'projects'}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-xs transition-all duration-200 ${
+                      activeTab === 'projects'
+                        ? 'text-gray-400 cursor-not-allowed'
+                        : 'text-gray-700 hover:text-gray-900'
+                    }`}
+                    style={activeTab !== 'projects' ? {
+                      background: 'rgba(0, 0, 0, 0.04)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)'
+                    } : undefined}
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Previous
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const steps = ['projects', 'clients', 'team', 'save'];
+                      const currentIndex = steps.indexOf(activeTab);
+                      if (currentIndex < steps.length - 1) {
+                        setActiveTab(steps[currentIndex + 1] as any);
+                      }
+                    }}
+                    disabled={activeTab === 'save'}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-xs transition-all duration-200"
+                    style={activeTab !== 'save' ? {
+                      background: 'rgba(0, 0, 0, 0.85)',
+                      color: '#ffffff',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(0, 0, 0, 0.9)'
+                    } : {
+                      color: 'rgb(156, 163, 175)',
+                      cursor: 'not-allowed'
+                    }}
+                  >
+                    Next
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
                 </div>
-              </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Transition Section - Tools Showcase - COMPACT */}
       <section
         id="tools"
-        className="relative py-8 sm:py-10 lg:py-12"
+        className="relative py-12 sm:py-16 lg:py-20"
         style={{
-          background: '#ffffff'
+          background: '#ffffff',
+          backgroundImage: 'url(/whitehex.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
         }}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          {/* Main Header - Compact */}
-          <ScrollReveal>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-gray-900 mb-2 text-center">
-              We Build Systems That Impact Real Business
-            </h2>
-            <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 text-center font-medium">
-              Try our free tools — powered by the same AI we use for enterprise clients
-            </p>
-          </ScrollReveal>
+          {/* White Card Container with Blurred Border */}
+          <div className="bg-white rounded-3xl p-8 sm:p-10 lg:p-12 shadow-2xl" style={{
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.3)',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05)'
+          }}>
+            {/* Main Header - Compact */}
+            <ScrollReveal>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-gray-900 mb-2 text-center">
+                We Build Systems That Impact Real Business
+              </h2>
+              <p className="text-base sm:text-lg text-gray-600 mb-8 sm:mb-10 text-center font-medium">
+                Try our free tools — powered by the same AI we use for enterprise clients
+              </p>
+            </ScrollReveal>
 
-          {/* Tools Grid - Compact Horizontal */}
-          <ToolsGrid />
+            {/* Tools Grid - Compact Horizontal */}
+            <ToolsGrid />
+          </div>
         </div>
       </section>
 
-      {/* Services Section - Split Layout */}
+      {/* Services Section - Split Layout with AI Orb */}
       <section
         id="services"
         className="relative bg-black py-12 sm:py-16 lg:py-20 xl:py-24"
@@ -771,204 +1043,167 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Portfolio Section - Desktop Bold */}
-      <section id="portfolio" className="py-16 sm:py-24 lg:py-40 xl:py-48 relative">
-        <div className="section-divider" />
-        <div className="max-w-[1200px] mx-auto px-5 sm:px-6 pt-16 sm:pt-24 lg:pt-32">
-          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+      {/* Portfolio Section - Dark Accordion Theme */}
+      <section id="portfolio" className="relative bg-black py-12 sm:py-16 lg:py-20 xl:py-24">
+        <div className="max-w-[1190px] mx-auto px-4 sm:px-5">
+          {/* Header */}
+          <div className="mb-10 sm:mb-12 lg:mb-16 text-center">
             <ScrollReveal>
-              <p className="text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem] font-mono tracking-[0.2em] lg:tracking-[0.3em] text-muted-foreground font-medium mb-4 sm:mb-6">OUR WORK</p>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
-              <h2 className="font-heading text-[1.5rem] sm:text-[1.8rem] lg:text-[2.25rem] xl:text-[3rem] font-bold tracking-tight mb-6 sm:mb-8">Portfolio</h2>
-            </ScrollReveal>
-
-            {/* Tagline pill - centered */}
-            <ScrollReveal delay={200}>
-              <div className="flex justify-center">
-                <div className="relative px-6 sm:px-8 py-3 sm:py-4 rounded-full text-white font-semibold text-sm sm:text-base lg:text-lg overflow-hidden"
-                  style={{
-                    background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
-                    boxShadow: '0 4px 20px rgba(217, 119, 87, 0.3)',
-                  }}
-                >
-                  <span className="relative z-10">The future belongs to those who automate today.</span>
-                </div>
-              </div>
+              <h2
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-wider text-white"
+                style={{
+                  fontFamily: "'Orbitron', 'Exo 2', 'Rajdhani', sans-serif",
+                  letterSpacing: '0.1em'
+                }}
+              >
+                Our Work
+              </h2>
             </ScrollReveal>
           </div>
 
-          {/* Tabs - Centered */}
-          <div className="flex justify-center mb-12">
-            <div className="inline-flex gap-2">
-              <button
-                onClick={() => setActiveTab("projects")}
-                className={`px-8 py-3 font-bold text-sm uppercase tracking-wider transition-all duration-200 rounded-lg ${
-                  activeTab === "projects"
-                    ? "bg-black text-white"
-                    : "bg-transparent text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Projects
-              </button>
-              <button
-                onClick={() => setActiveTab("clients")}
-                className={`px-8 py-3 font-bold text-sm uppercase tracking-wider transition-all duration-200 rounded-lg ${
-                  activeTab === "clients"
-                    ? "bg-black text-white"
-                    : "bg-transparent text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Clients
-              </button>
-              <button
-                onClick={() => setActiveTab("team")}
-                className={`px-8 py-3 font-bold text-sm uppercase tracking-wider transition-all duration-200 rounded-lg ${
-                  activeTab === "team"
-                    ? "bg-black text-white"
-                    : "bg-transparent text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Team
-              </button>
+          {/* Tabs */}
+          <div className="flex items-center justify-center gap-4 mb-10">
+            <button
+              onClick={() => setActiveTab("projects")}
+              className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
+                activeTab === "projects"
+                  ? "bg-white text-black"
+                  : "text-white/60 hover:text-white/90"
+              }`}
+            >
+              Projects
+            </button>
+            <button
+              onClick={() => setActiveTab("clients")}
+              className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
+                activeTab === "clients"
+                  ? "bg-white text-black"
+                  : "text-white/60 hover:text-white/90"
+              }`}
+            >
+              Clients
+            </button>
+            <button
+              onClick={() => setActiveTab("team")}
+              className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
+                activeTab === "team"
+                  ? "bg-white text-black"
+                  : "text-white/60 hover:text-white/90"
+              }`}
+            >
+              Team
+            </button>
+          </div>
+
+          {/* Content - Projects */}
+          {activeTab === "projects" && (
+            <div className="flex flex-col gap-4 max-w-3xl mx-auto">
+              {portfolioProjects.map((project, index) => (
+                <ScrollReveal key={project.id} delay={index * 30}>
+                  <div
+                    className="rounded-lg p-6 cursor-pointer transition-all duration-300"
+                    style={{ background: 'rgba(255, 255, 255, 0.05)' }}
+                    onClick={() => {
+                      const content = document.getElementById(`portfolio-project-${project.id}`);
+                      const icon = document.getElementById(`portfolio-icon-${project.id}`);
+                      if (content && icon) {
+                        if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                          content.style.maxHeight = '0px';
+                          icon.style.transform = 'rotate(0deg)';
+                        } else {
+                          content.style.maxHeight = content.scrollHeight + 'px';
+                          icon.style.transform = 'rotate(180deg)';
+                        }
+                      }
+                    }}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div>
+                        <h3 className="text-base font-bold text-white uppercase tracking-wider">{project.name}</h3>
+                        <p className="text-xs text-white/70 font-semibold">{project.category}</p>
+                      </div>
+                      <svg id={`portfolio-icon-${project.id}`} className="w-5 h-5 text-white transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                    <div id={`portfolio-project-${project.id}`} className="overflow-hidden transition-all duration-300" style={{ maxHeight: '0px' }}>
+                      <p className="text-sm text-white/60 leading-relaxed mb-3 mt-2">
+                        {project.fullDesc}
+                      </p>
+                      <div className="grid grid-cols-2 gap-4 mb-3">
+                        <div>
+                          <p className="text-xs text-white/50 uppercase tracking-wider mb-1">Client</p>
+                          <p className="text-sm text-white/80">{project.client}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-white/50 uppercase tracking-wider mb-1">Year</p>
+                          <p className="text-sm text-white/80">{project.year}</p>
+                        </div>
+                      </div>
+                      <div className="mb-3">
+                        <p className="text-xs text-white/50 uppercase tracking-wider mb-1">Results</p>
+                        <p className="text-sm text-white/80">{project.results}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-white/50 uppercase tracking-wider mb-1.5">Technologies</p>
+                        <div className="flex flex-wrap gap-2">
+                          {project.tech.map((tech) => (
+                            <span key={tech} className="text-xs px-2 py-1 rounded bg-white/10 text-white/70">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ScrollReveal>
+              ))}
             </div>
-          </div>
+          )}
 
-          <div
-            className="space-y-0"
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-          >
-            {activeTab === "projects" ? (
-              projects.map((project, index) => (
-                <ScrollReveal key={project.name} delay={index * 50}>
-                  <div className="group py-8 md:py-10 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6">
-                    {/* Mobile Layout - Stack Vertically */}
-                    <div className="md:hidden flex flex-col gap-4">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-mono text-muted-foreground">{project.year}</span>
-                        <div className="flex flex-wrap gap-2">
-                          {project.tech.map((t) => (
-                            <span key={t} className="tech-tag text-sm">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                      <h3 className="font-heading text-2xl font-medium text-foreground flex items-center gap-3">
-                        {project.name}
-                        <ArrowUpRight className="w-5 h-5" />
-                      </h3>
-                      <p className="text-lg text-muted-foreground">{project.description}</p>
-                      <span className="text-lg font-mono text-muted-foreground">{project.stat}</span>
+          {/* Content - Clients */}
+          {activeTab === "clients" && (
+            <div className="flex flex-col gap-4 max-w-3xl mx-auto">
+              {clients.map((client, index) => (
+                <ScrollReveal key={index} delay={index * 30}>
+                  <a
+                    href={client.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-lg p-6 transition-all duration-300 hover:bg-white/10 flex items-center justify-between"
+                    style={{ background: 'rgba(255, 255, 255, 0.05)' }}
+                  >
+                    <div>
+                      <h3 className="text-base font-bold text-white uppercase tracking-wider">{client.name}</h3>
+                      <p className="text-xs text-white/70 font-semibold mb-2">{client.industry}</p>
+                      <p className="text-sm text-white/60">{client.stat}</p>
                     </div>
+                    <svg className="w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </ScrollReveal>
+              ))}
+            </div>
+          )}
 
-                    {/* Desktop Grid Layout */}
-                    <div className="hidden md:grid grid-cols-12 gap-6 items-center">
-                      <div className="col-span-1 text-gray-500 font-mono text-base font-medium">{project.year}</div>
-                      <div className="col-span-2 font-heading text-foreground font-bold flex items-center gap-2 text-xl">
-                        {project.name}
-                      </div>
-                      <div className="col-span-4 text-gray-600 text-base leading-relaxed">{project.description}</div>
-                      <div className="col-span-3 text-base font-mono text-gray-700 font-semibold">{project.stat}</div>
-                      <div className="col-span-2 flex flex-wrap gap-2 justify-end">
-                        {project.tech.map((t) => (
-                          <span key={t} className="px-3 py-1 rounded-md text-xs font-semibold border border-gray-300 text-gray-700 bg-white">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+          {/* Content - Team */}
+          {activeTab === "team" && (
+            <div className="flex flex-col gap-4 max-w-3xl mx-auto">
+              {team.map((member, index) => (
+                <ScrollReveal key={index} delay={index * 30}>
+                  <div
+                    className="rounded-lg p-6 transition-all duration-300"
+                    style={{ background: 'rgba(255, 255, 255, 0.05)' }}
+                  >
+                    <h3 className="text-base font-bold text-white uppercase tracking-wider">{member.name}</h3>
+                    <p className="text-xs text-white/70 font-semibold mb-2">{member.description}</p>
+                    <p className="text-sm text-white/60">{member.stat}</p>
                   </div>
                 </ScrollReveal>
-              ))
-            ) : activeTab === "clients" ? (
-              clients.map((client, index) => (
-                <ScrollReveal key={client.name} delay={index * 50}>
-                  <div className="group py-6 md:py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6">
-                    {/* Mobile Layout - Stack Vertically */}
-                    <div className="md:hidden flex flex-col gap-3">
-                      <h3 className="font-heading text-xl font-medium text-foreground flex items-center gap-2">
-                        {client.name}
-                        <ArrowUpRight className="w-4 h-4" />
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{client.description}</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-mono text-muted-foreground">{client.stat}</span>
-                        <div className="flex flex-wrap gap-2">
-                          {client.tech.map((t) => (
-                            <span key={t} className="tech-tag text-xs">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Desktop Grid Layout */}
-                    <div className="hidden md:grid grid-cols-12 gap-4">
-                      <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
-                        {client.name}
-                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                      </div>
-                      <div className="col-span-4 text-muted-foreground">{client.description}</div>
-                      <div className="col-span-2 text-sm font-mono text-muted-foreground">{client.stat}</div>
-                      <div className="col-span-3 flex flex-wrap gap-2 justify-end">
-                        {client.tech.map((t) => (
-                          <span key={t} className="tech-tag">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              ))
-            ) : (
-              team.map((member, index) => (
-                <ScrollReveal key={member.name} delay={index * 50}>
-                  <div className="group py-6 md:py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6">
-                    {/* Mobile Layout - Stack Vertically */}
-                    <div className="md:hidden flex flex-col gap-3">
-                      <h3 className="font-heading text-xl font-medium text-foreground flex items-center gap-2">
-                        {member.name}
-                        <ArrowUpRight className="w-4 h-4" />
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{member.description}</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-mono text-muted-foreground">{member.stat}</span>
-                        <div className="flex flex-wrap gap-2">
-                          {member.tech.map((t) => (
-                            <span key={t} className="tech-tag text-xs">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Desktop Grid Layout */}
-                    <div className="hidden md:grid grid-cols-12 gap-4">
-                      <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
-                        {member.name}
-                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                      </div>
-                      <div className="col-span-4 text-muted-foreground">{member.description}</div>
-                      <div className="col-span-2 text-sm font-mono text-muted-foreground">{member.stat}</div>
-                      <div className="col-span-3 flex flex-wrap gap-2 justify-end">
-                        {member.tech.map((t) => (
-                          <span key={t} className="tech-tag">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              ))
-            )}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -1043,56 +1278,28 @@ export default function Home() {
             </ScrollReveal>
             <ScrollReveal delay={200}>
               <p className="text-lg lg:text-xl xl:text-2xl text-gray-700 max-w-2xl mx-auto px-4 sm:px-0 font-medium leading-relaxed">
-                We are passionate of delivering sustainable solutions and valuable tools to businesses. Let's connect and see if there's something you didn't know you needed.
+                Ready to transform your business with AI? Let's talk.
               </p>
             </ScrollReveal>
           </div>
 
-          {/* Tree - Dead Center with Parallax */}
-          <ScrollReveal delay={300}>
-            <Parallax speed={0.3}>
-              <div className="flex justify-center items-center my-16 sm:my-20 lg:my-24">
-                <div className="relative w-full max-w-md lg:max-w-lg">
-                  <Image
-                    src="/oogway1.png"
-                    alt="Tree"
-                    width={600}
-                    height={600}
-                    className="w-full h-auto"
-                    style={{ objectFit: 'contain', filter: 'brightness(0)' }}
-                    priority
-                  />
-                </div>
-              </div>
-            </Parallax>
-          </ScrollReveal>
 
-          {/* Bottom Content - Below Tree */}
-          <div className="text-center">
-            <ScrollReveal delay={400}>
-              <div className="max-w-2xl mx-auto p-10 lg:p-14 border-2 border-gray-200 rounded-3xl mb-12 bg-white shadow-lg hover:shadow-xl transition-all duration-300">
-                <Mail className="w-12 lg:w-14 h-12 lg:h-14 text-foreground mx-auto mb-8" />
-                <a
-                  href="mailto:hello@haestus.dev"
-                  className="text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-foreground hover:opacity-70 transition-opacity duration-200 block mb-5"
-                >
-                  hello@haestus.dev
-                </a>
-                <p className="text-base lg:text-lg text-muted-foreground font-medium">
-                  We respond within 24 hours.
-                </p>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={500}>
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+            <ScrollReveal delay={300}>
               <a
-                href="/portal"
-                className="inline-block text-lg lg:text-xl font-bold px-16 py-5 rounded-full text-white hover:opacity-90 hover:shadow-2xl transition-all duration-300"
-                style={{
-                  background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
-                }}
+                href="mailto:hello@haestus.dev"
+                className="inline-block text-base lg:text-lg font-bold px-10 py-4 rounded-full bg-black text-white hover:bg-gray-800 transition-all duration-300"
               >
-                Clients
+                Get in Touch
+              </a>
+            </ScrollReveal>
+            <ScrollReveal delay={400}>
+              <a
+                href="/#portfolio"
+                className="inline-block text-base lg:text-lg font-bold px-10 py-4 rounded-full border-2 border-black text-black hover:bg-black hover:text-white transition-all duration-300"
+              >
+                View Our Work
               </a>
             </ScrollReveal>
           </div>

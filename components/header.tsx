@@ -100,13 +100,13 @@ export function Header() {
         {/* Desktop CTA Button - Far Right */}
         <Link
           href="/portal"
-          className="text-sm font-bold px-5 py-2.5 rounded-lg text-white hover:opacity-90 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
+          className="text-sm font-bold px-5 py-2.5 rounded-lg text-white hover:bg-white/5 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
           style={{
-            background: 'linear-gradient(135deg, rgba(232, 155, 124, 0.9), rgba(255, 215, 181, 0.85))',
-            backdropFilter: 'blur(20px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-            border: '1px solid rgba(255, 255, 255, 0.3)',
-            boxShadow: '0 8px 32px rgba(232, 155, 124, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+            background: 'rgba(255, 255, 255, 0.03)',
+            backdropFilter: 'blur(40px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+            border: '2px solid #d97757',
+            boxShadow: '0 8px 24px rgba(217, 119, 87, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
           }}
         >
           Client Portal

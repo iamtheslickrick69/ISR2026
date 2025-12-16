@@ -127,7 +127,7 @@ export function HeroWallpaper() {
                     The age of AI is the rematch between David and Goliath.
                   </h1>
 
-                  {/* Subtitle */}
+                  {/* Subtitle - directly under title */}
                   <p className="text-sm sm:text-base md:text-lg text-white/70 font-medium tracking-wide italic">
                     and we're crafting slingshots
                   </p>
@@ -146,14 +146,10 @@ export function HeroWallpaper() {
                     </a>
                     <a
                       href="/portal"
-                      className="text-sm font-bold px-6 py-4 rounded-lg text-white hover:opacity-90 transition-all duration-200 text-center uppercase tracking-wide"
+                      className="text-sm font-bold px-6 py-4 rounded-lg text-white hover:bg-white/10 transition-all duration-200 text-center uppercase tracking-wide"
                       style={{
-                        background: 'linear-gradient(135deg, rgba(217, 119, 87, 0.9), rgba(255, 215, 181, 0.85))',
-                        backdropFilter: 'blur(20px) saturate(180%)',
-                        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-                        border: '1px solid rgba(255, 255, 255, 0.3)',
+                        border: '2px solid rgba(255, 255, 255, 0.3)',
                         WebkitTapHighlightColor: 'transparent',
-                        boxShadow: '0 8px 32px rgba(217, 119, 87, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
                       }}
                     >
                       Client Portal
@@ -173,7 +169,7 @@ export function HeroWallpaper() {
                   {/* Strategy */}
                   <div className="flex items-start gap-4 p-4 rounded-lg" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
                     <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
@@ -186,7 +182,7 @@ export function HeroWallpaper() {
                   {/* Implementation */}
                   <div className="flex items-start gap-4 p-4 rounded-lg" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
                     <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                       </svg>
                     </div>
@@ -199,7 +195,7 @@ export function HeroWallpaper() {
                   {/* Excellence */}
                   <div className="flex items-start gap-4 p-4 rounded-lg" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
                     <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-6 h-6" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                       </svg>
                     </div>
