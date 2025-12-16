@@ -234,7 +234,7 @@ export function HeroWallpaper() {
                     href="/portal"
                     className="text-xs sm:text-sm font-bold px-6 py-3 rounded-lg text-white hover:opacity-90 transition-all duration-200 text-center uppercase tracking-wide shadow-lg"
                     style={{
-                      background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
+                      background: '#e89b7c',
                       minHeight: '50px',
                       display: 'flex',
                       alignItems: 'center',
@@ -243,7 +243,7 @@ export function HeroWallpaper() {
                       boxShadow: '0 4px 14px rgba(217, 119, 87, 0.4)',
                     }}
                   >
-                    CLIENTS
+                    CLIENT PORTAL
                   </a>
                 </div>
 

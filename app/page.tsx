@@ -6,7 +6,7 @@ import { ScrollReveal } from "@/components/scroll-reveal"
 import { Parallax } from "@/components/parallax"
 import { Logo } from "@/components/logo"
 import { HeroWallpaper } from "@/components/HeroWallpaper"
-import { ArrowUpRight, Mail, ChevronLeft, ChevronRight } from "lucide-react"
+import { ArrowUpRight, Mail } from "lucide-react"
 import Image from "next/image"
 
 const tools = [
@@ -36,109 +36,75 @@ const tools = [
   }
 ]
 
-function ToolCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0)
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % tools.length)
-  }
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + tools.length) % tools.length)
-  }
-
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index)
-  }
-
-  const currentTool = tools[currentIndex]
-
+function ToolsGrid() {
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="relative">
-        {/* Description Section - Compact */}
-        <div className="mb-6 text-center px-4">
-          <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
-            {currentTool.name}
-          </h3>
-          <p className="text-sm lg:text-base text-gray-700 max-w-2xl mx-auto mb-4 leading-relaxed">
-            {currentTool.description}
-          </p>
-          <div className="flex flex-wrap gap-2 justify-center">
-            {currentTool.tags.map((tag, idx) => (
-              <span
-                key={idx}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold ${currentTool.tagColors[idx]}`}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
+    <div className="max-w-5xl mx-auto">
+      <div className="flex flex-col gap-6 lg:gap-8">
+        {tools.map((tool, index) => (
+          <div
+            key={tool.id}
+            className="group relative rounded-2xl overflow-hidden bg-white shadow-lg transition-all duration-500"
+            style={{
+              animationDelay: `${index * 100}ms`,
+              transform: 'scale(0.76)',
+              transformOrigin: 'center',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(0.76) translateY(-8px)'
+              e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(0.76) translateY(0)'
+              e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
+            }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+              {/* Image Section */}
+              <div className="relative h-[280px] md:h-[320px] overflow-hidden">
+                <Image
+                  src={tool.image}
+                  alt={tool.name}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  priority={index === 0}
+                />
+                {/* Gradient overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
 
-        {/* Image Section - Compact */}
-        <div className="relative">
-          <div className="relative overflow-hidden rounded-2xl shadow-xl">
-            <div className="relative h-[280px] lg:h-[350px]">
-              <Image
-                src={currentTool.image}
-                alt={currentTool.name}
-                fill
-                className="object-cover transition-all duration-500"
-                priority
-              />
+              {/* Content Section */}
+              <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {tool.tags.map((tag, idx) => (
+                    <span
+                      key={idx}
+                      className={`px-3 py-1 rounded-full text-xs font-bold ${tool.tagColors[idx]}`}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Title */}
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 group-hover:text-[#d97757] transition-colors duration-300">
+                  {tool.name}
+                </h3>
+
+                {/* Description */}
+                <p className="text-base text-gray-600 leading-relaxed mb-6">
+                  {tool.description}
+                </p>
+
+                {/* Hover Arrow Indicator */}
+                <div className="flex items-center gap-2 text-sm font-bold text-[#d97757] opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-0 group-hover:translate-x-2">
+                  Learn more
+                  <ArrowUpRight className="w-4 h-4" />
+                </div>
+              </div>
             </div>
           </div>
-
-          {/* Navigation Arrows - iOS-friendly touch targets */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/95 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-all duration-300 hover:scale-105 group"
-            aria-label="Previous tool"
-            style={{
-              minWidth: '44px',
-              minHeight: '44px',
-              WebkitTapHighlightColor: 'transparent',
-            }}
-          >
-            <ChevronLeft className="w-5 h-5 lg:w-6 lg:h-6 text-gray-900 group-hover:text-white transition-colors" />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/95 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-all duration-300 hover:scale-105 group"
-            aria-label="Next tool"
-            style={{
-              minWidth: '44px',
-              minHeight: '44px',
-              WebkitTapHighlightColor: 'transparent',
-            }}
-          >
-            <ChevronRight className="w-5 h-5 lg:w-6 lg:h-6 text-gray-900 group-hover:text-white transition-colors" />
-          </button>
-        </div>
-
-        {/* Dot Indicators - iOS-friendly */}
-        <div className="flex justify-center gap-2 mt-5">
-          {tools.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`transition-all duration-300 rounded-full ${
-                index === currentIndex
-                  ? 'w-8 h-2.5'
-                  : 'w-2.5 h-2.5 bg-white/60 hover:bg-white/80'
-              }`}
-              style={{
-                minHeight: '44px',
-                paddingTop: '20px',
-                paddingBottom: '20px',
-                WebkitTapHighlightColor: 'transparent',
-                ...(index === currentIndex ? { background: '#d97757' } : {}),
-              }}
-              aria-label={`Go to tool ${index + 1}`}
-            />
-          ))}
-        </div>
+        ))}
       </div>
     </div>
   )
@@ -289,21 +255,22 @@ const insights = [
 ]
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<"projects" | "clients" | "team">(() => {
-    // Smart default: Remember last visited tab from localStorage
-    if (typeof window !== 'undefined') {
-      const savedTab = localStorage.getItem('portfolioTab')
-      if (savedTab === 'projects' || savedTab === 'clients' || savedTab === 'team') {
-        return savedTab
-      }
-    }
-    return "projects"
-  })
+  const [activeTab, setActiveTab] = useState<"projects" | "clients" | "team">("projects")
   const [touchStart, setTouchStart] = useState<number>(0)
   const [touchEnd, setTouchEnd] = useState<number>(0)
 
   // Minimum swipe distance (in px)
   const minSwipeDistance = 50
+
+  // Load saved tab preference after hydration
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedTab = localStorage.getItem('portfolioTab')
+      if (savedTab === 'projects' || savedTab === 'clients' || savedTab === 'team') {
+        setActiveTab(savedTab)
+      }
+    }
+  }, [])
 
   // Save tab preference when it changes
   useEffect(() => {
@@ -387,31 +354,44 @@ export default function Home() {
       <section
         className="relative py-12 sm:py-16 lg:py-20"
         style={{
-          background: '#E5DDD0'
+          backgroundImage: 'url(/whitehex.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
         }}
       >
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="text-center">
-            {/* Main Header - Compact */}
-            <ScrollReveal>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-gray-900 mb-4 leading-tight">
-                Building the Future
-              </h2>
-            </ScrollReveal>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          {/* Large 3D White Card Container */}
+          <div
+            className="bg-white rounded-3xl p-8 sm:p-12 lg:p-16"
+            style={{
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08)',
+              transform: 'perspective(1000px) rotateX(1deg)',
+              transformStyle: 'preserve-3d',
+            }}
+          >
+            <div className="text-center">
+              {/* Main Header - Compact */}
+              <ScrollReveal>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-gray-900 mb-4 leading-tight">
+                  Building the Future
+                </h2>
+              </ScrollReveal>
 
-            {/* Pill-shaped description - Compact */}
-            <ScrollReveal delay={100}>
-              <div className="inline-block mb-10">
-                <div className="px-6 py-3 rounded-full bg-white/80 backdrop-blur-sm border border-gray-900/10 shadow-lg max-w-2xl">
-                  <p className="text-sm sm:text-base text-gray-800 font-medium">
-                    Building products that make a real difference in everyday life.
-                  </p>
+              {/* Pill-shaped description - Compact */}
+              <ScrollReveal delay={100}>
+                <div className="inline-block mb-10">
+                  <div className="px-6 py-3 rounded-full bg-gray-50 border border-gray-200 shadow-sm max-w-2xl">
+                    <p className="text-sm sm:text-base text-gray-800 font-medium">
+                      Building products that make a real difference in everyday life.
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </ScrollReveal>
+              </ScrollReveal>
 
-            {/* Tool Carousel */}
-            <ToolCarousel />
+              {/* Tools Grid */}
+              <ToolsGrid />
+            </div>
           </div>
         </div>
       </section>

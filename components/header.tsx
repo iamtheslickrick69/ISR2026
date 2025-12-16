@@ -17,7 +17,6 @@ const navLinks: NavLink[] = [
   { href: "#services", label: "Services" },
   { href: "#portfolio", label: "Work" },
   { href: "#insights", label: "Insights" },
-  { href: "#connect", label: "Connect" },
 ]
 
 export function Header() {
@@ -135,24 +134,14 @@ export function Header() {
 
         {/* Desktop CTA Buttons */}
         <div className="hidden md:flex items-center gap-3 flex-shrink-0">
-          <a
-            href="#connect"
-            onClick={(e) => handleNavClick(e, "#connect")}
-            className="text-sm font-bold px-5 py-2.5 rounded-lg bg-transparent text-white hover:bg-white/10 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
-            style={{
-              border: '1.5px solid rgba(255, 255, 255, 0.3)',
-            }}
-          >
-            Get Started
-          </a>
           <Link
             href="/portal"
             className="text-sm font-bold px-5 py-2.5 rounded-lg text-white hover:opacity-90 transition-all duration-200 uppercase tracking-wide whitespace-nowrap"
             style={{
-              background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
+              background: '#e89b7c',
             }}
           >
-            Clients
+            Client Portal
           </Link>
         </div>
 
@@ -239,26 +228,12 @@ export function Header() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col gap-3 px-3">
-            <a
-              href="#connect"
-              onClick={(e) => handleNavClick(e, "#connect")}
-              className="text-center py-4 px-4 rounded-lg border border-white/30 text-white font-medium"
-              style={{
-                minHeight: '50px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                WebkitTapHighlightColor: 'transparent',
-              }}
-            >
-              Get Started
-            </a>
             <Link
               href="/portal"
               onClick={() => setMobileMenuOpen(false)}
               className="text-center py-4 px-4 rounded-lg text-white font-medium"
               style={{
-                background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
+                background: '#e89b7c',
                 minHeight: '50px',
                 display: 'flex',
                 alignItems: 'center',
