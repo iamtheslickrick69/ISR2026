@@ -47,90 +47,62 @@ const tools = [
 
 function ToolsGrid() {
   return (
-    <div className="max-w-4xl mx-auto space-y-3">
+    <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
       {tools.map((tool, index) => (
         <ScrollReveal key={tool.id} delay={index * 100}>
-          <div
-            className="group relative rounded-xl overflow-hidden border transition-all duration-300"
-            style={{
-              background: 'rgba(255, 255, 255, 0.6)',
-              backdropFilter: 'blur(20px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-              borderColor: 'rgba(217, 119, 87, 0.2)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.75)';
-              e.currentTarget.style.borderColor = 'rgba(217, 119, 87, 0.4)';
-              e.currentTarget.style.boxShadow = '0 12px 40px rgba(217, 119, 87, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.6)';
-              e.currentTarget.style.borderColor = 'rgba(217, 119, 87, 0.2)';
-              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3)';
-            }}
-          >
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3">
-              {/* Image Section - Smaller */}
-              <div className="relative w-full sm:w-[100px] h-[100px] sm:h-[100px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
-                <Image
-                  src={tool.image}
-                  alt={tool.subtitle}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  priority={index === 0}
-                  style={
-                    tool.id === 3
-                      ? {
-                          filter: 'brightness(0) saturate(100%)',
-                          opacity: 1,
-                        }
-                      : undefined
-                  }
-                />
-                {tool.id === 3 && (
-                  <div
-                    className="absolute inset-0 mix-blend-multiply"
-                    style={{
-                      background: 'linear-gradient(135deg, #d97757 0%, #ffd7b5 100%)',
-                      pointerEvents: 'none'
-                    }}
-                  />
-                )}
-              </div>
-
-              {/* Content Section - Compact */}
-              <div className="flex-1 min-w-0">
-                {/* Title */}
-                <h3 className="text-base sm:text-lg font-bold text-gray-900 group-hover:text-gray-700 transition-colors mb-0.5">
-                  {tool.name}
-                </h3>
-
-                {/* Subtitle */}
-                <p className="text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
-                  {tool.subtitle}
-                </p>
-
-                {/* Description */}
-                <p className="text-xs text-gray-600 mb-2 leading-relaxed">
-                  {tool.description}
-                </p>
-
-                {/* CTA Button - Compact */}
-                <a
-                  href={tool.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs font-bold text-white px-3 py-1.5 rounded-lg hover:opacity-90 transition-all duration-200"
+          <div className="group relative rounded-lg overflow-hidden border border-gray-200 bg-white transition-all duration-300 hover:border-gray-300 hover:shadow-lg flex flex-col">
+            {/* Image Section */}
+            <div className="relative w-full h-48 overflow-hidden bg-gray-100">
+              <Image
+                src={tool.image}
+                alt={tool.subtitle}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                priority={index === 0}
+                style={
+                  tool.id === 3
+                    ? {
+                        filter: 'brightness(0) saturate(100%)',
+                        opacity: 1,
+                      }
+                    : undefined
+                }
+              />
+              {tool.id === 3 && (
+                <div
+                  className="absolute inset-0 mix-blend-multiply"
                   style={{
-                    background: '#000000',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                    background: 'linear-gradient(135deg, #d97757 0%, #ffd7b5 100%)',
+                    pointerEvents: 'none'
                   }}
-                >
-                  {tool.cta}
-                  <ArrowUpRight className="w-3 h-3" />
-                </a>
-              </div>
+                />
+              )}
+            </div>
+
+            {/* Content Section */}
+            <div className="p-5 flex flex-col flex-1">
+              <p className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+                {tool.subtitle}
+              </p>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">
+                {tool.name}
+              </h3>
+              <p className="text-sm text-gray-600 mb-4 leading-relaxed flex-1">
+                {tool.description}
+              </p>
+              <a
+                href={tool.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-bold text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all duration-200 self-start"
+                style={{
+                  background: '#000000',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                {tool.cta}
+                <ArrowUpRight className="w-4 h-4" />
+              </a>
             </div>
           </div>
         </ScrollReveal>
@@ -285,6 +257,8 @@ const insights = [
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<"projects" | "clients" | "team">("projects")
+  const [expandedStep, setExpandedStep] = useState<number | null>(null)
+  const [completedSteps, setCompletedSteps] = useState<number[]>([])
   const [touchStart, setTouchStart] = useState<number>(0)
   const [touchEnd, setTouchEnd] = useState<number>(0)
 
@@ -307,6 +281,26 @@ export default function Home() {
       localStorage.setItem('portfolioTab', activeTab)
     }
   }, [activeTab])
+
+  // Scroll-triggered checkmark animation for Process steps
+  useEffect(() => {
+    const stepElements = document.querySelectorAll(".process-step")
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const stepNum = parseInt(entry.target.getAttribute("data-step") || "0")
+            if (!completedSteps.includes(stepNum)) {
+              setCompletedSteps((prev) => [...prev, stepNum])
+            }
+          }
+        })
+      },
+      { threshold: 0.5 },
+    )
+    stepElements.forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [completedSteps])
 
   const onTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(0) // Reset on new touch
@@ -379,132 +373,196 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Process Section - Light Theme */}
+      {/* Process Section - Gamified with Vertical Timeline */}
       <section id="process" className="py-16 sm:py-20 lg:py-24 xl:py-28 relative overflow-hidden" style={{ background: '#ffffff' }}>
-        <div className="max-w-[1200px] mx-auto px-5 sm:px-6 relative" style={{ zIndex: 1 }}>
+        <div className="max-w-[900px] mx-auto px-5 sm:px-6 relative" style={{ zIndex: 1 }}>
           {/* Header */}
-          <div className="text-center mb-12 sm:mb-14 lg:mb-16">
+          <div className="text-center mb-16 sm:mb-20">
             <ScrollReveal>
-              <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-4 sm:mb-6 text-gray-900 px-4 sm:px-0">
+              <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4 text-gray-900">
                 Our Process
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 max-w-3xl mx-auto px-4 sm:px-0 font-medium">
-                From idea to implementation, we guide you every step of the way
+              <p className="text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto font-medium">
+                Click each step to learn more. Scroll to see your progress.
               </p>
             </ScrollReveal>
           </div>
 
-          {/* Process Cards - Dark Cards on Light */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {/* Card 1 - Discover */}
-            <ScrollReveal delay={50}>
-              <div className="rounded-2xl p-6 sm:p-8 transition-all duration-500 hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl group cursor-pointer"
-                style={{
-                  background: '#ffffff',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                  border: '1px solid rgba(0, 0, 0, 0.1)',
-                  transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
-                }}
-              >
-                <div className="mb-6">
-                  <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: '#000000' }}
-                  >
-                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                    </svg>
-                  </div>
-                  <div className="text-xs font-bold text-gray-500 mb-2 tracking-wider">STEP 01</div>
-                  <h3 className="font-heading text-2xl font-bold text-gray-900 mb-3">Discover</h3>
-                </div>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  We learn your business, challenges, and goals to build a foundation for success
-                </p>
-              </div>
-            </ScrollReveal>
+          {/* Vertical Timeline with Interactive Cards */}
+          <div className="relative">
+            {/* Vertical Line */}
+            <div className="absolute left-6 top-8 bottom-8 w-0.5 bg-gray-200" style={{ zIndex: 0 }}></div>
 
-            {/* Card 2 - Design */}
-            <ScrollReveal delay={100}>
-              <div className="rounded-2xl p-6 sm:p-8 transition-all duration-500 hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl group cursor-pointer"
-                style={{
-                  background: '#ffffff',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                  border: '1px solid rgba(0, 0, 0, 0.1)',
-                  transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
-                }}
+            {/* Step 1 - Discover */}
+            <div className="process-step relative mb-8" data-step="1">
+              <div
+                className={`relative pl-16 transition-all duration-300 ${expandedStep === 1 ? 'pb-6' : ''}`}
+                onClick={() => setExpandedStep(expandedStep === 1 ? null : 1)}
+                style={{ cursor: 'pointer' }}
               >
-                <div className="mb-6">
-                  <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: '#000000' }}
-                  >
-                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                {/* Checkpoint Circle */}
+                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
+                  completedSteps.includes(1) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
+                }`} style={{ zIndex: 1 }}>
+                  {completedSteps.includes(1) && (
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
-                  </div>
-                  <div className="text-xs font-bold text-gray-500 mb-2 tracking-wider">STEP 02</div>
-                  <h3 className="font-heading text-2xl font-bold text-gray-900 mb-3">Design</h3>
+                  )}
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  We create a tailored solution and strategic roadmap aligned with your vision
-                </p>
-              </div>
-            </ScrollReveal>
 
-            {/* Card 3 - Develop */}
-            <ScrollReveal delay={150}>
-              <div className="rounded-2xl p-6 sm:p-8 transition-all duration-500 hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl group cursor-pointer"
-                style={{
-                  background: '#ffffff',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                  border: '1px solid rgba(0, 0, 0, 0.1)',
-                  transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
-                }}
-              >
-                <div className="mb-6">
-                  <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: '#000000' }}
-                  >
-                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 01</div>
+                      <h3 className="font-heading text-2xl font-bold text-gray-900">Discover</h3>
+                    </div>
+                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 1 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
-                  <div className="text-xs font-bold text-gray-500 mb-2 tracking-wider">STEP 03</div>
-                  <h3 className="font-heading text-2xl font-bold text-gray-900 mb-3">Develop</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    We learn your business, challenges, and goals to build a foundation for success
+                  </p>
+                  {expandedStep === 1 && (
+                    <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-600 space-y-2 animate-in fade-in duration-300">
+                      <p>• Deep dive into your current workflows and pain points</p>
+                      <p>• Identify opportunities for AI integration</p>
+                      <p>• Define success metrics and KPIs</p>
+                      <p>• Stakeholder interviews and requirement gathering</p>
+                    </div>
+                  )}
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  We build and refine your AI solution with precision and attention to detail
-                </p>
               </div>
-            </ScrollReveal>
+            </div>
 
-            {/* Card 4 - Deploy */}
-            <ScrollReveal delay={200}>
-              <div className="rounded-2xl p-6 sm:p-8 transition-all duration-500 hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl group cursor-pointer"
-                style={{
-                  background: '#ffffff',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                  border: '1px solid rgba(0, 0, 0, 0.1)',
-                  transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
-                }}
+            {/* Step 2 - Design */}
+            <div className="process-step relative mb-8" data-step="2">
+              <div
+                className={`relative pl-16 transition-all duration-300 ${expandedStep === 2 ? 'pb-6' : ''}`}
+                onClick={() => setExpandedStep(expandedStep === 2 ? null : 2)}
+                style={{ cursor: 'pointer' }}
               >
-                <div className="mb-6">
-                  <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: '#000000' }}
-                  >
-                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
+                  completedSteps.includes(2) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
+                }`} style={{ zIndex: 1 }}>
+                  {completedSteps.includes(2) && (
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+
+                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 02</div>
+                      <h3 className="font-heading text-2xl font-bold text-gray-900">Design</h3>
+                    </div>
+                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 2 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
-                  <div className="text-xs font-bold text-gray-500 mb-2 tracking-wider">STEP 04</div>
-                  <h3 className="font-heading text-2xl font-bold text-gray-900 mb-3">Deploy</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    We create a tailored solution and strategic roadmap aligned with your vision
+                  </p>
+                  {expandedStep === 2 && (
+                    <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-600 space-y-2 animate-in fade-in duration-300">
+                      <p>• Architecture design and technology selection</p>
+                      <p>• UI/UX mockups and user flow mapping</p>
+                      <p>• Data model and API specification</p>
+                      <p>• Security and compliance planning</p>
+                    </div>
+                  )}
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  We launch your solution and provide ongoing support for lasting success
-                </p>
               </div>
-            </ScrollReveal>
+            </div>
+
+            {/* Step 3 - Develop */}
+            <div className="process-step relative mb-8" data-step="3">
+              <div
+                className={`relative pl-16 transition-all duration-300 ${expandedStep === 3 ? 'pb-6' : ''}`}
+                onClick={() => setExpandedStep(expandedStep === 3 ? null : 3)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
+                  completedSteps.includes(3) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
+                }`} style={{ zIndex: 1 }}>
+                  {completedSteps.includes(3) && (
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+
+                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 03</div>
+                      <h3 className="font-heading text-2xl font-bold text-gray-900">Develop</h3>
+                    </div>
+                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 3 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    We build and refine your AI solution with precision and attention to detail
+                  </p>
+                  {expandedStep === 3 && (
+                    <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-600 space-y-2 animate-in fade-in duration-300">
+                      <p>• Agile development with bi-weekly sprints</p>
+                      <p>• AI model training and fine-tuning</p>
+                      <p>• Continuous testing and quality assurance</p>
+                      <p>• Regular demos and feedback sessions</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Step 4 - Deploy */}
+            <div className="process-step relative" data-step="4">
+              <div
+                className={`relative pl-16 transition-all duration-300 ${expandedStep === 4 ? 'pb-6' : ''}`}
+                onClick={() => setExpandedStep(expandedStep === 4 ? null : 4)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
+                  completedSteps.includes(4) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
+                }`} style={{ zIndex: 1 }}>
+                  {completedSteps.includes(4) && (
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+
+                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 04</div>
+                      <h3 className="font-heading text-2xl font-bold text-gray-900">Deploy</h3>
+                    </div>
+                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 4 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    We launch your solution and provide ongoing support for lasting success
+                  </p>
+                  {expandedStep === 4 && (
+                    <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-600 space-y-2 animate-in fade-in duration-300">
+                      <p>• Production deployment and monitoring setup</p>
+                      <p>• Team training and documentation</p>
+                      <p>• Performance optimization and scaling</p>
+                      <p>• Ongoing maintenance and support</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -521,10 +579,10 @@ export default function Home() {
           {/* Main Header - Compact */}
           <ScrollReveal>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-gray-900 mb-2 text-center">
-              We Build What We Sell
+              We Build Systems That Impact Real Business
             </h2>
             <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 text-center font-medium">
-              Free tools built with the same AI that powers our client solutions
+              Try our free tools — powered by the same AI we use for enterprise clients
             </p>
           </ScrollReveal>
 
@@ -717,19 +775,17 @@ export default function Home() {
       <section id="portfolio" className="py-16 sm:py-24 lg:py-40 xl:py-48 relative">
         <div className="section-divider" />
         <div className="max-w-[1200px] mx-auto px-5 sm:px-6 pt-16 sm:pt-24 lg:pt-32">
-          <div className="mb-12 sm:mb-16 lg:mb-20">
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
             <ScrollReveal>
-              <p className="text-center text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem] font-mono tracking-[0.2em] lg:tracking-[0.3em] text-muted-foreground font-medium mb-4 sm:mb-6">OUR WORK</p>
+              <p className="text-[1.75rem] sm:text-[2rem] lg:text-[2.25rem] font-mono tracking-[0.2em] lg:tracking-[0.3em] text-muted-foreground font-medium mb-4 sm:mb-6">OUR WORK</p>
             </ScrollReveal>
-            <div className="flex items-center justify-between mb-6 sm:mb-8">
-              <ScrollReveal delay={100}>
-                <h2 className="font-heading text-[1.5rem] sm:text-[1.8rem] lg:text-[2.25rem] xl:text-[3rem] font-bold tracking-tight">Portfolio</h2>
-              </ScrollReveal>
-            </div>
-
-            {/* Tagline pill - full width below title */}
             <ScrollReveal delay={100}>
-              <div className="inline-block max-w-fit">
+              <h2 className="font-heading text-[1.5rem] sm:text-[1.8rem] lg:text-[2.25rem] xl:text-[3rem] font-bold tracking-tight mb-6 sm:mb-8">Portfolio</h2>
+            </ScrollReveal>
+
+            {/* Tagline pill - centered */}
+            <ScrollReveal delay={200}>
+              <div className="flex justify-center">
                 <div className="relative px-6 sm:px-8 py-3 sm:py-4 rounded-full text-white font-semibold text-sm sm:text-base lg:text-lg overflow-hidden"
                   style={{
                     background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
@@ -742,53 +798,39 @@ export default function Home() {
             </ScrollReveal>
           </div>
 
-          {/* iOS-Style Tabs */}
-          <div className="relative mb-10">
-            <div className="flex gap-3 sm:gap-5 mb-8 sm:mb-10 pb-3" style={{ borderBottom: '1px solid #e5e5e5', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          {/* Tabs - Centered */}
+          <div className="flex justify-center mb-12">
+            <div className="inline-flex gap-2">
               <button
                 onClick={() => setActiveTab("projects")}
-                className={`px-5 sm:px-8 py-4 font-semibold transition-all duration-200 whitespace-nowrap ${
+                className={`px-8 py-3 font-bold text-sm uppercase tracking-wider transition-all duration-200 rounded-lg ${
                   activeTab === "projects"
-                    ? "text-foreground border-b-2 border-foreground -mb-px"
-                    : "text-gray-400 hover:text-foreground"
+                    ? "bg-black text-white"
+                    : "bg-transparent text-gray-600 hover:text-gray-900"
                 }`}
-                style={{ fontSize: '20px', minHeight: '57px', WebkitTapHighlightColor: 'transparent' }}
               >
                 Projects
               </button>
               <button
                 onClick={() => setActiveTab("clients")}
-                className={`px-5 sm:px-8 py-4 font-semibold transition-all duration-200 whitespace-nowrap ${
+                className={`px-8 py-3 font-bold text-sm uppercase tracking-wider transition-all duration-200 rounded-lg ${
                   activeTab === "clients"
-                    ? "text-foreground border-b-2 border-foreground -mb-px"
-                    : "text-gray-400 hover:text-foreground"
+                    ? "bg-black text-white"
+                    : "bg-transparent text-gray-600 hover:text-gray-900"
                 }`}
-                style={{ fontSize: '20px', minHeight: '57px', WebkitTapHighlightColor: 'transparent' }}
               >
                 Clients
               </button>
               <button
                 onClick={() => setActiveTab("team")}
-                className={`px-5 sm:px-8 py-4 font-semibold transition-all duration-200 whitespace-nowrap ${
+                className={`px-8 py-3 font-bold text-sm uppercase tracking-wider transition-all duration-200 rounded-lg ${
                   activeTab === "team"
-                    ? "text-foreground border-b-2 border-foreground -mb-px"
-                    : "text-gray-400 hover:text-foreground"
+                    ? "bg-black text-white"
+                    : "bg-transparent text-gray-600 hover:text-gray-900"
                 }`}
-                style={{ fontSize: '20px', minHeight: '57px', WebkitTapHighlightColor: 'transparent' }}
               >
                 Team
               </button>
-            </div>
-
-            {/* iOS Swipe Hint */}
-            <div className="md:hidden flex items-center justify-center gap-3 mb-8 text-sm text-gray-400">
-              <svg className="w-5 h-5 swipe-indicator" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-              </svg>
-              <span>Swipe to navigate</span>
-              <svg className="w-5 h-5 swipe-indicator" style={{ transform: 'rotate(180deg)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-              </svg>
             </div>
           </div>
 
@@ -801,290 +843,128 @@ export default function Home() {
             {activeTab === "projects" ? (
               projects.map((project, index) => (
                 <ScrollReveal key={project.name} delay={index * 50}>
-                  {project.name === "promptlee" ? (
-                    <div className="group relative py-8 md:py-10 border-b border-border transition-colors duration-200 -mx-6 px-6 cursor-pointer overflow-hidden">
-                      {/* Project Image - only visible on hover on desktop */}
-                      <div className="hidden md:block absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out rounded-2xl overflow-hidden" style={{ zIndex: 0 }}>
-                        <Image
-                          src="/supa.png"
-                          alt={project.name}
-                          fill
-                          className="object-cover object-center rounded-2xl"
-                          style={{ objectFit: 'cover' }}
-                        />
-                      </div>
-
-                      {/* Mobile Layout - Stack Vertically */}
-                      <div className="md:hidden flex flex-col gap-4 relative z-10">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-mono text-muted-foreground">{project.year}</span>
-                          <div className="flex flex-wrap gap-2">
-                            {project.tech.map((t) => (
-                              <span key={t} className="tech-tag text-sm">
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                        <h3 className="font-heading text-2xl font-medium text-foreground flex items-center gap-3">
-                          {project.name}
-                          <ArrowUpRight className="w-5 h-5" />
-                        </h3>
-                        <p className="text-lg text-muted-foreground">{project.description}</p>
-                        <span className="text-lg font-mono text-muted-foreground">{project.stat}</span>
-                      </div>
-
-                      {/* Desktop Grid Layout */}
-                      <div className="hidden md:grid relative z-10 grid-cols-12 gap-6 items-center group-hover:opacity-0 transition-opacity duration-300">
-                        <div className="col-span-1 text-gray-500 font-mono text-base font-medium">{project.year}</div>
-                        <div className="col-span-2 font-heading text-foreground font-bold flex items-center gap-2 text-xl">
-                          {project.name}
-                        </div>
-                        <div className="col-span-4 text-gray-600 text-base leading-relaxed">{project.description}</div>
-                        <div className="col-span-3 text-base font-mono text-gray-700 font-semibold">{project.stat}</div>
-                        <div className="col-span-2 flex flex-wrap gap-2 justify-end">
+                  <div className="group py-8 md:py-10 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6">
+                    {/* Mobile Layout - Stack Vertically */}
+                    <div className="md:hidden flex flex-col gap-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-mono text-muted-foreground">{project.year}</span>
+                        <div className="flex flex-wrap gap-2">
                           {project.tech.map((t) => (
-                            <span key={t} className="px-3 py-1 rounded-md text-xs font-semibold border border-gray-300 text-gray-700 bg-white">
+                            <span key={t} className="tech-tag text-sm">
                               {t}
                             </span>
                           ))}
                         </div>
                       </div>
+                      <h3 className="font-heading text-2xl font-medium text-foreground flex items-center gap-3">
+                        {project.name}
+                        <ArrowUpRight className="w-5 h-5" />
+                      </h3>
+                      <p className="text-lg text-muted-foreground">{project.description}</p>
+                      <span className="text-lg font-mono text-muted-foreground">{project.stat}</span>
                     </div>
-                  ) : (
-                    <div className="group py-8 md:py-10 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
-                      {/* Mobile Layout - Stack Vertically */}
-                      <div className="md:hidden flex flex-col gap-4">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-mono text-muted-foreground">{project.year}</span>
-                          <div className="flex flex-wrap gap-2">
-                            {project.tech.map((t) => (
-                              <span key={t} className="tech-tag text-sm">
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                        <h3 className="font-heading text-2xl font-medium text-foreground flex items-center gap-3">
-                          {project.name}
-                          <ArrowUpRight className="w-5 h-5" />
-                        </h3>
-                        <p className="text-lg text-muted-foreground">{project.description}</p>
-                        <span className="text-lg font-mono text-muted-foreground">{project.stat}</span>
-                      </div>
 
-                      {/* Desktop Grid Layout */}
-                      <div className="hidden md:grid grid-cols-12 gap-6 items-center">
-                        <div className="col-span-1 text-gray-500 font-mono text-base font-medium">{project.year}</div>
-                        <div className="col-span-2 font-heading text-foreground font-bold flex items-center gap-2 text-xl">
-                          {project.name}
-                        </div>
-                        <div className="col-span-4 text-gray-600 text-base leading-relaxed">{project.description}</div>
-                        <div className="col-span-3 text-base font-mono text-gray-700 font-semibold">{project.stat}</div>
-                        <div className="col-span-2 flex flex-wrap gap-2 justify-end">
-                          {project.tech.map((t) => (
-                            <span key={t} className="px-3 py-1 rounded-md text-xs font-semibold border border-gray-300 text-gray-700 bg-white">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
+                    {/* Desktop Grid Layout */}
+                    <div className="hidden md:grid grid-cols-12 gap-6 items-center">
+                      <div className="col-span-1 text-gray-500 font-mono text-base font-medium">{project.year}</div>
+                      <div className="col-span-2 font-heading text-foreground font-bold flex items-center gap-2 text-xl">
+                        {project.name}
+                      </div>
+                      <div className="col-span-4 text-gray-600 text-base leading-relaxed">{project.description}</div>
+                      <div className="col-span-3 text-base font-mono text-gray-700 font-semibold">{project.stat}</div>
+                      <div className="col-span-2 flex flex-wrap gap-2 justify-end">
+                        {project.tech.map((t) => (
+                          <span key={t} className="px-3 py-1 rounded-md text-xs font-semibold border border-gray-300 text-gray-700 bg-white">
+                            {t}
+                          </span>
+                        ))}
                       </div>
                     </div>
-                  )}
+                  </div>
                 </ScrollReveal>
               ))
             ) : activeTab === "clients" ? (
               clients.map((client, index) => (
                 <ScrollReveal key={client.name} delay={index * 50}>
-                  {(client.name === "PayPro" || client.name === "Beehive Rental and Sales" || client.name === "Custom Branded Screen Cleaners") ? (
-                    <div className="group relative py-6 md:py-8 border-b border-border transition-colors duration-200 -mx-6 px-6 cursor-pointer overflow-hidden">
-                      {/* Client Image - only visible on hover on desktop */}
-                      <div className="hidden md:block absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out rounded-2xl overflow-hidden" style={{ zIndex: 0 }}>
-                        <Image
-                          src={
-                            client.name === "PayPro"
-                              ? "/clients/paypro.png"
-                              : client.name === "Beehive Rental and Sales"
-                              ? "/clients/beehive.png"
-                              : "/clients/custom-branded.png"
-                          }
-                          alt={client.name}
-                          fill
-                          className="object-cover object-center rounded-2xl"
-                          style={{ objectFit: 'cover' }}
-                        />
-                      </div>
-
-                      {/* Mobile Layout - Stack Vertically */}
-                      <div className="md:hidden flex flex-col gap-3 relative z-10">
-                        <div className="flex items-center justify-between">
-                          <h3 className="font-heading text-xl font-medium text-foreground">{client.name}</h3>
-                        </div>
-                        <p className="text-sm text-muted-foreground">{client.description}</p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-mono text-muted-foreground">{client.stat}</span>
-                          <div className="flex flex-wrap gap-2">
-                            {client.tech.map((t) => (
-                              <span key={t} className="tech-tag text-xs">
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Desktop Grid Layout */}
-                      <div className="hidden md:grid relative z-10 grid-cols-12 gap-4 group-hover:opacity-0 transition-opacity duration-300">
-                        <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
-                          {client.name}
-                          <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                        </div>
-                        <div className="col-span-4 text-muted-foreground">{client.description}</div>
-                        <div className="col-span-2 text-sm font-mono text-muted-foreground">{client.stat}</div>
-                        <div className="col-span-3 flex flex-wrap gap-2 justify-end">
+                  <div className="group py-6 md:py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6">
+                    {/* Mobile Layout - Stack Vertically */}
+                    <div className="md:hidden flex flex-col gap-3">
+                      <h3 className="font-heading text-xl font-medium text-foreground flex items-center gap-2">
+                        {client.name}
+                        <ArrowUpRight className="w-4 h-4" />
+                      </h3>
+                      <p className="text-sm text-muted-foreground">{client.description}</p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-mono text-muted-foreground">{client.stat}</span>
+                        <div className="flex flex-wrap gap-2">
                           {client.tech.map((t) => (
-                            <span key={t} className="tech-tag">
+                            <span key={t} className="tech-tag text-xs">
                               {t}
                             </span>
                           ))}
                         </div>
                       </div>
                     </div>
-                  ) : (
-                    <div className="group py-6 md:py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
-                      {/* Mobile Layout - Stack Vertically */}
-                      <div className="md:hidden flex flex-col gap-3">
-                        <h3 className="font-heading text-xl font-medium text-foreground flex items-center gap-2">
-                          {client.name}
-                          <ArrowUpRight className="w-4 h-4" />
-                        </h3>
-                        <p className="text-sm text-muted-foreground">{client.description}</p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-mono text-muted-foreground">{client.stat}</span>
-                          <div className="flex flex-wrap gap-2">
-                            {client.tech.map((t) => (
-                              <span key={t} className="tech-tag text-xs">
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
 
-                      {/* Desktop Grid Layout */}
-                      <div className="hidden md:grid grid-cols-12 gap-4">
-                        <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
-                          {client.name}
-                          <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                        </div>
-                        <div className="col-span-4 text-muted-foreground">{client.description}</div>
-                        <div className="col-span-2 text-sm font-mono text-muted-foreground">{client.stat}</div>
-                        <div className="col-span-3 flex flex-wrap gap-2 justify-end">
-                          {client.tech.map((t) => (
-                            <span key={t} className="tech-tag">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
+                    {/* Desktop Grid Layout */}
+                    <div className="hidden md:grid grid-cols-12 gap-4">
+                      <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                        {client.name}
+                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      </div>
+                      <div className="col-span-4 text-muted-foreground">{client.description}</div>
+                      <div className="col-span-2 text-sm font-mono text-muted-foreground">{client.stat}</div>
+                      <div className="col-span-3 flex flex-wrap gap-2 justify-end">
+                        {client.tech.map((t) => (
+                          <span key={t} className="tech-tag">
+                            {t}
+                          </span>
+                        ))}
                       </div>
                     </div>
-                  )}
+                  </div>
                 </ScrollReveal>
               ))
             ) : (
               team.map((member, index) => (
                 <ScrollReveal key={member.name} delay={index * 50}>
-                  {(member.name === "Crew Cam" || member.name === "BidMyBrace" || member.name === "BeWeddy") ? (
-                    <div className="group relative py-6 md:py-8 border-b border-border transition-colors duration-200 -mx-6 px-6 cursor-pointer overflow-hidden">
-                      {/* Team Image - only visible on hover on desktop */}
-                      <div className="hidden md:block absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out rounded-2xl overflow-hidden" style={{ zIndex: 0 }}>
-                        <Image
-                          src={
-                            member.name === "Crew Cam"
-                              ? "/team/crew-cam.png"
-                              : member.name === "BidMyBrace"
-                              ? "/team/bidmybrace.png"
-                              : "/team/beweddy.png"
-                          }
-                          alt={member.name}
-                          fill
-                          className="object-cover object-center rounded-2xl"
-                          style={{ objectFit: 'cover' }}
-                        />
-                      </div>
-
-                      {/* Mobile Layout - Stack Vertically */}
-                      <div className="md:hidden flex flex-col gap-3 relative z-10">
-                        <h3 className="font-heading text-xl font-medium text-foreground">{member.name}</h3>
-                        <p className="text-sm text-muted-foreground">{member.description}</p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-mono text-muted-foreground">{member.stat}</span>
-                          <div className="flex flex-wrap gap-2">
-                            {member.tech.map((t) => (
-                              <span key={t} className="tech-tag text-xs">
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Desktop Grid Layout */}
-                      <div className="hidden md:grid relative z-10 grid-cols-12 gap-4 group-hover:opacity-0 transition-opacity duration-300">
-                        <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
-                          {member.name}
-                          <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                        </div>
-                        <div className="col-span-4 text-muted-foreground">{member.description}</div>
-                        <div className="col-span-2 text-sm font-mono text-muted-foreground">{member.stat}</div>
-                        <div className="col-span-3 flex flex-wrap gap-2 justify-end">
+                  <div className="group py-6 md:py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6">
+                    {/* Mobile Layout - Stack Vertically */}
+                    <div className="md:hidden flex flex-col gap-3">
+                      <h3 className="font-heading text-xl font-medium text-foreground flex items-center gap-2">
+                        {member.name}
+                        <ArrowUpRight className="w-4 h-4" />
+                      </h3>
+                      <p className="text-sm text-muted-foreground">{member.description}</p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-mono text-muted-foreground">{member.stat}</span>
+                        <div className="flex flex-wrap gap-2">
                           {member.tech.map((t) => (
-                            <span key={t} className="tech-tag">
+                            <span key={t} className="tech-tag text-xs">
                               {t}
                             </span>
                           ))}
                         </div>
                       </div>
                     </div>
-                  ) : (
-                    <div className="group py-6 md:py-8 border-b border-border hover:bg-secondary/50 transition-colors duration-200 -mx-6 px-6 cursor-pointer">
-                      {/* Mobile Layout - Stack Vertically */}
-                      <div className="md:hidden flex flex-col gap-3">
-                        <h3 className="font-heading text-xl font-medium text-foreground flex items-center gap-2">
-                          {member.name}
-                          <ArrowUpRight className="w-4 h-4" />
-                        </h3>
-                        <p className="text-sm text-muted-foreground">{member.description}</p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-mono text-muted-foreground">{member.stat}</span>
-                          <div className="flex flex-wrap gap-2">
-                            {member.tech.map((t) => (
-                              <span key={t} className="tech-tag text-xs">
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
 
-                      {/* Desktop Grid Layout */}
-                      <div className="hidden md:grid grid-cols-12 gap-4">
-                        <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
-                          {member.name}
-                          <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                        </div>
-                        <div className="col-span-4 text-muted-foreground">{member.description}</div>
-                        <div className="col-span-2 text-sm font-mono text-muted-foreground">{member.stat}</div>
-                        <div className="col-span-3 flex flex-wrap gap-2 justify-end">
-                          {member.tech.map((t) => (
-                            <span key={t} className="tech-tag">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
+                    {/* Desktop Grid Layout */}
+                    <div className="hidden md:grid grid-cols-12 gap-4">
+                      <div className="col-span-3 font-heading text-foreground font-medium flex items-center gap-2">
+                        {member.name}
+                        <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                      </div>
+                      <div className="col-span-4 text-muted-foreground">{member.description}</div>
+                      <div className="col-span-2 text-sm font-mono text-muted-foreground">{member.stat}</div>
+                      <div className="col-span-3 flex flex-wrap gap-2 justify-end">
+                        {member.tech.map((t) => (
+                          <span key={t} className="tech-tag">
+                            {t}
+                          </span>
+                        ))}
                       </div>
                     </div>
-                  )}
+                  </div>
                 </ScrollReveal>
               ))
             )}
