@@ -715,12 +715,13 @@ export default function Home() {
                       className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all text-white bg-white/10 hover:bg-white/20"
                     >
                       Next
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  )}
                 </div>
-            </div>
+              </div>
           </ScrollReveal>
         </div>
       </section>
