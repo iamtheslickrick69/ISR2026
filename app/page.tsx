@@ -135,114 +135,64 @@ const services = [
   },
 ]
 
-const portfolioProjects = [
+const projects = [
   {
-    id: 1,
-    name: "MachineMate Nate",
-    category: "AI Agents",
-    shortDesc: "AI-powered voice assistant for business automation",
-    fullDesc: "24/7 voice AI assistant that handles customer inquiries, schedules appointments, and manages business operations with natural language processing",
-    client: "MachineMate",
     year: "2025",
-    results: "24/7 availability, 80% reduced response time",
-    tech: ["Voice AI", "NLP", "Next.js"],
-    image: "/portfolio/nate.jpg",
-    featured: true,
-  },
-  {
-    id: 2,
-    name: "Sidekick",
-    category: "AI Agents",
-    shortDesc: "AI productivity assistant for streamlined workflows",
-    fullDesc: "Smart AI agent that automates repetitive tasks, manages emails, and optimizes daily workflows for maximum productivity",
-    client: "Internal",
-    year: "2025",
-    results: "3x faster task completion",
-    tech: ["AI", "Next.js", "Automation"],
-    image: "/portfolio/sidekick.jpg",
-    featured: false,
-  },
-  {
-    id: 3,
-    name: "ubill.io",
-    category: "Dashboards",
-    shortDesc: "Real-time energy analytics dashboard",
-    fullDesc: "Comprehensive energy bill analysis platform with predictive modeling and real-time cost tracking",
-    client: "uBill",
-    year: "2025",
-    results: "35% cost savings identified",
-    tech: ["Next.js", "AI/ML", "Charts"],
-    image: "/portfolio/ubill.jpg",
-    featured: false,
-  },
-  {
-    id: 4,
-    name: "ProShop24/7",
-    category: "Dashboards",
-    shortDesc: "IoT operations monitoring dashboard",
-    fullDesc: "Real-time IoT integration dashboard reducing operational downtime with predictive maintenance alerts",
-    client: "ProShop",
-    year: "2024",
-    results: "45% downtime reduction",
-    tech: ["IoT", "Real-time", "React"],
-    image: "/portfolio/proshop.jpg",
-    featured: false,
-  },
-  {
-    id: 5,
-    name: "LoopSync",
-    category: "Automation",
-    shortDesc: "Automated customer engagement platform",
-    fullDesc: "End-to-end customer engagement automation with intelligent retention workflows and personalized communications",
-    client: "LoopSync",
-    year: "2025",
-    results: "3x higher retention rate",
-    tech: ["AI", "Automation", "Next.js"],
-    image: "/portfolio/loopsync.jpg",
-    featured: false,
-  },
-  {
-    id: 6,
-    name: "pestctrl.ai",
-    category: "Automation",
-    shortDesc: "Automated data extraction system",
-    fullDesc: "Computer vision-powered document extraction with industry-leading accuracy for pest control operations",
-    client: "PestCtrl",
-    year: "2024",
-    results: "99.2% accuracy rate",
-    tech: ["Computer Vision", "AI"],
-    image: "/portfolio/pestctrl.jpg",
-    featured: false,
-  },
-  {
-    id: 7,
     name: "Alfred Eats",
-    category: "Full Stack",
-    shortDesc: "AI-powered restaurant ordering platform",
-    fullDesc: "Complete restaurant ordering and delivery platform with AI-driven menu recommendations and seamless checkout",
-    client: "Alfred Eats",
-    year: "2025",
-    results: "Seamless ordering experience",
-    tech: ["AI", "Mobile", "Next.js"],
-    image: "/portfolio/alfred.jpg",
-    featured: false,
+    description: "AI-powered restaurant ordering and delivery platform",
+    stat: "Seamless ordering",
+    tech: ["AI", "Mobile"],
   },
   {
-    id: 8,
-    name: "promptlee",
-    category: "Full Stack",
-    shortDesc: "Fine-tuned LLM platform",
-    fullDesc: "Custom language model platform for domain-specific applications with API integration and fine-tuning capabilities",
-    client: "Promptlee",
+    year: "2025",
+    name: "Sidekick",
+    description: "AI productivity assistant for streamlined workflows",
+    stat: "Smart automation",
+    tech: ["AI", "Next.js"],
+  },
+  {
+    year: "2025",
+    name: "LoopSync",
+    description: "Automated customer engagement and retention platform",
+    stat: "3x higher retention",
+    tech: ["AI", "Automation"],
+  },
+  {
+    year: "2025",
+    name: "MachineMate Nate",
+    description: "AI-powered voice assistant for business automation",
+    stat: "24/7 availability",
+    tech: ["Voice AI", "NLP"],
+  },
+  {
+    year: "2025",
+    name: "ubill.io",
+    description: "Real-time analytics and predictive modeling",
+    stat: "Energy bill analysis",
+    tech: ["Next.js", "AI/ML"],
+  },
+  {
     year: "2024",
-    results: "10x faster responses",
-    tech: ["LLMs", "API", "React"],
-    image: "/portfolio/promptlee.jpg",
-    featured: false,
+    name: "pestctrl.ai",
+    description: "Automated extraction with industry-leading accuracy",
+    stat: "99.2% accuracy",
+    tech: ["Computer Vision"],
+  },
+  {
+    year: "2024",
+    name: "ProShop24/7",
+    description: "IoT integration reducing operational downtime",
+    stat: "45% reduction",
+    tech: ["IoT", "Real-time"],
+  },
+  {
+    year: "2024",
+    name: "promptlee",
+    description: "Fine-tuned language models for domain-specific apps",
+    stat: "10x faster",
+    tech: ["LLMs", "API"],
   },
 ]
-
-const projects = portfolioProjects
 
 const clients = [
   {
@@ -306,29 +256,10 @@ const insights = [
 ]
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<"projects" | "clients" | "team" | "save">("projects")
+  const [activeTab, setActiveTab] = useState<"projects" | "clients" | "team">("projects")
   const [expandedStep, setExpandedStep] = useState<number | null>(null)
   const [completedSteps, setCompletedSteps] = useState<number[]>([])
   const [touchStart, setTouchStart] = useState<number>(0)
-  const [portfolioCategory, setPortfolioCategory] = useState<"All" | "AI Agents" | "Dashboards" | "Automation" | "Full Stack">("All")
-  const [portfolioSearch, setPortfolioSearch] = useState("")
-
-  // Keyboard navigation for Our Process section
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const steps = ['projects', 'clients', 'team', 'save'] as const;
-      const currentIndex = steps.indexOf(activeTab);
-
-      if (e.key === 'ArrowRight' && currentIndex < steps.length - 1) {
-        setActiveTab(steps[currentIndex + 1]);
-      } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
-        setActiveTab(steps[currentIndex - 1]);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeTab])
   const [touchEnd, setTouchEnd] = useState<number>(0)
 
   // Minimum swipe distance (in px)
@@ -415,16 +346,6 @@ export default function Home() {
     return () => observer.disconnect()
   }, [])
 
-  // Filter portfolio projects
-  const filteredPortfolio = portfolioProjects.filter(project => {
-    const matchesCategory = portfolioCategory === "All" || project.category === portfolioCategory
-    const matchesSearch = project.name.toLowerCase().includes(portfolioSearch.toLowerCase()) ||
-                         project.shortDesc.toLowerCase().includes(portfolioSearch.toLowerCase())
-    return matchesCategory && matchesSearch
-  })
-
-  const featuredProject = portfolioProjects.find(p => p.featured)
-
   return (
     <div
       className="min-h-screen"
@@ -452,317 +373,225 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Our Process Section - Dark Theme */}
-      <section
-        id="our-process-interactive"
-        className="relative bg-black py-16 sm:py-20 lg:py-24"
-      >
-        <div className="max-w-[1100px] mx-auto px-5 sm:px-6">
+      {/* Process Section - Gamified with Vertical Timeline */}
+      <section id="process" className="py-16 sm:py-20 lg:py-24 xl:py-28 relative overflow-hidden" style={{ background: '#ffffff' }}>
+        <div className="max-w-[900px] mx-auto px-5 sm:px-6 relative" style={{ zIndex: 1 }}>
           {/* Header */}
-          <div className="text-center mb-12 sm:mb-16">
+          <div className="text-center mb-16 sm:mb-20">
             <ScrollReveal>
-              <h2
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-wider text-white mb-4"
-                style={{
-                  fontFamily: "'Orbitron', 'Exo 2', 'Rajdhani', sans-serif",
-                  letterSpacing: '0.1em'
-                }}
-              >
-                How We Work
+              <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4 text-gray-900">
+                Our Process
               </h2>
-              <p className="text-white/60 text-sm sm:text-base max-w-xl mx-auto">
-                A proven 4-step process that turns your vision into reality
+            </ScrollReveal>
+            <ScrollReveal delay={100}>
+              <p className="text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto font-medium">
+                Click each step to learn more. Scroll to see your progress.
               </p>
             </ScrollReveal>
           </div>
 
-          {/* Progress Bar */}
-          <ScrollReveal delay={100}>
-            <div className="flex items-center justify-center gap-2 mb-12">
-              {[
-                { key: 'projects', num: 1, label: 'Discover', time: '1-2 weeks' },
-                { key: 'clients', num: 2, label: 'Design', time: '2-3 weeks' },
-                { key: 'team', num: 3, label: 'Develop', time: '4-8 weeks' },
-                { key: 'save', num: 4, label: 'Deploy', time: '1-2 weeks' }
-              ].map((step, index) => (
-                <div key={step.key} className="flex items-center">
-                  <button
-                    onClick={() => setActiveTab(step.key as any)}
-                    className={`flex flex-col items-center transition-all duration-300`}
-                  >
-                    <div
-                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
-                        activeTab === step.key ? 'scale-110' : ''
-                      }`}
-                      style={{
-                        background: activeTab === step.key ? '#d97757' : 'rgba(255, 255, 255, 0.1)',
-                        border: `2px solid ${activeTab === step.key ? '#d97757' : 'rgba(255, 255, 255, 0.2)'}`
-                      }}
-                    >
-                      <span className={`text-sm font-bold ${activeTab === step.key ? 'text-white' : 'text-white/60'}`}>
-                        {step.num}
-                      </span>
-                    </div>
-                    <span className={`text-xs font-semibold uppercase tracking-wider hidden sm:block ${
-                      activeTab === step.key ? 'text-white' : 'text-white/40'
-                    }`}>
-                      {step.label}
-                    </span>
-                  </button>
-                  {index < 3 && (
-                    <div
-                      className="w-8 sm:w-16 h-0.5 mx-2"
-                      style={{
-                        background: ['projects', 'clients', 'team'].indexOf(activeTab) > index
-                          ? '#d97757'
-                          : 'rgba(255, 255, 255, 0.1)'
-                      }}
-                    />
+          {/* Vertical Timeline with Interactive Cards */}
+          <div className="relative">
+            {/* Vertical Line */}
+            <div className="absolute left-6 top-8 bottom-8 w-0.5 bg-gray-200" style={{ zIndex: 0 }}></div>
+
+            {/* Step 1 - Discover */}
+            <div className="process-step relative mb-8" data-step="1">
+              <div
+                className={`relative pl-16 transition-all duration-300 ${expandedStep === 1 ? 'pb-6' : ''}`}
+                onClick={() => setExpandedStep(expandedStep === 1 ? null : 1)}
+                style={{ cursor: 'pointer' }}
+              >
+                {/* Checkpoint Circle */}
+                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
+                  completedSteps.includes(1) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
+                }`} style={{ zIndex: 1 }}>
+                  {completedSteps.includes(1) && (
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
                   )}
                 </div>
-              ))}
-            </div>
-          </ScrollReveal>
 
-          {/* Content Card */}
-          <ScrollReveal delay={150}>
-            <div
-              className="max-w-3xl mx-auto rounded-2xl p-8 sm:p-10 transition-all duration-500"
-              style={{
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-              }}
-            >
-                {activeTab === "projects" && (
-                  <div className="animate-fade-in">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.2)' }}>
-                        <svg className="w-7 h-7" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>Week 1-2</span>
-                        <h2 className="text-2xl sm:text-3xl font-bold text-white">Discover</h2>
-                      </div>
+                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 01</div>
+                      <h3 className="font-heading text-2xl font-bold text-gray-900">Discover</h3>
                     </div>
-                    <p className="text-base text-white/70 leading-relaxed mb-6">
-                      We don't just ask what you want—we dig deep to understand why. This phase is about uncovering the real problems worth solving.
-                    </p>
-                    <div className="space-y-3 mb-6">
-                      {['Deep-dive into your workflows and pain points', 'Map opportunities where AI creates real value', 'Define what success actually looks like', 'Align stakeholders on vision and priorities'].map((item) => (
-                        <div key={item} className="flex items-start gap-3">
-                          <span style={{ color: '#d97757' }}>→</span>
-                          <p className="text-sm text-white/80">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex-1 p-4 rounded-xl text-center" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
-                        <div className="text-2xl font-bold text-white mb-1">2-3</div>
-                        <div className="text-xs text-white/50">Discovery Sessions</div>
-                      </div>
-                      <div className="flex-1 p-4 rounded-xl text-center" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
-                        <div className="text-2xl font-bold text-white mb-1">100%</div>
-                        <div className="text-xs text-white/50">Custom Approach</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === "clients" && (
-                  <div className="animate-fade-in">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.2)' }}>
-                        <svg className="w-7 h-7" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>Week 2-5</span>
-                        <h2 className="text-2xl sm:text-3xl font-bold text-white">Design</h2>
-                      </div>
-                    </div>
-                    <p className="text-base text-white/70 leading-relaxed mb-6">
-                      We architect solutions that are built to scale. No cookie-cutter templates—every design is tailored to your specific needs.
-                    </p>
-                    <div className="space-y-3 mb-6">
-                      {['System architecture and tech stack selection', 'Interactive prototypes and user flows', 'Data models and API specifications', 'Security-first design patterns'].map((item) => (
-                        <div key={item} className="flex items-start gap-3">
-                          <span style={{ color: '#d97757' }}>→</span>
-                          <p className="text-sm text-white/80">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="p-4 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
-                      <div className="text-xs font-medium text-white/50 mb-3 uppercase tracking-wider">Our Stack</div>
-                      <div className="flex flex-wrap gap-2">
-                        {['Next.js', 'AI/ML', 'TypeScript', 'Supabase', 'Tailwind'].map((tech) => (
-                          <span key={tech} className="px-3 py-1.5 rounded-full text-xs font-medium" style={{ background: '#d97757', color: 'white' }}>
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === "team" && (
-                  <div className="animate-fade-in">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.2)' }}>
-                        <svg className="w-7 h-7" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                        </svg>
-                      </div>
-                      <div>
-                        <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>Week 5-13</span>
-                        <h2 className="text-2xl sm:text-3xl font-bold text-white">Develop</h2>
-                      </div>
-                    </div>
-                    <p className="text-base text-white/70 leading-relaxed mb-6">
-                      This is where the magic happens. We build fast, iterate often, and keep you in the loop every step of the way.
-                    </p>
-                    <div className="space-y-3 mb-6">
-                      {['2-week agile sprints with demos', 'AI model training and fine-tuning', 'Continuous testing and QA', 'Weekly progress updates and feedback'].map((item) => (
-                        <div key={item} className="flex items-start gap-3">
-                          <span style={{ color: '#d97757' }}>→</span>
-                          <p className="text-sm text-white/80">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex gap-4">
-                      <div className="flex-1 p-4 rounded-xl text-center" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
-                        <div className="text-2xl font-bold text-white mb-1">2-week</div>
-                        <div className="text-xs text-white/50">Sprint Cycles</div>
-                      </div>
-                      <div className="flex-1 p-4 rounded-xl text-center" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
-                        <div className="text-2xl font-bold text-white mb-1">99.9%</div>
-                        <div className="text-xs text-white/50">Uptime Target</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === "save" && (
-                  <div className="animate-fade-in">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.2)' }}>
-                        <svg className="w-7 h-7" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>Week 13-15</span>
-                        <h2 className="text-2xl sm:text-3xl font-bold text-white">Deploy</h2>
-                      </div>
-                    </div>
-                    <p className="text-base text-white/70 leading-relaxed mb-6">
-                      Launch day is just the beginning. We ensure a smooth rollout and stick around to make sure everything runs perfectly.
-                    </p>
-                    <div className="space-y-3 mb-6">
-                      {['Zero-downtime production deployment', 'Team training and documentation', 'Performance monitoring setup', 'Ongoing support and maintenance'].map((item) => (
-                        <div key={item} className="flex items-start gap-3">
-                          <span style={{ color: '#d97757' }}>✓</span>
-                          <p className="text-sm text-white/80">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="p-4 rounded-xl" style={{ background: 'rgba(217, 119, 87, 0.1)', border: '1px solid rgba(217, 119, 87, 0.3)' }}>
-                      <div className="text-sm text-white/90 font-medium mb-2">What's Included</div>
-                      <div className="text-xs text-white/60">24/7 monitoring • Dedicated Slack channel • Monthly performance reviews • Priority bug fixes</div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Navigation */}
-                <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/10">
-                  <button
-                    onClick={() => {
-                      const steps = ['projects', 'clients', 'team', 'save'];
-                      const currentIndex = steps.indexOf(activeTab);
-                      if (currentIndex > 0) setActiveTab(steps[currentIndex - 1] as any);
-                    }}
-                    disabled={activeTab === 'projects'}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      activeTab === 'projects' ? 'text-white/30 cursor-not-allowed' : 'text-white/70 hover:text-white hover:bg-white/10'
-                    }`}
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 1 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
-                    Previous
-                  </button>
-
-                  {activeTab === 'save' ? (
-                    <a
-                      href="#connect"
-                      className="flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all text-white"
-                      style={{ background: '#d97757' }}
-                    >
-                      Start Your Project
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </a>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        const steps = ['projects', 'clients', 'team', 'save'];
-                        const currentIndex = steps.indexOf(activeTab);
-                        if (currentIndex < steps.length - 1) setActiveTab(steps[currentIndex + 1] as any);
-                      }}
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all text-white bg-white/10 hover:bg-white/20"
-                    >
-                      Next
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </button>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    We learn your business, challenges, and goals to build a foundation for success
+                  </p>
+                  {expandedStep === 1 && (
+                    <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-600 space-y-2 animate-in fade-in duration-300">
+                      <p>• Deep dive into your current workflows and pain points</p>
+                      <p>• Identify opportunities for AI integration</p>
+                      <p>• Define success metrics and KPIs</p>
+                      <p>• Stakeholder interviews and requirement gathering</p>
+                    </div>
                   )}
                 </div>
               </div>
-          </ScrollReveal>
+            </div>
+
+            {/* Step 2 - Design */}
+            <div className="process-step relative mb-8" data-step="2">
+              <div
+                className={`relative pl-16 transition-all duration-300 ${expandedStep === 2 ? 'pb-6' : ''}`}
+                onClick={() => setExpandedStep(expandedStep === 2 ? null : 2)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
+                  completedSteps.includes(2) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
+                }`} style={{ zIndex: 1 }}>
+                  {completedSteps.includes(2) && (
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+
+                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 02</div>
+                      <h3 className="font-heading text-2xl font-bold text-gray-900">Design</h3>
+                    </div>
+                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 2 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    We create a tailored solution and strategic roadmap aligned with your vision
+                  </p>
+                  {expandedStep === 2 && (
+                    <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-600 space-y-2 animate-in fade-in duration-300">
+                      <p>• Architecture design and technology selection</p>
+                      <p>• UI/UX mockups and user flow mapping</p>
+                      <p>• Data model and API specification</p>
+                      <p>• Security and compliance planning</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Step 3 - Develop */}
+            <div className="process-step relative mb-8" data-step="3">
+              <div
+                className={`relative pl-16 transition-all duration-300 ${expandedStep === 3 ? 'pb-6' : ''}`}
+                onClick={() => setExpandedStep(expandedStep === 3 ? null : 3)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
+                  completedSteps.includes(3) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
+                }`} style={{ zIndex: 1 }}>
+                  {completedSteps.includes(3) && (
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+
+                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 03</div>
+                      <h3 className="font-heading text-2xl font-bold text-gray-900">Develop</h3>
+                    </div>
+                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 3 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    We build and refine your AI solution with precision and attention to detail
+                  </p>
+                  {expandedStep === 3 && (
+                    <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-600 space-y-2 animate-in fade-in duration-300">
+                      <p>• Agile development with bi-weekly sprints</p>
+                      <p>• AI model training and fine-tuning</p>
+                      <p>• Continuous testing and quality assurance</p>
+                      <p>• Regular demos and feedback sessions</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Step 4 - Deploy */}
+            <div className="process-step relative" data-step="4">
+              <div
+                className={`relative pl-16 transition-all duration-300 ${expandedStep === 4 ? 'pb-6' : ''}`}
+                onClick={() => setExpandedStep(expandedStep === 4 ? null : 4)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
+                  completedSteps.includes(4) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
+                }`} style={{ zIndex: 1 }}>
+                  {completedSteps.includes(4) && (
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+
+                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 04</div>
+                      <h3 className="font-heading text-2xl font-bold text-gray-900">Deploy</h3>
+                    </div>
+                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 4 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    We launch your solution and provide ongoing support for lasting success
+                  </p>
+                  {expandedStep === 4 && (
+                    <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-600 space-y-2 animate-in fade-in duration-300">
+                      <p>• Production deployment and monitoring setup</p>
+                      <p>• Team training and documentation</p>
+                      <p>• Performance optimization and scaling</p>
+                      <p>• Ongoing maintenance and support</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Transition Section - Tools Showcase - COMPACT */}
       <section
         id="tools"
-        className="relative py-12 sm:py-16 lg:py-20"
+        className="relative py-8 sm:py-10 lg:py-12"
         style={{
-          background: '#ffffff',
-          backgroundImage: 'url(/whitehex.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          background: '#ffffff'
         }}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          {/* White Card Container with Blurred Border */}
-          <div className="bg-white rounded-3xl p-8 sm:p-10 lg:p-12 shadow-2xl" style={{
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.3)',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05)'
-          }}>
-            {/* Main Header - Compact */}
-            <ScrollReveal>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-gray-900 mb-2 text-center">
-                We Build Systems That Impact Real Business
-              </h2>
-              <p className="text-base sm:text-lg text-gray-600 mb-8 sm:mb-10 text-center font-medium">
-                Try our free tools — powered by the same AI we use for enterprise clients
-              </p>
-            </ScrollReveal>
+          {/* Main Header - Compact */}
+          <ScrollReveal>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-gray-900 mb-2 text-center">
+              We Build Systems That Impact Real Business
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 text-center font-medium">
+              Try our free tools — powered by the same AI we use for enterprise clients
+            </p>
+          </ScrollReveal>
 
-            {/* Tools Grid - Compact Horizontal */}
-            <ToolsGrid />
-          </div>
+          {/* Tools Grid - Compact Horizontal */}
+          <ToolsGrid />
         </div>
       </section>
 
-      {/* Services Section - Split Layout with AI Orb */}
+      {/* Services Section - Split Layout */}
       <section
         id="services"
         className="relative bg-black py-12 sm:py-16 lg:py-20 xl:py-24"
@@ -942,218 +771,219 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Portfolio Section - Dark Accordion Theme */}
-      <section id="portfolio" className="relative bg-black py-12 sm:py-16 lg:py-20 xl:py-24">
-        <div className="max-w-[1190px] mx-auto px-4 sm:px-5">
-          {/* Header */}
-          <div className="mb-10 sm:mb-12 lg:mb-16 text-center">
-            <ScrollReveal>
-              <h2
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-wider text-white"
-                style={{
-                  fontFamily: "'Orbitron', 'Exo 2', 'Rajdhani', sans-serif",
-                  letterSpacing: '0.1em'
-                }}
-              >
-                Our Work
-              </h2>
-            </ScrollReveal>
+      {/* Portfolio & Insights - Full Height Split Section */}
+      <section className="relative min-h-screen flex flex-col lg:flex-row">
+        {/* LEFT SIDE: Insights (Dark with Video) */}
+        <div
+          id="insights"
+          className="w-full lg:w-1/2 min-h-[100vh] lg:min-h-screen bg-black relative flex flex-col justify-center px-6 sm:px-8 lg:px-12 py-16 lg:py-0 overflow-hidden"
+        >
+          {/* Video Background - Reduced filter by 50% */}
+          <div className="absolute inset-0" style={{ zIndex: 0 }}>
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ objectFit: 'cover', opacity: 0.7 }}
+            >
+              <source src="https://pub-7824dae2ffd24193b52760c54972be1d.r2.dev/111peachbaby.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-br from-black/35 via-black/25 to-black/35" />
           </div>
 
-          {/* Tabs */}
-          <div className="flex items-center justify-center gap-4 mb-10">
-            <button
-              onClick={() => setActiveTab("projects")}
-              className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
-                activeTab === "projects"
-                  ? "bg-white text-black"
-                  : "text-white/60 hover:text-white/90"
-              }`}
-            >
-              Projects
-            </button>
-            <button
-              onClick={() => setActiveTab("clients")}
-              className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
-                activeTab === "clients"
-                  ? "bg-white text-black"
-                  : "text-white/60 hover:text-white/90"
-              }`}
-            >
-              Clients
-            </button>
-            <button
-              onClick={() => setActiveTab("team")}
-              className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
-                activeTab === "team"
-                  ? "bg-white text-black"
-                  : "text-white/60 hover:text-white/90"
-              }`}
-            >
-              Team
-            </button>
-          </div>
+          <div className="max-w-lg mx-auto w-full relative" style={{ zIndex: 1 }}>
+            {/* Header */}
+            <div className="mb-8 lg:mb-10">
+              <ScrollReveal>
+                <h2
+                  className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-wider text-white mb-2"
+                  style={{
+                    fontFamily: "'Orbitron', 'Exo 2', 'Rajdhani', sans-serif",
+                    letterSpacing: '0.08em'
+                  }}
+                >
+                  Insights
+                </h2>
+                <p className="text-sm text-white/70 font-medium">Research on AI and what matters</p>
+              </ScrollReveal>
+            </div>
 
-          {/* Content - Projects */}
-          {activeTab === "projects" && (
-            <div className="flex flex-col gap-4 max-w-3xl mx-auto">
-              {portfolioProjects.map((project, index) => (
-                <ScrollReveal key={project.id} delay={index * 30}>
-                  <div
-                    className="rounded-lg p-6 cursor-pointer transition-all duration-300"
-                    style={{ background: 'rgba(255, 255, 255, 0.05)' }}
-                    onClick={() => {
-                      const content = document.getElementById(`portfolio-project-${project.id}`);
-                      const icon = document.getElementById(`portfolio-icon-${project.id}`);
-                      if (content && icon) {
-                        if (content.style.maxHeight && content.style.maxHeight !== '0px') {
-                          content.style.maxHeight = '0px';
-                          icon.style.transform = 'rotate(0deg)';
-                        } else {
-                          content.style.maxHeight = content.scrollHeight + 'px';
-                          icon.style.transform = 'rotate(180deg)';
-                        }
+            {/* Insight Cards */}
+            <div className="flex flex-col gap-3">
+              {insights.map((post, index) => (
+                <ScrollReveal key={post.title} delay={index * 100}>
+                  <div className="group p-4 rounded-lg cursor-pointer transition-all duration-300 hover:bg-white/15"
+                    style={{ background: 'rgba(255, 255, 255, 0.08)' }}
+                  >
+                    <div className="flex items-center gap-2 text-xs text-white/60 mb-2 font-medium">
+                      <span>{post.date}</span>
+                      <span className="w-1 h-1 bg-white/40 rounded-full" />
+                      <span>{post.readTime}</span>
+                    </div>
+                    <h3 className="text-sm font-bold text-white leading-snug mb-2">{post.title}</h3>
+                    <div className="flex items-center gap-2 text-xs font-semibold transition-colors duration-200" style={{ color: '#d97757' }}>
+                      Read more
+                      <ArrowUpRight className="w-3 h-3" />
+                    </div>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT SIDE: Portfolio (Light) */}
+        <div
+          id="portfolio"
+          className="w-full lg:w-1/2 min-h-[100vh] lg:min-h-screen bg-white flex flex-col justify-center px-6 sm:px-8 lg:px-12 py-16 lg:py-0"
+        >
+          <div className="max-w-lg mx-auto w-full">
+            {/* Header */}
+            <div className="mb-8 lg:mb-10">
+              <ScrollReveal>
+                <h2
+                  className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-wider text-gray-900 mb-2"
+                  style={{
+                    fontFamily: "'Orbitron', 'Exo 2', 'Rajdhani', sans-serif",
+                    letterSpacing: '0.08em'
+                  }}
+                >
+                  Portfolio
+                </h2>
+                <p className="text-sm text-gray-500 font-medium">Our work speaks for itself</p>
+              </ScrollReveal>
+            </div>
+
+            {/* Accordion Cards */}
+            <div className="flex flex-col gap-3">
+              {/* Projects */}
+              <ScrollReveal delay={50}>
+                <div
+                  className="rounded-lg p-4 cursor-pointer transition-all duration-300 hover:shadow-md"
+                  style={{ background: 'rgba(0, 0, 0, 0.03)' }}
+                  onClick={() => {
+                    const content = document.getElementById('portfolio-1');
+                    const icon = document.getElementById('portfolio-icon-1');
+                    if (content && icon) {
+                      if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                        content.style.maxHeight = '0px';
+                        icon.style.transform = 'rotate(0deg)';
+                      } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
                       }
-                    }}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div>
-                        <h3 className="text-base font-bold text-white uppercase tracking-wider">{project.name}</h3>
-                        <p className="text-xs text-white/70 font-semibold">{project.category}</p>
-                      </div>
-                      <svg id={`portfolio-icon-${project.id}`} className="w-5 h-5 text-white transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
-                    <div id={`portfolio-project-${project.id}`} className="overflow-hidden transition-all duration-300" style={{ maxHeight: '0px' }}>
-                      <p className="text-sm text-white/60 leading-relaxed mb-3 mt-2">
-                        {project.fullDesc}
-                      </p>
-                      <div className="grid grid-cols-2 gap-4 mb-3">
-                        <div>
-                          <p className="text-xs text-white/50 uppercase tracking-wider mb-1">Client</p>
-                          <p className="text-sm text-white/80">{project.client}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-white/50 uppercase tracking-wider mb-1">Year</p>
-                          <p className="text-sm text-white/80">{project.year}</p>
-                        </div>
-                      </div>
-                      <div className="mb-3">
-                        <p className="text-xs text-white/50 uppercase tracking-wider mb-1">Results</p>
-                        <p className="text-sm text-white/80">{project.results}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-white/50 uppercase tracking-wider mb-1.5">Technologies</p>
-                        <div className="flex flex-wrap gap-2">
-                          {project.tech.map((tech) => (
-                            <span key={tech} className="text-xs px-2 py-1 rounded bg-white/10 text-white/70">
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          )}
-
-          {/* Content - Clients */}
-          {activeTab === "clients" && (
-            <div className="flex flex-col gap-4 max-w-3xl mx-auto">
-              {clients.map((client, index) => (
-                <ScrollReveal key={index} delay={index * 30}>
-                  <a
-                    href={client.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-lg p-6 transition-all duration-300 hover:bg-white/10 flex items-center justify-between"
-                    style={{ background: 'rgba(255, 255, 255, 0.05)' }}
-                  >
+                    }
+                  }}
+                >
+                  <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-base font-bold text-white uppercase tracking-wider">{client.name}</h3>
-                      <p className="text-xs text-white/70 font-semibold mb-2">{client.industry}</p>
-                      <p className="text-sm text-white/60">{client.stat}</p>
+                      <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Projects</h3>
+                      <p className="text-xs text-gray-500">AI Solutions We've Built</p>
                     </div>
-                    <svg className="w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    <svg id="portfolio-icon-1" className="w-5 h-5 text-gray-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
-                  </a>
-                </ScrollReveal>
-              ))}
-            </div>
-          )}
-
-          {/* Content - Team */}
-          {activeTab === "team" && (
-            <div className="flex flex-col gap-4 max-w-3xl mx-auto">
-              {team.map((member, index) => (
-                <ScrollReveal key={index} delay={index * 30}>
-                  <div
-                    className="rounded-lg p-6 transition-all duration-300"
-                    style={{ background: 'rgba(255, 255, 255, 0.05)' }}
-                  >
-                    <h3 className="text-base font-bold text-white uppercase tracking-wider">{member.name}</h3>
-                    <p className="text-xs text-white/70 font-semibold mb-2">{member.description}</p>
-                    <p className="text-sm text-white/60">{member.stat}</p>
                   </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Insights Section - Compact */}
-      <section id="insights" className="py-10 sm:py-12 lg:py-16 relative overflow-hidden">
-        <div className="section-divider" />
-
-        {/* Video Background with Overlay */}
-        <div className="absolute inset-0" style={{ zIndex: 0 }}>
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ objectFit: 'cover' }}
-          >
-            <source src="https://pub-7824dae2ffd24193b52760c54972be1d.r2.dev/111peachbaby.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-500/40 via-gray-500/30 to-gray-600/50" />
-        </div>
-
-        <div className="max-w-[1200px] mx-auto px-5 sm:px-6 relative" style={{ zIndex: 1 }}>
-          <div className="text-center mb-6 sm:mb-8">
-            <ScrollReveal>
-              <h2 className="font-heading text-[1.75rem] sm:text-[2.1rem] lg:text-[2.625rem] font-bold tracking-tight mb-2 text-white drop-shadow-2xl">Insights</h2>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
-              <p className="text-sm sm:text-base text-white/90 max-w-xl mx-auto drop-shadow-lg font-medium">
-                Personal research on where AI is, where it's going, and what matters.
-              </p>
-            </ScrollReveal>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-3 lg:gap-4">
-            {insights.map((post, index) => (
-              <ScrollReveal key={post.title} delay={index * 100}>
-                <div className="group p-4 sm:p-5 rounded-xl cursor-pointer h-full flex flex-col transition-all duration-300 bg-white/95 backdrop-blur-sm hover:bg-white hover:-translate-y-1 hover:shadow-2xl border border-white/20">
-                  <div className="flex items-center gap-2 text-xs text-gray-600 mb-2 font-medium">
-                    <span>{post.date}</span>
-                    <span className="w-1 h-1 bg-gray-400 rounded-full" />
-                    <span>{post.readTime}</span>
-                  </div>
-                  <h3 className="font-heading text-base sm:text-lg font-bold text-gray-900 flex-grow leading-snug">{post.title}</h3>
-                  <div className="mt-3 flex items-center gap-2 text-sm font-semibold transition-colors duration-200" style={{ color: '#d97757' }}>
-                    Read more
-                    <ArrowUpRight className="w-4 h-4" />
+                  <div id="portfolio-1" className="overflow-hidden transition-all duration-300" style={{ maxHeight: '0px' }}>
+                    <div className="mt-3 space-y-2 max-h-48 overflow-y-auto">
+                      {projects.map((project) => (
+                        <div key={project.name} className="p-2.5 rounded-md bg-white border border-gray-100">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-xs font-bold text-gray-900">{project.name}</span>
+                            <span className="text-xs font-mono text-gray-400">{project.year}</span>
+                          </div>
+                          <p className="text-xs text-gray-500 leading-relaxed">{project.description}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </ScrollReveal>
-            ))}
+
+              {/* Clients */}
+              <ScrollReveal delay={100}>
+                <div
+                  className="rounded-lg p-4 cursor-pointer transition-all duration-300 hover:shadow-md"
+                  style={{ background: 'rgba(0, 0, 0, 0.03)' }}
+                  onClick={() => {
+                    const content = document.getElementById('portfolio-2');
+                    const icon = document.getElementById('portfolio-icon-2');
+                    if (content && icon) {
+                      if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                        content.style.maxHeight = '0px';
+                        icon.style.transform = 'rotate(0deg)';
+                      } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                      }
+                    }
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Clients</h3>
+                      <p className="text-xs text-gray-500">Companies We've Partnered With</p>
+                    </div>
+                    <svg id="portfolio-icon-2" className="w-5 h-5 text-gray-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <div id="portfolio-2" className="overflow-hidden transition-all duration-300" style={{ maxHeight: '0px' }}>
+                    <div className="mt-3 space-y-2 max-h-48 overflow-y-auto">
+                      {clients.map((client) => (
+                        <div key={client.name} className="p-2.5 rounded-md bg-white border border-gray-100">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-xs font-bold text-gray-900">{client.name}</span>
+                            <span className="text-xs font-mono text-gray-400">{client.stat}</span>
+                          </div>
+                          <p className="text-xs text-gray-500 leading-relaxed">{client.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              {/* Team */}
+              <ScrollReveal delay={150}>
+                <div
+                  className="rounded-lg p-4 cursor-pointer transition-all duration-300 hover:shadow-md"
+                  style={{ background: 'rgba(0, 0, 0, 0.03)' }}
+                  onClick={() => {
+                    const content = document.getElementById('portfolio-3');
+                    const icon = document.getElementById('portfolio-icon-3');
+                    if (content && icon) {
+                      if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                        content.style.maxHeight = '0px';
+                        icon.style.transform = 'rotate(0deg)';
+                      } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                      }
+                    }
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">Team</h3>
+                      <p className="text-xs text-gray-500">The People Behind the Work</p>
+                    </div>
+                    <svg id="portfolio-icon-3" className="w-5 h-5 text-gray-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <div id="portfolio-3" className="overflow-hidden transition-all duration-300" style={{ maxHeight: '0px' }}>
+                    <div className="mt-3 py-6 text-center">
+                      <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">
+                        Coming Soon
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
           </div>
         </div>
       </section>
@@ -1177,28 +1007,56 @@ export default function Home() {
             </ScrollReveal>
             <ScrollReveal delay={200}>
               <p className="text-lg lg:text-xl xl:text-2xl text-gray-700 max-w-2xl mx-auto px-4 sm:px-0 font-medium leading-relaxed">
-                Ready to transform your business with AI? Let's talk.
+                We are passionate of delivering sustainable solutions and valuable tools to businesses. Let's connect and see if there's something you didn't know you needed.
               </p>
             </ScrollReveal>
           </div>
 
+          {/* Tree - Dead Center with Parallax */}
+          <ScrollReveal delay={300}>
+            <Parallax speed={0.3}>
+              <div className="flex justify-center items-center my-16 sm:my-20 lg:my-24">
+                <div className="relative w-full max-w-md lg:max-w-lg">
+                  <Image
+                    src="/oogway1.png"
+                    alt="Tree"
+                    width={600}
+                    height={600}
+                    className="w-full h-auto"
+                    style={{ objectFit: 'contain', filter: 'brightness(0)' }}
+                    priority
+                  />
+                </div>
+              </div>
+            </Parallax>
+          </ScrollReveal>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-            <ScrollReveal delay={300}>
-              <a
-                href="mailto:hello@haestus.dev"
-                className="inline-block text-base lg:text-lg font-bold px-10 py-4 rounded-full bg-black text-white hover:bg-gray-800 transition-all duration-300"
-              >
-                Get in Touch
-              </a>
-            </ScrollReveal>
+          {/* Bottom Content - Below Tree */}
+          <div className="text-center">
             <ScrollReveal delay={400}>
+              <div className="max-w-2xl mx-auto p-10 lg:p-14 border-2 border-gray-200 rounded-3xl mb-12 bg-white shadow-lg hover:shadow-xl transition-all duration-300">
+                <Mail className="w-12 lg:w-14 h-12 lg:h-14 text-foreground mx-auto mb-8" />
+                <a
+                  href="mailto:hello@haestus.dev"
+                  className="text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-foreground hover:opacity-70 transition-opacity duration-200 block mb-5"
+                >
+                  hello@haestus.dev
+                </a>
+                <p className="text-base lg:text-lg text-muted-foreground font-medium">
+                  We respond within 24 hours.
+                </p>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={500}>
               <a
-                href="/#portfolio"
-                className="inline-block text-base lg:text-lg font-bold px-10 py-4 rounded-full border-2 border-black text-black hover:bg-black hover:text-white transition-all duration-300"
+                href="/portal"
+                className="inline-block text-lg lg:text-xl font-bold px-16 py-5 rounded-full text-white hover:opacity-90 hover:shadow-2xl transition-all duration-300"
+                style={{
+                  background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
+                }}
               >
-                View Our Work
+                Clients
               </a>
             </ScrollReveal>
           </div>

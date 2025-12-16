@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
+import { AnimationProvider } from "@/components/animations/AnimationProvider"
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -72,7 +73,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} style={{ overflow: 'visible' }}>
       <body className="font-sans antialiased bg-background text-foreground" style={{ overflow: 'visible', position: 'relative' }}>
-        {children}
+        <AnimationProvider>
+          {children}
+        </AnimationProvider>
       </body>
     </html>
   )
