@@ -52,12 +52,12 @@ export function Footer() {
           <div className="space-y-2">
             <Link href="/" className="block">
               <Image
-                src="/trans1.png"
+                src="/55.png"
                 alt="Haestus"
                 width={600}
                 height={600}
                 className="h-auto max-w-[140px] md:max-w-[240px]"
-                style={{ filter: 'brightness(0)' }}
+                style={{ filter: 'brightness(0)', borderRadius: '6px' }}
               />
             </Link>
             <p className="text-xs text-muted-foreground hidden md:block">

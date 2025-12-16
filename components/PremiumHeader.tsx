@@ -134,12 +134,12 @@ export default function PremiumHeader() {
               }}
             >
               <Image
-                src="/trans1.png"
+                src="/55.png"
                 alt="Haestus"
                 width={200}
                 height={200}
                 className="h-auto"
-                style={{ filter: 'brightness(0) invert(1)' }}
+                style={{ filter: 'brightness(0) invert(1)', borderRadius: '6px' }}
                 priority
               />
             </motion.div>

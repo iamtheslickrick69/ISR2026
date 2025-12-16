@@ -64,12 +64,12 @@ export default function PortalPage() {
         {/* Logo */}
         <div className="flex justify-center mb-10">
           <Image
-            src="/trans1.png"
+            src="/55.png"
             alt="Haestus"
             width={360}
             height={360}
             className="h-auto"
-            style={{ maxWidth: '360px', filter: 'brightness(0)' }}
+            style={{ maxWidth: '360px', filter: 'brightness(0)', borderRadius: '6px' }}
             priority
           />
         </div>

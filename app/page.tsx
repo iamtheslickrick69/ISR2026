@@ -13,99 +13,128 @@ const tools = [
   {
     id: 1,
     name: "AI Statement Analyzer",
-    description: "Free tool. No login required. Clear, unbiased analysis of payment processing fees for small business owners.",
+    subtitle: "Payment Processing",
+    description: "Instant breakdown of your credit card processing fees. No login required.",
     image: "/analyze.png",
-    tags: ["Free Forever", "No Login", "Unbiased"],
-    tagColors: ["bg-white/90 text-gray-800", "bg-white/80 text-gray-800", "bg-white/70 text-gray-800"]
+    tags: ["Free"],
+    tagColors: ["bg-black text-white"],
+    cta: "Analyze Statement",
+    url: "https://teampaypro.com"
   },
   {
     id: 2,
     name: "SupaPrompt",
-    description: "Master prompt engineering for everyone. We bring the menu out to you so you can really order what you want, not just tell a chef \"Make me a grilled cheese.\"",
+    subtitle: "Multi-LLM Interface",
+    description: "Talk to multiple AI models in one place. Built for real work.",
     image: "/supab.png",
-    tags: ["Advanced", "Multi-LLM", "Easy"],
-    tagColors: ["bg-white/90 text-gray-800", "bg-white/80 text-gray-800", "bg-white/70 text-gray-800"]
+    tags: ["Free"],
+    tagColors: ["bg-black text-white"],
+    cta: "Try SupaPrompt",
+    url: "https://promptlee.io"
   },
   {
     id: 3,
     name: "ubill.io",
-    description: "Free energy bill analysis. No login required. Understand your energy needs as clearly as you understand price per gallon at the pump.",
+    subtitle: "Energy Bill Analysis",
+    description: "Upload your energy bill. Get instant clarity on your costs.",
     image: "/ubill.png",
-    tags: ["100% Free", "No Signup", "Transparent"],
-    tagColors: ["bg-white/90 text-gray-800", "bg-white/80 text-gray-800", "bg-white/70 text-gray-800"]
+    tags: ["Free"],
+    tagColors: ["bg-black text-white"],
+    cta: "Analyze Bill",
+    url: "https://ubill.io"
   }
 ]
 
 function ToolsGrid() {
   return (
-    <div className="max-w-5xl mx-auto">
-      <div className="flex flex-col gap-6 lg:gap-8">
-        {tools.map((tool, index) => (
+    <div className="max-w-4xl mx-auto space-y-3">
+      {tools.map((tool, index) => (
+        <ScrollReveal key={tool.id} delay={index * 100}>
           <div
-            key={tool.id}
-            className="group relative rounded-2xl overflow-hidden bg-white shadow-lg transition-all duration-500"
+            className="group relative rounded-xl overflow-hidden border transition-all duration-300"
             style={{
-              animationDelay: `${index * 100}ms`,
-              transform: 'scale(0.76)',
-              transformOrigin: 'center',
+              background: 'rgba(255, 255, 255, 0.6)',
+              backdropFilter: 'blur(20px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+              borderColor: 'rgba(217, 119, 87, 0.2)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'scale(0.76) translateY(-8px)'
-              e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.75)';
+              e.currentTarget.style.borderColor = 'rgba(217, 119, 87, 0.4)';
+              e.currentTarget.style.boxShadow = '0 12px 40px rgba(217, 119, 87, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(0.76) translateY(0)'
-              e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.6)';
+              e.currentTarget.style.borderColor = 'rgba(217, 119, 87, 0.2)';
+              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3)';
             }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-              {/* Image Section */}
-              <div className="relative h-[280px] md:h-[320px] overflow-hidden">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3">
+              {/* Image Section - Smaller */}
+              <div className="relative w-full sm:w-[100px] h-[100px] sm:h-[100px] flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
                 <Image
                   src={tool.image}
-                  alt={tool.name}
+                  alt={tool.subtitle}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                   priority={index === 0}
+                  style={
+                    tool.id === 3
+                      ? {
+                          filter: 'brightness(0) saturate(100%)',
+                          opacity: 1,
+                        }
+                      : undefined
+                  }
                 />
-                {/* Gradient overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                {tool.id === 3 && (
+                  <div
+                    className="absolute inset-0 mix-blend-multiply"
+                    style={{
+                      background: 'linear-gradient(135deg, #d97757 0%, #ffd7b5 100%)',
+                      pointerEvents: 'none'
+                    }}
+                  />
+                )}
               </div>
 
-              {/* Content Section */}
-              <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {tool.tags.map((tag, idx) => (
-                    <span
-                      key={idx}
-                      className={`px-3 py-1 rounded-full text-xs font-bold ${tool.tagColors[idx]}`}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
+              {/* Content Section - Compact */}
+              <div className="flex-1 min-w-0">
                 {/* Title */}
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 group-hover:text-[#d97757] transition-colors duration-300">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 group-hover:text-gray-700 transition-colors mb-0.5">
                   {tool.name}
                 </h3>
 
+                {/* Subtitle */}
+                <p className="text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
+                  {tool.subtitle}
+                </p>
+
                 {/* Description */}
-                <p className="text-base text-gray-600 leading-relaxed mb-6">
+                <p className="text-xs text-gray-600 mb-2 leading-relaxed">
                   {tool.description}
                 </p>
 
-                {/* Hover Arrow Indicator */}
-                <div className="flex items-center gap-2 text-sm font-bold text-[#d97757] opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-0 group-hover:translate-x-2">
-                  Learn more
-                  <ArrowUpRight className="w-4 h-4" />
-                </div>
+                {/* CTA Button - Compact */}
+                <a
+                  href={tool.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-white px-3 py-1.5 rounded-lg hover:opacity-90 transition-all duration-200"
+                  style={{
+                    background: '#000000',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                  }}
+                >
+                  {tool.cta}
+                  <ArrowUpRight className="w-3 h-3" />
+                </a>
               </div>
             </div>
           </div>
-        ))}
-      </div>
+        </ScrollReveal>
+      ))}
     </div>
   )
 }
@@ -350,256 +379,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Transition Section - Tools Showcase */}
-      <section
-        className="relative py-12 sm:py-16 lg:py-20"
-        style={{
-          backgroundImage: 'url(/whitehex.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          {/* Large 3D White Card Container */}
-          <div
-            className="bg-white rounded-3xl p-8 sm:p-12 lg:p-16"
-            style={{
-              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08)',
-              transform: 'perspective(1000px) rotateX(1deg)',
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            <div className="text-center">
-              {/* Main Header - Compact */}
-              <ScrollReveal>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-gray-900 mb-4 leading-tight">
-                  Building the Future
-                </h2>
-              </ScrollReveal>
-
-              {/* Pill-shaped description - Compact */}
-              <ScrollReveal delay={100}>
-                <div className="inline-block mb-10">
-                  <div className="px-6 py-3 rounded-full bg-gray-50 border border-gray-200 shadow-sm max-w-2xl">
-                    <p className="text-sm sm:text-base text-gray-800 font-medium">
-                      Building products that make a real difference in everyday life.
-                    </p>
-                  </div>
-                </div>
-              </ScrollReveal>
-
-              {/* Tools Grid */}
-              <ToolsGrid />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section - BELOW Hero */}
-      <section
-        id="services"
-        className="relative bg-gray-50 py-10 sm:py-14 lg:py-16 xl:py-20"
-      >
-          <div className="max-w-[1200px] mx-auto px-5 sm:px-6">
-          {/* Header */}
-          <div className="text-center mb-8 sm:mb-10 lg:mb-14">
-            <ScrollReveal>
-              <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-6 sm:mb-8 px-4 sm:px-0">
-                Transform Your Business{" "}
-                <span style={{ color: '#d97757' }}>with AI</span>
-              </h2>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
-              <p className="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto px-4 sm:px-0 mb-8 sm:mb-10 lg:mb-12">
-                We don't sell AI. We don't develop AI. We architect it. Every day new models and tools are deployed to the market, and most business owners can't keep up.
-              </p>
-            </ScrollReveal>
-          </div>
-
-          {/* Three Service Cards */}
-          <div className="grid md:grid-cols-3 gap-5 lg:gap-6 mb-8 sm:mb-10 lg:mb-12">
-            {/* AI Consulting - Compact */}
-            <ScrollReveal delay={50}>
-              <div className="card-entrance card-entrance-delay-1 group p-4 sm:p-5 lg:p-6 h-full flex flex-col transition-all duration-300 angled-border-subtle bg-white shadow-md hover:shadow-xl hover:-translate-y-2 hover:scale-[1.02]" style={{ border: '2px solid #fef5ef' }}>
-                <div className="w-10 h-10 rounded-lg mb-3 sm:mb-4 flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.08)' }}>
-                  <svg className="w-5 h-5" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                </div>
-                <h3 className="font-heading text-lg sm:text-xl font-semibold text-foreground mb-1.5">AI Consulting</h3>
-                <p className="text-xs sm:text-sm font-semibold mb-3 sm:mb-4" style={{ color: '#d97757' }}>Strategy & Implementation</p>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 flex-grow">
-                  We help you understand where AI fits in your business and develop clear implementation strategies.
-                </p>
-                <ul className="space-y-1.5 sm:space-y-2 mb-4">
-                  <li className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                    <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    AI Strategy & Roadmap
-                  </li>
-                  <li className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                    <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Process Audits
-                  </li>
-                  <li className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                    <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Implementation Planning
-                  </li>
-                  <li className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                    <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Team Training
-                  </li>
-                </ul>
-              </div>
-            </ScrollReveal>
-
-            {/* AI Agent Building - Compact */}
-            <ScrollReveal delay={100}>
-              <div className="card-entrance card-entrance-delay-2 group p-4 sm:p-5 lg:p-6 h-full flex flex-col transition-all duration-300 angled-border-subtle bg-white shadow-md hover:shadow-xl hover:-translate-y-2 hover:scale-[1.02]" style={{ border: '2px solid #fef5ef' }}>
-                <div className="w-10 h-10 rounded-lg mb-3 sm:mb-4 flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.08)' }}>
-                  <svg className="w-5 h-5" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                  </svg>
-                </div>
-                <h3 className="font-heading text-lg sm:text-xl font-semibold text-foreground mb-1.5">AI Agent Building</h3>
-                <p className="text-xs sm:text-sm font-semibold mb-3 sm:mb-4" style={{ color: '#d97757' }}>Custom AI Solutions</p>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 flex-grow">
-                  Custom AI agents tailored to your specific business needs and workflows.
-                </p>
-                <ul className="space-y-1.5 sm:space-y-2">
-                  <li className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                    <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Custom Built Agents
-                  </li>
-                  <li className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                    <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Tailored to Your Business
-                  </li>
-                  <li className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                    <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Fully Integrated
-                  </li>
-                  <li className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                    <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Ongoing Support
-                  </li>
-                </ul>
-              </div>
-            </ScrollReveal>
-
-            {/* Web App & Design - Compact */}
-            <ScrollReveal delay={150}>
-              <div className="card-entrance card-entrance-delay-3 group p-4 sm:p-5 lg:p-6 h-full flex flex-col transition-all duration-300 angled-border-subtle bg-white shadow-md hover:shadow-xl hover:-translate-y-2 hover:scale-[1.02]" style={{ border: '2px solid #fef5ef' }}>
-                <div className="w-10 h-10 rounded-lg mb-3 sm:mb-4 flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.08)' }}>
-                  <svg className="w-5 h-5" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                  </svg>
-                </div>
-                <h3 className="font-heading text-lg sm:text-xl font-semibold text-foreground mb-1.5">Web App & Design</h3>
-                <p className="text-xs sm:text-sm font-semibold mb-3 sm:mb-4" style={{ color: '#d97757' }}>Full-Stack Development</p>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-4 flex-grow">
-                  Modern web applications built with the latest technologies and best practices.
-                </p>
-                <ul className="space-y-1.5 sm:space-y-2 mb-4">
-                  <li className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                    <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Full-Stack Development
-                  </li>
-                  <li className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                    <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Modern UI/UX Design
-                  </li>
-                  <li className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                    <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Responsive & Fast
-                  </li>
-                  <li className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                    <svg className="w-4 h-4 flex-shrink-0" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    SEO Optimized
-                  </li>
-                </ul>
-              </div>
-            </ScrollReveal>
-          </div>
-
-          {/* CTA Button - Below Cards */}
-          <ScrollReveal delay={200}>
-            <div className="text-center mt-8">
-              <a
-                href="#connect"
-                className="inline-block text-base sm:text-lg font-bold px-8 py-4 rounded-lg text-white spring-bounce enhanced-button transition-all duration-300 uppercase tracking-wide shadow-lg"
-                style={{
-                  background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
-                }}
-              >
-                See what the latest AI tools could do for your business
-              </a>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* Process Section - Concrete Gray with Light Cards */}
-      <section id="process" className="py-16 sm:py-20 lg:py-24 xl:py-28 relative overflow-hidden" style={{ background: '#898989' }}>
+      {/* Process Section - Light Theme */}
+      <section id="process" className="py-16 sm:py-20 lg:py-24 xl:py-28 relative overflow-hidden" style={{ background: '#ffffff' }}>
         <div className="max-w-[1200px] mx-auto px-5 sm:px-6 relative" style={{ zIndex: 1 }}>
           {/* Header */}
           <div className="text-center mb-12 sm:mb-14 lg:mb-16">
             <ScrollReveal>
-              <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-4 sm:mb-6 text-white px-4 sm:px-0">
+              <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-4 sm:mb-6 text-gray-900 px-4 sm:px-0">
                 Our Process
               </h2>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <p className="text-lg sm:text-xl lg:text-2xl text-white/80 max-w-3xl mx-auto px-4 sm:px-0 font-medium">
+              <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 max-w-3xl mx-auto px-4 sm:px-0 font-medium">
                 From idea to implementation, we guide you every step of the way
               </p>
             </ScrollReveal>
           </div>
 
-          {/* Process Cards - Light Gray on Dark */}
+          {/* Process Cards - Dark Cards on Light */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {/* Card 1 - Discover */}
             <ScrollReveal delay={50}>
               <div className="rounded-2xl p-6 sm:p-8 transition-all duration-500 hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl group cursor-pointer"
                 style={{
-                  background: '#f5f5f5',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                  background: '#ffffff',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                  border: '1px solid rgba(0, 0, 0, 0.1)',
                   transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
                 }}
               >
                 <div className="mb-6">
                   <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: 'linear-gradient(135deg, #d97757 0%, #ffd7b5 100%)' }}
+                    style={{ background: '#000000' }}
                   >
                     <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
                   </div>
-                  <div className="text-xs font-bold text-gray-400 mb-2 tracking-wider">STEP 01</div>
+                  <div className="text-xs font-bold text-gray-500 mb-2 tracking-wider">STEP 01</div>
                   <h3 className="font-heading text-2xl font-bold text-gray-900 mb-3">Discover</h3>
                 </div>
                 <p className="text-sm text-gray-600 leading-relaxed">
@@ -612,20 +429,21 @@ export default function Home() {
             <ScrollReveal delay={100}>
               <div className="rounded-2xl p-6 sm:p-8 transition-all duration-500 hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl group cursor-pointer"
                 style={{
-                  background: '#f5f5f5',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                  background: '#ffffff',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                  border: '1px solid rgba(0, 0, 0, 0.1)',
                   transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
                 }}
               >
                 <div className="mb-6">
                   <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: 'linear-gradient(135deg, #d97757 0%, #ffd7b5 100%)' }}
+                    style={{ background: '#000000' }}
                   >
                     <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                     </svg>
                   </div>
-                  <div className="text-xs font-bold text-gray-400 mb-2 tracking-wider">STEP 02</div>
+                  <div className="text-xs font-bold text-gray-500 mb-2 tracking-wider">STEP 02</div>
                   <h3 className="font-heading text-2xl font-bold text-gray-900 mb-3">Design</h3>
                 </div>
                 <p className="text-sm text-gray-600 leading-relaxed">
@@ -638,20 +456,21 @@ export default function Home() {
             <ScrollReveal delay={150}>
               <div className="rounded-2xl p-6 sm:p-8 transition-all duration-500 hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl group cursor-pointer"
                 style={{
-                  background: '#f5f5f5',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                  background: '#ffffff',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                  border: '1px solid rgba(0, 0, 0, 0.1)',
                   transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
                 }}
               >
                 <div className="mb-6">
                   <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: 'linear-gradient(135deg, #d97757 0%, #ffd7b5 100%)' }}
+                    style={{ background: '#000000' }}
                   >
                     <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                     </svg>
                   </div>
-                  <div className="text-xs font-bold text-gray-400 mb-2 tracking-wider">STEP 03</div>
+                  <div className="text-xs font-bold text-gray-500 mb-2 tracking-wider">STEP 03</div>
                   <h3 className="font-heading text-2xl font-bold text-gray-900 mb-3">Develop</h3>
                 </div>
                 <p className="text-sm text-gray-600 leading-relaxed">
@@ -664,25 +483,230 @@ export default function Home() {
             <ScrollReveal delay={200}>
               <div className="rounded-2xl p-6 sm:p-8 transition-all duration-500 hover:-translate-y-3 hover:scale-[1.03] hover:shadow-2xl group cursor-pointer"
                 style={{
-                  background: '#f5f5f5',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                  background: '#ffffff',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                  border: '1px solid rgba(0, 0, 0, 0.1)',
                   transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)'
                 }}
               >
                 <div className="mb-6">
                   <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: 'linear-gradient(135deg, #d97757 0%, #ffd7b5 100%)' }}
+                    style={{ background: '#000000' }}
                   >
                     <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>
                   </div>
-                  <div className="text-xs font-bold text-gray-400 mb-2 tracking-wider">STEP 04</div>
+                  <div className="text-xs font-bold text-gray-500 mb-2 tracking-wider">STEP 04</div>
                   <h3 className="font-heading text-2xl font-bold text-gray-900 mb-3">Deploy</h3>
                 </div>
                 <p className="text-sm text-gray-600 leading-relaxed">
                   We launch your solution and provide ongoing support for lasting success
                 </p>
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Transition Section - Tools Showcase - COMPACT */}
+      <section
+        id="tools"
+        className="relative py-8 sm:py-10 lg:py-12"
+        style={{
+          background: '#ffffff'
+        }}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          {/* Main Header - Compact */}
+          <ScrollReveal>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-gray-900 mb-2 text-center">
+              We Build What We Sell
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 text-center font-medium">
+              Free tools built with the same AI that powers our client solutions
+            </p>
+          </ScrollReveal>
+
+          {/* Tools Grid - Compact Horizontal */}
+          <ToolsGrid />
+        </div>
+      </section>
+
+      {/* Services Section - Split Layout */}
+      <section
+        id="services"
+        className="relative bg-black py-12 sm:py-16 lg:py-20 xl:py-24"
+      >
+        <div className="max-w-[1190px] mx-auto px-4 sm:px-5">
+          {/* Header */}
+          <div className="mb-10 sm:mb-12 lg:mb-16">
+            <ScrollReveal>
+              <h2
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-wider text-white"
+                style={{
+                  fontFamily: "'Orbitron', 'Exo 2', 'Rajdhani', sans-serif",
+                  letterSpacing: '0.1em'
+                }}
+              >
+                Transform Your Business with AI
+              </h2>
+            </ScrollReveal>
+          </div>
+
+          {/* Split Layout Grid */}
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+            {/* LEFT SIDE: Expandable Accordion Cards */}
+            <div className="flex flex-col gap-4">
+              {/* AI Consulting */}
+              <ScrollReveal delay={50}>
+                <div
+                  className="rounded-lg p-4 cursor-pointer transition-all duration-300"
+                  style={{ background: 'rgba(255, 255, 255, 0.05)' }}
+                  onClick={() => {
+                    const content = document.getElementById('service-1');
+                    const icon = document.getElementById('service-icon-1');
+                    if (content && icon) {
+                      if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                        content.style.maxHeight = '0px';
+                        icon.style.transform = 'rotate(0deg)';
+                      } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                      }
+                    }
+                  }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <h3 className="text-base font-bold text-white uppercase tracking-wider">AI Consulting</h3>
+                      <p className="text-xs text-white/70 font-semibold">Strategy & Implementation</p>
+                    </div>
+                    <svg id="service-icon-1" className="w-5 h-5 text-white transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <div id="service-1" className="overflow-hidden transition-all duration-300" style={{ maxHeight: '0px' }}>
+                    <p className="text-sm text-white/60 leading-relaxed mb-3 mt-2">
+                      We help you understand where AI fits in your business and develop clear implementation strategies.
+                    </p>
+                    <ul className="space-y-1.5">
+                      {['AI Strategy & Roadmap', 'Process Audits', 'Implementation Planning', 'Team Training'].map((item) => (
+                        <li key={item} className="text-xs text-white/80 flex items-start gap-2">
+                          <span className="text-white/60 mt-0.5">•</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              {/* AI Agent Building */}
+              <ScrollReveal delay={100}>
+                <div
+                  className="rounded-lg p-4 cursor-pointer transition-all duration-300"
+                  style={{ background: 'rgba(255, 255, 255, 0.05)' }}
+                  onClick={() => {
+                    const content = document.getElementById('service-2');
+                    const icon = document.getElementById('service-icon-2');
+                    if (content && icon) {
+                      if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                        content.style.maxHeight = '0px';
+                        icon.style.transform = 'rotate(0deg)';
+                      } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                      }
+                    }
+                  }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <h3 className="text-base font-bold text-white uppercase tracking-wider">AI Agent Building</h3>
+                      <p className="text-xs text-white/70 font-semibold">Custom AI Solutions</p>
+                    </div>
+                    <svg id="service-icon-2" className="w-5 h-5 text-white transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <div id="service-2" className="overflow-hidden transition-all duration-300" style={{ maxHeight: '0px' }}>
+                    <p className="text-sm text-white/60 leading-relaxed mb-3 mt-2">
+                      Custom AI agents tailored to your specific business needs and workflows.
+                    </p>
+                    <ul className="space-y-1.5">
+                      {['Custom Built Agents', 'Tailored to Your Business', 'Fully Integrated', 'Ongoing Support'].map((item) => (
+                        <li key={item} className="text-xs text-white/80 flex items-start gap-2">
+                          <span className="text-white/60 mt-0.5">•</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              {/* Web App & Design */}
+              <ScrollReveal delay={150}>
+                <div
+                  className="rounded-lg p-4 cursor-pointer transition-all duration-300"
+                  style={{ background: 'rgba(255, 255, 255, 0.05)' }}
+                  onClick={() => {
+                    const content = document.getElementById('service-3');
+                    const icon = document.getElementById('service-icon-3');
+                    if (content && icon) {
+                      if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                        content.style.maxHeight = '0px';
+                        icon.style.transform = 'rotate(0deg)';
+                      } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                      }
+                    }
+                  }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <h3 className="text-base font-bold text-white uppercase tracking-wider">Web App & Design</h3>
+                      <p className="text-xs text-white/70 font-semibold">Full-Stack Development</p>
+                    </div>
+                    <svg id="service-icon-3" className="w-5 h-5 text-white transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <div id="service-3" className="overflow-hidden transition-all duration-300" style={{ maxHeight: '0px' }}>
+                    <p className="text-sm text-white/60 leading-relaxed mb-3 mt-2">
+                      Modern web applications built with the latest technologies and best practices.
+                    </p>
+                    <ul className="space-y-1.5">
+                      {['Full-Stack Development', 'Modern UI/UX Design', 'Responsive & Fast', 'SEO Optimized'].map((item) => (
+                        <li key={item} className="text-xs text-white/80 flex items-start gap-2">
+                          <span className="text-white/60 mt-0.5">•</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
+
+            {/* RIGHT SIDE: AI Orb Video */}
+            <ScrollReveal delay={200}>
+              <div className="flex justify-center lg:justify-end">
+                <video
+                  autoPlay
+                  muted
+                  playsInline
+                  loop
+                  preload="auto"
+                  className="w-full max-w-[340px] lg:max-w-[425px] h-auto"
+                  style={{
+                    filter: 'brightness(1.1) contrast(1.15) saturate(1.2)',
+                  }}
+                >
+                  <source src="https://pub-7824dae2ffd24193b52760c54972be1d.r2.dev/00orb.mp4" type="video/mp4" />
+                </video>
               </div>
             </ScrollReveal>
           </div>
@@ -1084,7 +1108,7 @@ export default function Home() {
           >
             <source src="https://pub-7824dae2ffd24193b52760c54972be1d.r2.dev/111peachbaby.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-500/40 via-gray-500/30 to-gray-600/50" />
         </div>
 
         <div className="max-w-[1200px] mx-auto px-5 sm:px-6 relative" style={{ zIndex: 1 }}>

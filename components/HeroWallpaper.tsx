@@ -2,28 +2,14 @@
 
 import { ArrowDown } from "lucide-react"
 import Image from "next/image"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 
 export function HeroWallpaper() {
   const [isVisible, setIsVisible] = useState(false)
   const [showStory, setShowStory] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     setIsVisible(true)
-  }, [])
-
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-
-    const handleEnded = () => {
-      video.currentTime = 0
-      video.play()
-    }
-
-    video.addEventListener('ended', handleEnded)
-    return () => video.removeEventListener('ended', handleEnded)
   }, [])
 
   // Prevent body scroll when story modal is open (iOS fix)
@@ -57,15 +43,15 @@ export function HeroWallpaper() {
     >
       {/* Video Background */}
       <video
-        ref={videoRef}
         autoPlay
         muted
         playsInline
+        loop
         className="absolute inset-0 w-full h-full object-cover"
         style={{
           objectFit: 'cover',
           zIndex: 0,
-          filter: 'brightness(0.6) grayscale(100%) contrast(1.1)',
+          filter: 'brightness(0.6) grayscale(100%) contrast(1.1)'
         }}
       >
         <source src="https://pub-7824dae2ffd24193b52760c54972be1d.r2.dev/123454321green.mp4" type="video/mp4" />
@@ -88,170 +74,148 @@ export function HeroWallpaper() {
           }}
         >
 
-          {/* Hero Content - Clean Minimalist Layout with Dramatic Entrance */}
-          <div className="absolute inset-0 flex items-center justify-center z-[10] pointer-events-none hero-entrance" style={{ paddingTop: '80px', paddingBottom: '40px' }}>
-              <div className="max-w-[1200px] mx-auto px-5 sm:px-6 py-4 pointer-events-auto w-full">
+          {/* Hero Content - Split Screen Layout */}
+          <div className="absolute inset-0 flex items-center justify-center z-[10] pointer-events-none" style={{ paddingTop: '80px', paddingBottom: '40px' }}>
+            <div className="max-w-[1200px] mx-auto px-5 sm:px-6 py-4 pointer-events-auto w-full">
 
-                {/* Icon + Logo - Side by Side */}
-                <div
-                  className="flex items-center justify-center gap-4 sm:gap-6 mb-6 sm:mb-8"
+              {/* Logo - Centered Top */}
+              <div
+                className="flex items-center justify-center mb-8"
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(-10px) scale(0.95)',
+                  transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.05s',
+                }}
+              >
+                <button
+                  onClick={() => setShowStory(true)}
+                  className="cursor-pointer transition-transform duration-200 hover:scale-105"
+                  aria-label="Learn more about Haestus"
                   style={{
-                    opacity: isVisible ? 1 : 0,
-                    transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(-10px) scale(0.95)',
-                    transition: 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
+                    WebkitTapHighlightColor: 'transparent',
                   }}
                 >
                   <Image
-                    src="/blackmm.png"
-                    alt="Haestus Icon"
-                    width={60}
-                    height={60}
-                    className="w-auto h-auto max-w-[45px] sm:max-w-[55px] md:max-w-[60px]"
-                    priority
-                    style={{
-                      filter: 'brightness(0) invert(1) drop-shadow(0 10px 40px rgba(255, 255, 255, 0.15))',
-                    }}
-                  />
-                  <Image
-                    src="/trans1.png"
+                    src="/mm.png"
                     alt="Haestus"
-                    width={220}
-                    height={220}
-                    className="w-auto h-auto max-w-[160px] sm:max-w-[200px] md:max-w-[240px]"
+                    width={330}
+                    height={330}
+                    className="w-auto h-auto max-w-[240px] sm:max-w-[300px]"
                     priority
                     style={{
-                      filter: 'brightness(0) invert(1) drop-shadow(0 10px 40px rgba(255, 255, 255, 0.15))',
+                      filter: 'brightness(0) invert(1)',
+                      borderRadius: '6px'
                     }}
                   />
-                </div>
+                </button>
+              </div>
 
-                {/* Divider Line */}
+              {/* Split Screen Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+
+                {/* LEFT SIDE: Title, Subtitle, Buttons */}
                 <div
-                  className="w-full max-w-5xl mx-auto mb-8"
+                  className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-6"
                   style={{
                     opacity: isVisible ? 1 : 0,
-                    transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
+                    transform: isVisible ? 'translateX(0)' : 'translateX(-30px)',
+                    transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
                   }}
                 >
-                  <div className="h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-                </div>
-
-                {/* Main Headline */}
-                <div
-                  className="text-center mb-6 sm:mb-8"
-                  style={{
-                    opacity: isVisible ? 1 : 0,
-                    transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-                    transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s',
-                  }}
-                >
-                  <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-black text-white leading-tight max-w-4xl mx-auto px-4 mb-3 sm:mb-4" style={{ letterSpacing: '-0.02em' }}>
-                    AI Is Leveling the Playing Field
-                    <br />
-                    For Everyone
+                  {/* Title */}
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight" style={{ letterSpacing: '-0.02em' }}>
+                    The age of AI is the rematch between David and Goliath.
                   </h1>
-                  <p className="text-xs sm:text-sm md:text-base text-white/70 max-w-3xl mx-auto px-4 font-medium uppercase tracking-wide flex items-center justify-center gap-2">
-                    Never before has the stage been more set for those
-                    <button
-                      onClick={() => setShowStory(true)}
-                      className="text-white/70 hover:text-white transition-all duration-200 hover:scale-110 cursor-pointer font-bold"
-                      aria-label="Learn more about Haestus"
+
+                  {/* Subtitle */}
+                  <p className="text-sm sm:text-base md:text-lg text-white/70 font-medium tracking-wide italic">
+                    and we're crafting slingshots
+                  </p>
+
+                  {/* Buttons Stacked */}
+                  <div className="flex flex-col gap-3 w-full max-w-md">
+                    <a
+                      href="#services"
+                      className="text-sm font-bold px-6 py-4 rounded-lg text-white hover:bg-white/10 transition-all duration-200 text-center uppercase tracking-wide"
                       style={{
-                        minWidth: '32px',
-                        minHeight: '32px',
+                        border: '2px solid rgba(255, 255, 255, 0.3)',
                         WebkitTapHighlightColor: 'transparent',
                       }}
                     >
-                      &gt;
-                    </button>
-                  </p>
+                      Learn More
+                    </a>
+                    <a
+                      href="/portal"
+                      className="text-sm font-bold px-6 py-4 rounded-lg text-white hover:opacity-90 transition-all duration-200 text-center uppercase tracking-wide"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(217, 119, 87, 0.9), rgba(255, 215, 181, 0.85))',
+                        backdropFilter: 'blur(20px) saturate(180%)',
+                        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                        border: '1px solid rgba(255, 255, 255, 0.3)',
+                        WebkitTapHighlightColor: 'transparent',
+                        boxShadow: '0 8px 32px rgba(217, 119, 87, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+                      }}
+                    >
+                      Client Portal
+                    </a>
+                  </div>
                 </div>
 
-                {/* Three Pillars */}
+                {/* RIGHT SIDE: Three Pillars Vertical */}
                 <div
-                  className="grid grid-cols-3 gap-3 sm:gap-6 max-w-5xl mx-auto mb-6 sm:mb-8 px-4"
+                  className="flex flex-col gap-6"
                   style={{
                     opacity: isVisible ? 1 : 0,
-                    transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-                    transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s',
+                    transform: isVisible ? 'translateX(0)' : 'translateX(30px)',
+                    transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s',
                   }}
                 >
-                  <div className="text-center">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {/* Strategy */}
+                  <div className="flex items-start gap-4 p-4 rounded-lg" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
+                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
-                    <h3 className="text-xs sm:text-sm font-bold text-white mb-1 sm:mb-2 uppercase tracking-wider">Strategy</h3>
-                    <p className="text-[10px] sm:text-xs text-white/60 leading-relaxed hidden sm:block">Build roadmaps that matter</p>
+                    <div>
+                      <h3 className="text-sm font-bold text-white mb-1 uppercase tracking-wider">Strategy</h3>
+                      <p className="text-sm text-white/60 leading-relaxed">Build roadmaps that matter</p>
+                    </div>
                   </div>
 
-                  <div className="text-center">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {/* Implementation */}
+                  <div className="flex items-start gap-4 p-4 rounded-lg" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
+                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                       </svg>
                     </div>
-                    <h3 className="text-xs sm:text-sm font-bold text-white mb-1 sm:mb-2 uppercase tracking-wider">Implementation</h3>
-                    <p className="text-[10px] sm:text-xs text-white/60 leading-relaxed hidden sm:block">Ship products that scale</p>
+                    <div>
+                      <h3 className="text-sm font-bold text-white mb-1 uppercase tracking-wider">Implementation</h3>
+                      <p className="text-sm text-white/60 leading-relaxed">Ship products that scale</p>
+                    </div>
                   </div>
 
-                  <div className="text-center">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                      <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {/* Excellence */}
+                  <div className="flex items-start gap-4 p-4 rounded-lg" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
+                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                       </svg>
                     </div>
-                    <h3 className="text-xs sm:text-sm font-bold text-white mb-1 sm:mb-2 uppercase tracking-wider">Excellence</h3>
-                    <p className="text-[10px] sm:text-xs text-white/60 leading-relaxed hidden sm:block">Deliver reliable results</p>
+                    <div>
+                      <h3 className="text-sm font-bold text-white mb-1 uppercase tracking-wider">Excellence</h3>
+                      <p className="text-sm text-white/60 leading-relaxed">Deliver reliable results</p>
+                    </div>
                   </div>
                 </div>
+              </div>
 
-                {/* CTA - Starlink Style */}
-                <div
-                  className="flex flex-col sm:flex-row justify-center gap-3 px-4"
-                  style={{
-                    opacity: isVisible ? 1 : 0,
-                    transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-                    transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s',
-                  }}
-                >
-                  <a
-                    href="#services"
-                    className="text-xs sm:text-sm font-bold px-6 py-3 rounded-lg bg-transparent text-white hover:bg-white/10 transition-all duration-200 text-center uppercase tracking-wide"
-                    style={{
-                      border: '2px solid rgba(255, 255, 255, 0.3)',
-                      minHeight: '50px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      WebkitTapHighlightColor: 'transparent',
-                    }}
-                  >
-                    VIEW ALL PLANS
-                  </a>
-                  <a
-                    href="/portal"
-                    className="text-xs sm:text-sm font-bold px-6 py-3 rounded-lg text-white hover:opacity-90 transition-all duration-200 text-center uppercase tracking-wide shadow-lg"
-                    style={{
-                      background: '#e89b7c',
-                      minHeight: '50px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      WebkitTapHighlightColor: 'transparent',
-                      boxShadow: '0 4px 14px rgba(217, 119, 87, 0.4)',
-                    }}
-                  >
-                    CLIENT PORTAL
-                  </a>
-                </div>
-
-                <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-                  <ArrowDown className="w-5 h-5 text-white/40" />
-                </div>
+              <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
+                <ArrowDown className="w-5 h-5 text-white/60" />
               </div>
             </div>
+          </div>
         </div>
       </div>
 
@@ -316,7 +280,7 @@ export function HeroWallpaper() {
               <div>
                 {/* Header */}
                 <h3 className="text-lg sm:text-xl font-bold text-white mb-3 uppercase tracking-wide text-center" style={{ letterSpacing: '0.05em', fontWeight: 700 }}>
-                  Who Want To Step Into The Light
+                  Leveraging AI
                 </h3>
 
                 <div className="w-16 h-0.5 bg-gradient-to-r from-[#d97757] to-[#ffd7b5] mb-4 rounded-full mx-auto" />
