@@ -132,11 +132,11 @@ export function HeroWallpaper() {
                     and we're crafting slingshots
                   </p>
 
-                  {/* Buttons Stacked */}
-                  <div className="flex flex-col gap-3 w-full max-w-md">
+                  {/* Buttons Side by Side */}
+                  <div className="flex flex-row gap-3 w-full max-w-md">
                     <a
                       href="#services"
-                      className="text-sm font-bold px-6 py-4 rounded-lg text-white hover:bg-white/10 transition-all duration-200 text-center uppercase tracking-wide"
+                      className="flex-1 text-sm font-bold px-6 py-4 rounded-lg text-white hover:bg-white/10 transition-all duration-200 text-center uppercase tracking-wide"
                       style={{
                         border: '2px solid rgba(255, 255, 255, 0.3)',
                         WebkitTapHighlightColor: 'transparent',
@@ -146,9 +146,9 @@ export function HeroWallpaper() {
                     </a>
                     <a
                       href="/portal"
-                      className="text-sm font-bold px-6 py-4 rounded-lg text-white hover:bg-white/10 transition-all duration-200 text-center uppercase tracking-wide"
+                      className="flex-1 text-sm font-bold px-6 py-4 rounded-lg text-white hover:bg-white/10 transition-all duration-200 text-center uppercase tracking-wide"
                       style={{
-                        border: '2px solid rgba(255, 255, 255, 0.3)',
+                        border: '2px solid #d97757',
                         WebkitTapHighlightColor: 'transparent',
                       }}
                     >

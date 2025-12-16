@@ -452,87 +452,74 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Our Process Section - Split View */}
+      {/* Our Process Section - Dark Theme */}
       <section
         id="our-process-interactive"
-        className="relative py-12 sm:py-14 lg:py-16 bg-white"
+        className="relative bg-black py-16 sm:py-20 lg:py-24"
       >
-        <div className="max-w-[1200px] mx-auto px-6 sm:px-8">
+        <div className="max-w-[1100px] mx-auto px-5 sm:px-6">
           {/* Header */}
-          <div className="mb-8 text-center">
+          <div className="text-center mb-12 sm:mb-16">
             <ScrollReveal>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4">
-                Our Process
+              <h2
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-wider text-white mb-4"
+                style={{
+                  fontFamily: "'Orbitron', 'Exo 2', 'Rajdhani', sans-serif",
+                  letterSpacing: '0.1em'
+                }}
+              >
+                How We Work
               </h2>
-              {/* Progress Dots */}
-              <div className="flex items-center justify-center gap-1.5">
-                {[
-                  { key: 'projects', num: 1 },
-                  { key: 'clients', num: 2 },
-                  { key: 'team', num: 3 },
-                  { key: 'save', num: 4 }
-                ].map((step) => (
-                  <button
-                    key={step.key}
-                    onClick={() => setActiveTab(step.key as any)}
-                    className={`transition-all duration-300 ${
-                      activeTab === step.key
-                        ? 'w-6 h-1.5 rounded-full shadow-lg'
-                        : 'w-1.5 h-1.5 rounded-full border backdrop-blur-sm'
-                    }`}
-                    style={activeTab === step.key ? {
-                      background: 'rgba(0, 0, 0, 0.9)',
-                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)'
-                    } : {
-                      background: 'rgba(0, 0, 0, 0.15)',
-                      border: '1px solid rgba(0, 0, 0, 0.2)',
-                      backdropFilter: 'blur(8px)',
-                      WebkitBackdropFilter: 'blur(8px)'
-                    }}
-                    aria-label={`Go to step ${step.num}`}
-                  />
-                ))}
-              </div>
+              <p className="text-white/60 text-sm sm:text-base max-w-xl mx-auto">
+                A proven 4-step process that turns your vision into reality
+              </p>
             </ScrollReveal>
           </div>
 
-          {/* Horizontal Tabs */}
+          {/* Progress Bar */}
           <ScrollReveal delay={100}>
-            <div className="flex flex-wrap justify-center gap-1.5 mb-7">
+            <div className="flex items-center justify-center gap-2 mb-12">
               {[
-                { num: 1, title: 'Discover', key: 'projects' },
-                { num: 2, title: 'Design', key: 'clients' },
-                { num: 3, title: 'Develop', key: 'team' },
-                { num: 4, title: 'Deploy', key: 'save' }
-              ].map((step) => (
-                <button
-                  key={step.num}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 border`}
-                  style={activeTab === step.key ? {
-                    background: 'rgba(0, 0, 0, 0.85)',
-                    border: '1px solid rgba(0, 0, 0, 0.9)',
-                    backdropFilter: 'blur(16px)',
-                    WebkitBackdropFilter: 'blur(16px)',
-                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)'
-                  } : {
-                    background: 'rgba(0, 0, 0, 0.04)',
-                    border: '1px solid rgba(0, 0, 0, 0.08)',
-                    backdropFilter: 'blur(12px)',
-                    WebkitBackdropFilter: 'blur(12px)'
-                  }}
-                  onClick={() => setActiveTab(step.key as any)}
-                >
-                  <span className={`font-semibold text-xs ${
-                    activeTab === step.key ? 'text-white' : 'text-gray-600'
-                  }`}>
-                    {step.num}
-                  </span>
-                  <span className={`text-xs font-medium ${
-                    activeTab === step.key ? 'text-white' : 'text-gray-600'
-                  }`}>
-                    {step.title}
-                  </span>
-                </button>
+                { key: 'projects', num: 1, label: 'Discover', time: '1-2 weeks' },
+                { key: 'clients', num: 2, label: 'Design', time: '2-3 weeks' },
+                { key: 'team', num: 3, label: 'Develop', time: '4-8 weeks' },
+                { key: 'save', num: 4, label: 'Deploy', time: '1-2 weeks' }
+              ].map((step, index) => (
+                <div key={step.key} className="flex items-center">
+                  <button
+                    onClick={() => setActiveTab(step.key as any)}
+                    className={`flex flex-col items-center transition-all duration-300`}
+                  >
+                    <div
+                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-2 transition-all duration-300 ${
+                        activeTab === step.key ? 'scale-110' : ''
+                      }`}
+                      style={{
+                        background: activeTab === step.key ? '#d97757' : 'rgba(255, 255, 255, 0.1)',
+                        border: `2px solid ${activeTab === step.key ? '#d97757' : 'rgba(255, 255, 255, 0.2)'}`
+                      }}
+                    >
+                      <span className={`text-sm font-bold ${activeTab === step.key ? 'text-white' : 'text-white/60'}`}>
+                        {step.num}
+                      </span>
+                    </div>
+                    <span className={`text-xs font-semibold uppercase tracking-wider hidden sm:block ${
+                      activeTab === step.key ? 'text-white' : 'text-white/40'
+                    }`}>
+                      {step.label}
+                    </span>
+                  </button>
+                  {index < 3 && (
+                    <div
+                      className="w-8 sm:w-16 h-0.5 mx-2"
+                      style={{
+                        background: ['projects', 'clients', 'team'].indexOf(activeTab) > index
+                          ? '#d97757'
+                          : 'rgba(255, 255, 255, 0.1)'
+                      }}
+                    />
+                  )}
+                </div>
               ))}
             </div>
           </ScrollReveal>
@@ -540,111 +527,78 @@ export default function Home() {
           {/* Content Card */}
           <ScrollReveal delay={150}>
             <div
-              className="max-w-3xl mx-auto rounded-xl p-6 sm:p-7 border min-h-[300px] transition-all duration-500 ease-in-out"
+              className="max-w-3xl mx-auto rounded-2xl p-8 sm:p-10 transition-all duration-500"
               style={{
-                background: 'rgba(0, 0, 0, 0.02)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-                border: '1px solid rgba(0, 0, 0, 0.08)',
-                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04), inset 0 1px 0 0 rgba(255, 255, 255, 0.5)'
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
               }}
             >
                 {activeTab === "projects" && (
-                  <div className="space-y-4 animate-fade-in text-center">
-                    <div className="mb-1">
-                      <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>STEP 01</span>
+                  <div className="animate-fade-in">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.2)' }}>
+                        <svg className="w-7 h-7" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>Week 1-2</span>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-white">Discover</h2>
+                      </div>
                     </div>
-                    <h2 className="text-3xl sm:text-4xl font-bold text-black">Discover</h2>
-                    <p className="text-base text-gray-800 leading-relaxed max-w-2xl mx-auto">
-                      We learn your business, challenges, and goals to build a foundation for success
+                    <p className="text-base text-white/70 leading-relaxed mb-6">
+                      We don't just ask what you want—we dig deep to understand why. This phase is about uncovering the real problems worth solving.
                     </p>
-                    <div className="space-y-2.5 max-w-xl mx-auto">
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Deep dive into your current workflows and pain points</p>
-                      </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Identify opportunities for AI integration</p>
-                      </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Define success metrics and KPIs</p>
-                      </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Stakeholder interviews and requirement gathering</p>
-                      </div>
+                    <div className="space-y-3 mb-6">
+                      {['Deep-dive into your workflows and pain points', 'Map opportunities where AI creates real value', 'Define what success actually looks like', 'Align stakeholders on vision and priorities'].map((item) => (
+                        <div key={item} className="flex items-start gap-3">
+                          <span style={{ color: '#d97757' }}>→</span>
+                          <p className="text-sm text-white/80">{item}</p>
+                        </div>
+                      ))}
                     </div>
-                    <div className="grid grid-cols-2 gap-3 pt-3 max-w-md mx-auto">
-                      <div
-                        className="p-3 rounded-lg border text-center"
-                        style={{
-                          background: 'rgba(0, 0, 0, 0.02)',
-                          backdropFilter: 'blur(12px)',
-                          WebkitBackdropFilter: 'blur(12px)',
-                          border: '1px solid rgba(0, 0, 0, 0.06)'
-                        }}
-                      >
-                        <div className="text-xl font-semibold mb-1 text-black">2-3</div>
-                        <div className="text-xs text-gray-700">Discovery Sessions</div>
+                    <div className="flex gap-4">
+                      <div className="flex-1 p-4 rounded-xl text-center" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
+                        <div className="text-2xl font-bold text-white mb-1">2-3</div>
+                        <div className="text-xs text-white/50">Discovery Sessions</div>
                       </div>
-                      <div
-                        className="p-3 rounded-lg border text-center"
-                        style={{
-                          background: 'rgba(0, 0, 0, 0.02)',
-                          backdropFilter: 'blur(12px)',
-                          WebkitBackdropFilter: 'blur(12px)',
-                          border: '1px solid rgba(0, 0, 0, 0.06)'
-                        }}
-                      >
-                        <div className="text-xl font-semibold mb-1 text-black">100%</div>
-                        <div className="text-xs text-gray-700">Custom Approach</div>
+                      <div className="flex-1 p-4 rounded-xl text-center" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
+                        <div className="text-2xl font-bold text-white mb-1">100%</div>
+                        <div className="text-xs text-white/50">Custom Approach</div>
                       </div>
                     </div>
                   </div>
                 )}
 
                 {activeTab === "clients" && (
-                  <div className="space-y-4 animate-fade-in text-center">
-                    <div className="mb-1">
-                      <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>STEP 02</span>
+                  <div className="animate-fade-in">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.2)' }}>
+                        <svg className="w-7 h-7" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>Week 2-5</span>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-white">Design</h2>
+                      </div>
                     </div>
-                    <h2 className="text-3xl sm:text-4xl font-bold text-black">Design</h2>
-                    <p className="text-base text-gray-800 leading-relaxed max-w-2xl mx-auto">
-                      We create a tailored solution and strategic roadmap aligned with your vision
+                    <p className="text-base text-white/70 leading-relaxed mb-6">
+                      We architect solutions that are built to scale. No cookie-cutter templates—every design is tailored to your specific needs.
                     </p>
-                    <div className="space-y-2.5 max-w-xl mx-auto">
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Architecture design and technology selection</p>
-                      </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">UI/UX mockups and user flow mapping</p>
-                      </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Data model and API specification</p>
-                      </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Security and compliance planning</p>
-                      </div>
+                    <div className="space-y-3 mb-6">
+                      {['System architecture and tech stack selection', 'Interactive prototypes and user flows', 'Data models and API specifications', 'Security-first design patterns'].map((item) => (
+                        <div key={item} className="flex items-start gap-3">
+                          <span style={{ color: '#d97757' }}>→</span>
+                          <p className="text-sm text-white/80">{item}</p>
+                        </div>
+                      ))}
                     </div>
-                    <div
-                      className="p-4 rounded-lg border max-w-md mx-auto"
-                      style={{
-                        background: 'rgba(0, 0, 0, 0.02)',
-                        backdropFilter: 'blur(12px)',
-                        WebkitBackdropFilter: 'blur(12px)',
-                        border: '1px solid rgba(0, 0, 0, 0.06)'
-                      }}
-                    >
-                      <div className="text-xs font-medium text-gray-700 mb-2.5">Tech Stack</div>
-                      <div className="flex flex-wrap gap-2 justify-center">
+                    <div className="p-4 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
+                      <div className="text-xs font-medium text-white/50 mb-3 uppercase tracking-wider">Our Stack</div>
+                      <div className="flex flex-wrap gap-2">
                         {['Next.js', 'AI/ML', 'TypeScript', 'Supabase', 'Tailwind'].map((tech) => (
-                          <span key={tech} className="px-2.5 py-1 rounded text-xs font-medium bg-black text-white">
+                          <span key={tech} className="px-3 py-1.5 rounded-full text-xs font-medium" style={{ background: '#d97757', color: 'white' }}>
                             {tech}
                           </span>
                         ))}
@@ -654,169 +608,113 @@ export default function Home() {
                 )}
 
                 {activeTab === "team" && (
-                  <div className="space-y-4 animate-fade-in text-center">
-                    <div className="mb-1">
-                      <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>STEP 03</span>
+                  <div className="animate-fade-in">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.2)' }}>
+                        <svg className="w-7 h-7" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                      </div>
+                      <div>
+                        <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>Week 5-13</span>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-white">Develop</h2>
+                      </div>
                     </div>
-                    <h2 className="text-3xl sm:text-4xl font-bold text-black">Develop</h2>
-                    <p className="text-base text-gray-800 leading-relaxed max-w-2xl mx-auto">
-                      We build and refine your AI solution with precision and attention to detail
+                    <p className="text-base text-white/70 leading-relaxed mb-6">
+                      This is where the magic happens. We build fast, iterate often, and keep you in the loop every step of the way.
                     </p>
-                    <div className="space-y-2.5 max-w-xl mx-auto">
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Agile development with bi-weekly sprints</p>
-                      </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">AI model training and fine-tuning</p>
-                      </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Continuous testing and quality assurance</p>
-                      </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Regular demos and feedback sessions</p>
-                      </div>
+                    <div className="space-y-3 mb-6">
+                      {['2-week agile sprints with demos', 'AI model training and fine-tuning', 'Continuous testing and QA', 'Weekly progress updates and feedback'].map((item) => (
+                        <div key={item} className="flex items-start gap-3">
+                          <span style={{ color: '#d97757' }}>→</span>
+                          <p className="text-sm text-white/80">{item}</p>
+                        </div>
+                      ))}
                     </div>
-                    <div className="grid grid-cols-2 gap-3 pt-3 max-w-md mx-auto">
-                      <div
-                        className="p-3 rounded-lg border text-center"
-                        style={{
-                          background: 'rgba(0, 0, 0, 0.02)',
-                          backdropFilter: 'blur(12px)',
-                          WebkitBackdropFilter: 'blur(12px)',
-                          border: '1px solid rgba(0, 0, 0, 0.06)'
-                        }}
-                      >
-                        <div className="text-xl font-semibold mb-1 text-black">2-week</div>
-                        <div className="text-xs text-gray-700">Sprint Cycles</div>
+                    <div className="flex gap-4">
+                      <div className="flex-1 p-4 rounded-xl text-center" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
+                        <div className="text-2xl font-bold text-white mb-1">2-week</div>
+                        <div className="text-xs text-white/50">Sprint Cycles</div>
                       </div>
-                      <div
-                        className="p-3 rounded-lg border text-center"
-                        style={{
-                          background: 'rgba(0, 0, 0, 0.02)',
-                          backdropFilter: 'blur(12px)',
-                          WebkitBackdropFilter: 'blur(12px)',
-                          border: '1px solid rgba(0, 0, 0, 0.06)'
-                        }}
-                      >
-                        <div className="text-xl font-semibold mb-1 text-black">99.9%</div>
-                        <div className="text-xs text-gray-700">Uptime Target</div>
+                      <div className="flex-1 p-4 rounded-xl text-center" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
+                        <div className="text-2xl font-bold text-white mb-1">99.9%</div>
+                        <div className="text-xs text-white/50">Uptime Target</div>
                       </div>
                     </div>
                   </div>
                 )}
 
                 {activeTab === "save" && (
-                  <div className="space-y-4 animate-fade-in text-center">
-                    <div className="mb-1">
-                      <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>STEP 04</span>
+                  <div className="animate-fade-in">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: 'rgba(217, 119, 87, 0.2)' }}>
+                        <svg className="w-7 h-7" style={{ color: '#d97757' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#d97757' }}>Week 13-15</span>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-white">Deploy</h2>
+                      </div>
                     </div>
-                    <h2 className="text-3xl sm:text-4xl font-bold text-black">Deploy</h2>
-                    <p className="text-base text-gray-800 leading-relaxed max-w-2xl mx-auto">
-                      We launch your solution and provide ongoing support for lasting success
+                    <p className="text-base text-white/70 leading-relaxed mb-6">
+                      Launch day is just the beginning. We ensure a smooth rollout and stick around to make sure everything runs perfectly.
                     </p>
-                    <div className="space-y-2.5 max-w-xl mx-auto">
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Production deployment and monitoring setup</p>
-                      </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Team training and documentation</p>
-                      </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Performance optimization and scaling</p>
-                      </div>
-                      <div className="flex items-start gap-2.5">
-                        <span className="text-gray-900 mt-0.5 text-sm">→</span>
-                        <p className="text-sm text-gray-900 text-left">Ongoing maintenance and support</p>
-                      </div>
+                    <div className="space-y-3 mb-6">
+                      {['Zero-downtime production deployment', 'Team training and documentation', 'Performance monitoring setup', 'Ongoing support and maintenance'].map((item) => (
+                        <div key={item} className="flex items-start gap-3">
+                          <span style={{ color: '#d97757' }}>✓</span>
+                          <p className="text-sm text-white/80">{item}</p>
+                        </div>
+                      ))}
                     </div>
-                    <div
-                      className="p-4 rounded-lg border max-w-md mx-auto"
-                      style={{
-                        background: 'rgba(0, 0, 0, 0.02)',
-                        backdropFilter: 'blur(12px)',
-                        WebkitBackdropFilter: 'blur(12px)',
-                        border: '1px solid rgba(0, 0, 0, 0.06)'
-                      }}
-                    >
-                      <div className="text-xs font-medium text-gray-700 mb-2.5">What You Get</div>
-                      <div className="space-y-2">
-                        <div className="flex items-start gap-2.5">
-                          <span className="text-gray-900 mt-0.5 text-sm">✓</span>
-                          <p className="text-sm text-gray-900 text-left">Zero-downtime deployment</p>
-                        </div>
-                        <div className="flex items-start gap-2.5">
-                          <span className="text-gray-900 mt-0.5 text-sm">✓</span>
-                          <p className="text-sm text-gray-900 text-left">24/7 monitoring & alerts</p>
-                        </div>
-                        <div className="flex items-start gap-2.5">
-                          <span className="text-gray-900 mt-0.5 text-sm">✓</span>
-                          <p className="text-sm text-gray-900 text-left">Dedicated support channel</p>
-                        </div>
-                      </div>
+                    <div className="p-4 rounded-xl" style={{ background: 'rgba(217, 119, 87, 0.1)', border: '1px solid rgba(217, 119, 87, 0.3)' }}>
+                      <div className="text-sm text-white/90 font-medium mb-2">What's Included</div>
+                      <div className="text-xs text-white/60">24/7 monitoring • Dedicated Slack channel • Monthly performance reviews • Priority bug fixes</div>
                     </div>
                   </div>
                 )}
 
-                {/* Navigation Buttons */}
-                <div
-                  className="flex items-center justify-between mt-6 pt-4 border-t"
-                  style={{ borderColor: 'rgba(0, 0, 0, 0.08)' }}
-                >
+                {/* Navigation */}
+                <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/10">
                   <button
                     onClick={() => {
                       const steps = ['projects', 'clients', 'team', 'save'];
                       const currentIndex = steps.indexOf(activeTab);
-                      if (currentIndex > 0) {
-                        setActiveTab(steps[currentIndex - 1] as any);
-                      }
+                      if (currentIndex > 0) setActiveTab(steps[currentIndex - 1] as any);
                     }}
                     disabled={activeTab === 'projects'}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-xs transition-all duration-200 ${
-                      activeTab === 'projects'
-                        ? 'text-gray-400 cursor-not-allowed'
-                        : 'text-gray-700 hover:text-gray-900'
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                      activeTab === 'projects' ? 'text-white/30 cursor-not-allowed' : 'text-white/70 hover:text-white hover:bg-white/10'
                     }`}
-                    style={activeTab !== 'projects' ? {
-                      background: 'rgba(0, 0, 0, 0.04)',
-                      backdropFilter: 'blur(8px)',
-                      WebkitBackdropFilter: 'blur(8px)'
-                    } : undefined}
                   >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
                     Previous
                   </button>
 
-                  <button
-                    onClick={() => {
-                      const steps = ['projects', 'clients', 'team', 'save'];
-                      const currentIndex = steps.indexOf(activeTab);
-                      if (currentIndex < steps.length - 1) {
-                        setActiveTab(steps[currentIndex + 1] as any);
-                      }
-                    }}
-                    disabled={activeTab === 'save'}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-xs transition-all duration-200"
-                    style={activeTab !== 'save' ? {
-                      background: 'rgba(0, 0, 0, 0.85)',
-                      color: '#ffffff',
-                      backdropFilter: 'blur(8px)',
-                      WebkitBackdropFilter: 'blur(8px)',
-                      border: '1px solid rgba(0, 0, 0, 0.9)'
-                    } : {
-                      color: 'rgb(156, 163, 175)',
-                      cursor: 'not-allowed'
-                    }}
-                  >
-                    Next
+                  {activeTab === 'save' ? (
+                    <a
+                      href="#connect"
+                      className="flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all text-white"
+                      style={{ background: '#d97757' }}
+                    >
+                      Start Your Project
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </a>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        const steps = ['projects', 'clients', 'team', 'save'];
+                        const currentIndex = steps.indexOf(activeTab);
+                        if (currentIndex < steps.length - 1) setActiveTab(steps[currentIndex + 1] as any);
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all text-white bg-white/10 hover:bg-white/20"
+                    >
+                      Next
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
