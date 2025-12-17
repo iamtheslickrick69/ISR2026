@@ -4,7 +4,8 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Bot, Mail, Lock, User, Loader2, ArrowRight, Check } from "lucide-react"
+import { Mail, Lock, User, Loader2, ArrowRight, Check, Eye, EyeOff } from "lucide-react"
+import Image from "next/image"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,10 +13,10 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 const features = [
-  "Create AI chatbots in 15 minutes",
-  "Train on your website content",
-  "Capture leads automatically",
-  "No coding required",
+  "Enterprise AI systems in weeks, not months",
+  "Production-grade architecture from day one",
+  "0 revisions. 100% production success rate",
+  "Full-stack intelligence systems that scale",
 ]
 
 export default function SignUpPage() {
@@ -23,9 +24,27 @@ export default function SignUpPage() {
   const [fullName, setFullName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const supabase = createClient()
+
+  // Password strength calculation
+  const getPasswordStrength = (pwd: string): { strength: number; label: string; color: string } => {
+    let strength = 0
+    if (pwd.length >= 6) strength += 1
+    if (pwd.length >= 10) strength += 1
+    if (/[a-z]/.test(pwd) && /[A-Z]/.test(pwd)) strength += 1
+    if (/\d/.test(pwd)) strength += 1
+    if (/[^a-zA-Z0-9]/.test(pwd)) strength += 1
+
+    if (strength <= 1) return { strength: 25, label: 'Weak', color: 'bg-red-500' }
+    if (strength <= 3) return { strength: 50, label: 'Fair', color: 'bg-yellow-500' }
+    if (strength <= 4) return { strength: 75, label: 'Good', color: 'bg-blue-500' }
+    return { strength: 100, label: 'Strong', color: 'bg-green-500' }
+  }
+
+  const passwordStrength = password ? getPasswordStrength(password) : null
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -54,7 +73,7 @@ export default function SignUpPage() {
       return
     }
 
-    router.push("/agent-builder")
+    router.push("/portal")
     router.refresh()
   }
 
@@ -76,18 +95,23 @@ export default function SignUpPage() {
       {/* Left side - Features */}
       <div className="hidden lg:flex lg:flex-1 items-center justify-center p-12 bg-gradient-to-br from-blue-600/10 to-purple-600/10">
         <div className="max-w-md">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 shadow-lg shadow-blue-500/20">
-              <Bot className="h-7 w-7 text-white" />
-            </div>
-            <span className="text-2xl font-bold text-white">Agent Builder</span>
+          <div className="mb-8">
+            <Image
+              src="/yaya.png"
+              alt="Haestus"
+              width={160}
+              height={52}
+              className="h-14 w-auto mb-8"
+              style={{ filter: 'brightness(0) invert(1)' }}
+              priority
+            />
           </div>
           <h2 className="text-3xl font-bold text-white mb-4">
-            Build AI chatbots for your business
+            AI Architecture That Amplifies Capability
           </h2>
           <p className="text-gray-400 mb-8">
-            Join thousands of businesses using AI-powered chatbots to engage
-            customers and capture leads 24/7.
+            Join leading companies building intelligent systems that scale.
+            We architect AI that compounds competitive advantage.
           </p>
           <ul className="space-y-4">
             {features.map((feature, i) => (
@@ -119,10 +143,15 @@ export default function SignUpPage() {
           {/* Mobile Logo */}
           <div className="text-center mb-8 lg:hidden">
             <Link href="/" className="inline-flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 shadow-lg shadow-blue-500/20">
-                <Bot className="h-7 w-7 text-white" />
-              </div>
-              <span className="text-2xl font-bold text-white">Agent Builder</span>
+              <Image
+                src="/yaya.png"
+                alt="Haestus"
+                width={140}
+                height={46}
+                className="h-12 w-auto"
+                style={{ filter: 'brightness(0) invert(1)' }}
+                priority
+              />
             </Link>
           </div>
 
@@ -130,7 +159,7 @@ export default function SignUpPage() {
             <CardHeader className="text-center">
               <CardTitle className="text-2xl text-white">Create your account</CardTitle>
               <CardDescription className="text-gray-400">
-                Start building AI chatbots for free
+                Get started with Haestus today
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -185,17 +214,52 @@ export default function SignUpPage() {
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                     <Input
                       id="password"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       minLength={6}
-                      className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500"
+                      className="pl-10 pr-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
                   </div>
+
+                  {/* Password Strength Indicator */}
+                  {passwordStrength && (
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-500">Password strength</span>
+                        <span className={`font-medium ${
+                          passwordStrength.label === 'Weak' ? 'text-red-400' :
+                          passwordStrength.label === 'Fair' ? 'text-yellow-400' :
+                          passwordStrength.label === 'Good' ? 'text-blue-400' :
+                          'text-green-400'
+                        }`}>
+                          {passwordStrength.label}
+                        </span>
+                      </div>
+                      <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full ${passwordStrength.color} transition-all duration-300`}
+                          style={{ width: `${passwordStrength.strength}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
                   <p className="text-xs text-gray-500">
-                    Must be at least 6 characters
+                    Use 10+ characters with a mix of letters, numbers & symbols
                   </p>
                 </div>
 

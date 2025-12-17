@@ -26,6 +26,7 @@ export function CapabilityCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -8, scale: 1.02 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
       className="relative"
@@ -34,7 +35,7 @@ export function CapabilityCard({
         className={`bg-gradient-to-br from-gray-900 to-black border rounded-2xl p-6 cursor-pointer transition-all duration-300 ${
           isExpanded
             ? 'border-orange-500/50 shadow-[0_0_30px_rgba(255,107,53,0.3)]'
-            : 'border-white/10 hover:border-orange-500/30'
+            : 'border-white/10 hover:border-orange-500/30 hover:shadow-[0_20px_40px_rgba(217,119,87,0.3)]'
         }`}
         onClick={() => setIsExpanded(!isExpanded)}
       >

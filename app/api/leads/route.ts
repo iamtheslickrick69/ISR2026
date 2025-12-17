@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
       .select('id')
       .eq('user_id', user.id)
 
-    const botIds = bots?.map(b => b.id) || []
+    const botIds = (bots as any)?.map((b: any) => b.id) || []
 
     if (botIds.length === 0) {
       return NextResponse.json({ leads: [], total: 0 })
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
         phone: phone || null,
         custom_fields: customFields || {},
         source_page: sourcePage || null,
-      })
+      } as any)
       .select()
       .single()
 
@@ -106,11 +106,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to create lead' }, { status: 500 })
     }
 
+    const leadData = lead as any
+
     // Update conversation with lead ID
     if (conversationId) {
-      await supabase
+      await (supabase
         .from('conversations')
-        .update({ lead_id: lead.id })
+        .update as any)({ lead_id: leadData.id })
         .eq('id', conversationId)
     }
 

@@ -10,7 +10,7 @@ function getStripe(): Stripe {
       throw new Error('Stripe is not configured. Please set STRIPE_SECRET_KEY environment variable.')
     }
     stripeInstance = new Stripe(secretKey, {
-      apiVersion: '2025-03-31.basil',
+      apiVersion: '2025-11-17.clover',
       typescript: true,
     })
   }

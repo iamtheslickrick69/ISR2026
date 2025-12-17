@@ -2,10 +2,15 @@
 import { useEffect, useState } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { AdvancedScrollReveal, HoverCard, MagneticButton, FloatingElement } from "@/components/animations"
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { Parallax } from "@/components/parallax"
 import { Logo } from "@/components/logo"
 import { HeroWallpaper } from "@/components/HeroWallpaper"
+import { Testimonials } from "@/components/Testimonials"
+import { ClientLogos } from "@/components/ClientLogos"
+import { Newsletter } from "@/components/Newsletter"
+import { StickyCTA } from "@/components/StickyCTA"
 import { ArrowUpRight, Mail } from "lucide-react"
 import Image from "next/image"
 
@@ -49,8 +54,9 @@ function ToolsGrid() {
   return (
     <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
       {tools.map((tool, index) => (
-        <ScrollReveal key={tool.id} delay={index * 100}>
-          <div className="group relative rounded-lg overflow-hidden border border-gray-200 bg-white transition-all duration-300 hover:border-gray-300 hover:shadow-lg flex flex-col">
+        <AdvancedScrollReveal key={tool.id} animation="scaleUp" delay={index * 0.1} duration={0.6}>
+          <HoverCard lift={true} glow={true}>
+            <div className="group relative rounded-lg overflow-hidden border border-gray-200 bg-white flex flex-col">
             {/* Image Section */}
             <div className="relative w-full h-48 overflow-hidden bg-gray-100">
               <Image
@@ -90,22 +96,25 @@ function ToolsGrid() {
               <p className="text-sm text-gray-600 mb-4 leading-relaxed flex-1">
                 {tool.description}
               </p>
-              <a
-                href={tool.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-bold text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all duration-200 self-start"
-                style={{
-                  background: '#000000',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-                }}
-              >
-                {tool.cta}
-                <ArrowUpRight className="w-4 h-4" />
-              </a>
+              <MagneticButton strength={0.15}>
+                <a
+                  href={tool.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-bold text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all duration-200 self-start"
+                  style={{
+                    background: '#000000',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                  }}
+                >
+                  {tool.cta}
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              </MagneticButton>
             </div>
-          </div>
-        </ScrollReveal>
+            </div>
+          </HoverCard>
+        </AdvancedScrollReveal>
       ))}
     </div>
   )
@@ -378,16 +387,16 @@ export default function Home() {
         <div className="max-w-[900px] mx-auto px-5 sm:px-6 relative" style={{ zIndex: 1 }}>
           {/* Header */}
           <div className="text-center mb-16 sm:mb-20">
-            <ScrollReveal>
+            <AdvancedScrollReveal animation="slideUp" duration={0.8}>
               <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4 text-gray-900">
                 Our Process
               </h2>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
+            </AdvancedScrollReveal>
+            <AdvancedScrollReveal animation="fade" delay={0.2} duration={0.6}>
               <p className="text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto font-medium">
                 Click each step to learn more. Scroll to see your progress.
               </p>
-            </ScrollReveal>
+            </AdvancedScrollReveal>
           </div>
 
           {/* Vertical Timeline with Interactive Cards */}
@@ -398,30 +407,33 @@ export default function Home() {
             {/* Step 1 - Discover */}
             <div className="process-step relative mb-8" data-step="1">
               <div
-                className={`relative pl-16 transition-all duration-300 ${expandedStep === 1 ? 'pb-6' : ''}`}
+                className={`relative pl-10 md:pl-16 transition-all duration-300 ${expandedStep === 1 ? 'pb-6' : ''}`}
                 onClick={() => setExpandedStep(expandedStep === 1 ? null : 1)}
                 style={{ cursor: 'pointer' }}
               >
-                {/* Checkpoint Circle */}
-                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
+                {/* Checkpoint Circle - 44px touch target on mobile */}
+                <div className={`absolute left-0 md:left-3 top-0 md:top-2 w-11 h-11 md:w-6 md:h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
                   completedSteps.includes(1) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
                 }`} style={{ zIndex: 1 }}>
                   {completedSteps.includes(1) && (
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-4 md:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
                   )}
                 </div>
 
-                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                <div className="bg-white rounded-xl p-4 md:p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 01</div>
-                      <h3 className="font-heading text-2xl font-bold text-gray-900">Discover</h3>
+                      <h3 className="font-heading text-xl md:text-2xl font-bold text-gray-900">Discover</h3>
                     </div>
-                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 1 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    {/* 44px touch target for chevron */}
+                    <div className="flex items-center justify-center w-11 h-11 -mr-3 md:w-auto md:h-auto md:mr-0">
+                      <svg className={`w-6 h-6 md:w-5 md:h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 1 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
                   </div>
                   <p className="text-sm text-gray-600 leading-relaxed">
                     We learn your business, challenges, and goals to build a foundation for success
@@ -441,29 +453,31 @@ export default function Home() {
             {/* Step 2 - Design */}
             <div className="process-step relative mb-8" data-step="2">
               <div
-                className={`relative pl-16 transition-all duration-300 ${expandedStep === 2 ? 'pb-6' : ''}`}
+                className={`relative pl-10 md:pl-16 transition-all duration-300 ${expandedStep === 2 ? 'pb-6' : ''}`}
                 onClick={() => setExpandedStep(expandedStep === 2 ? null : 2)}
                 style={{ cursor: 'pointer' }}
               >
-                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
+                <div className={`absolute left-0 md:left-3 top-0 md:top-2 w-11 h-11 md:w-6 md:h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
                   completedSteps.includes(2) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
                 }`} style={{ zIndex: 1 }}>
                   {completedSteps.includes(2) && (
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-4 md:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
                   )}
                 </div>
 
-                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                <div className="bg-white rounded-xl p-4 md:p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 02</div>
-                      <h3 className="font-heading text-2xl font-bold text-gray-900">Design</h3>
+                      <h3 className="font-heading text-xl md:text-2xl font-bold text-gray-900">Design</h3>
                     </div>
-                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 2 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <div className="flex items-center justify-center w-11 h-11 -mr-3 md:w-auto md:h-auto md:mr-0">
+                      <svg className={`w-6 h-6 md:w-5 md:h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 2 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
                   </div>
                   <p className="text-sm text-gray-600 leading-relaxed">
                     We create a tailored solution and strategic roadmap aligned with your vision
@@ -483,29 +497,31 @@ export default function Home() {
             {/* Step 3 - Develop */}
             <div className="process-step relative mb-8" data-step="3">
               <div
-                className={`relative pl-16 transition-all duration-300 ${expandedStep === 3 ? 'pb-6' : ''}`}
+                className={`relative pl-10 md:pl-16 transition-all duration-300 ${expandedStep === 3 ? 'pb-6' : ''}`}
                 onClick={() => setExpandedStep(expandedStep === 3 ? null : 3)}
                 style={{ cursor: 'pointer' }}
               >
-                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
+                <div className={`absolute left-0 md:left-3 top-0 md:top-2 w-11 h-11 md:w-6 md:h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
                   completedSteps.includes(3) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
                 }`} style={{ zIndex: 1 }}>
                   {completedSteps.includes(3) && (
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-4 md:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
                   )}
                 </div>
 
-                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                <div className="bg-white rounded-xl p-4 md:p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 03</div>
-                      <h3 className="font-heading text-2xl font-bold text-gray-900">Develop</h3>
+                      <h3 className="font-heading text-xl md:text-2xl font-bold text-gray-900">Develop</h3>
                     </div>
-                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 3 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <div className="flex items-center justify-center w-11 h-11 -mr-3 md:w-auto md:h-auto md:mr-0">
+                      <svg className={`w-6 h-6 md:w-5 md:h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 3 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
                   </div>
                   <p className="text-sm text-gray-600 leading-relaxed">
                     We build and refine your AI solution with precision and attention to detail
@@ -525,29 +541,31 @@ export default function Home() {
             {/* Step 4 - Deploy */}
             <div className="process-step relative" data-step="4">
               <div
-                className={`relative pl-16 transition-all duration-300 ${expandedStep === 4 ? 'pb-6' : ''}`}
+                className={`relative pl-10 md:pl-16 transition-all duration-300 ${expandedStep === 4 ? 'pb-6' : ''}`}
                 onClick={() => setExpandedStep(expandedStep === 4 ? null : 4)}
                 style={{ cursor: 'pointer' }}
               >
-                <div className={`absolute left-3 top-2 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
+                <div className={`absolute left-0 md:left-3 top-0 md:top-2 w-11 h-11 md:w-6 md:h-6 rounded-full flex items-center justify-center transition-all duration-500 ${
                   completedSteps.includes(4) ? 'bg-green-500 scale-110' : 'bg-white border-2 border-gray-300'
                 }`} style={{ zIndex: 1 }}>
                   {completedSteps.includes(4) && (
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-4 md:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
                   )}
                 </div>
 
-                <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                <div className="bg-white rounded-xl p-4 md:p-6 shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <div className="text-xs font-bold text-gray-500 mb-1 tracking-wider">STEP 04</div>
-                      <h3 className="font-heading text-2xl font-bold text-gray-900">Deploy</h3>
+                      <h3 className="font-heading text-xl md:text-2xl font-bold text-gray-900">Deploy</h3>
                     </div>
-                    <svg className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 4 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <div className="flex items-center justify-center w-11 h-11 -mr-3 md:w-auto md:h-auto md:mr-0">
+                      <svg className={`w-6 h-6 md:w-5 md:h-5 text-gray-400 transition-transform duration-300 ${expandedStep === 4 ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
                   </div>
                   <p className="text-sm text-gray-600 leading-relaxed">
                     We launch your solution and provide ongoing support for lasting success
@@ -577,14 +595,14 @@ export default function Home() {
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           {/* Main Header - Compact */}
-          <ScrollReveal>
+          <AdvancedScrollReveal animation="blur" duration={1}>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-gray-900 mb-2 text-center">
               We Build Systems That Impact Real Business
             </h2>
             <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 text-center font-medium">
               Try our free tools — powered by the same AI we use for enterprise clients
             </p>
-          </ScrollReveal>
+          </AdvancedScrollReveal>
 
           {/* Tools Grid - Compact Horizontal */}
           <ToolsGrid />
@@ -599,7 +617,7 @@ export default function Home() {
         <div className="max-w-[1190px] mx-auto px-4 sm:px-5">
           {/* Header */}
           <div className="mb-10 sm:mb-12 lg:mb-16">
-            <ScrollReveal>
+            <AdvancedScrollReveal animation="slideRight" duration={0.8}>
               <h2
                 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-wider text-white"
                 style={{
@@ -609,7 +627,7 @@ export default function Home() {
               >
                 Transform Your Business with AI
               </h2>
-            </ScrollReveal>
+            </AdvancedScrollReveal>
           </div>
 
           {/* Split Layout Grid */}
@@ -749,24 +767,27 @@ export default function Home() {
               </ScrollReveal>
             </div>
 
-            {/* RIGHT SIDE: AI Orb Video */}
-            <ScrollReveal delay={200}>
-              <div className="flex justify-center lg:justify-end">
-                <video
-                  autoPlay
-                  muted
-                  playsInline
-                  loop
-                  preload="auto"
-                  className="w-full max-w-[340px] lg:max-w-[425px] h-auto"
-                  style={{
-                    filter: 'brightness(1.1) contrast(1.15) saturate(1.2)',
-                  }}
-                >
-                  <source src="https://pub-7824dae2ffd24193b52760c54972be1d.r2.dev/00orb.mp4" type="video/mp4" />
-                </video>
-              </div>
-            </ScrollReveal>
+            {/* RIGHT SIDE: AI Orb Video - Lazy load on mobile */}
+            <AdvancedScrollReveal animation="scale" delay={0.3} duration={1}>
+              <FloatingElement distance={15} duration={4}>
+                <div className="flex justify-center lg:justify-end">
+                  <video
+                    autoPlay
+                    muted
+                    playsInline
+                    loop
+                    preload="metadata"
+                    poster="/orb-poster.jpg"
+                    className="w-full max-w-[340px] lg:max-w-[425px] h-auto"
+                    style={{
+                      filter: 'brightness(1.1) contrast(1.15) saturate(1.2)',
+                    }}
+                  >
+                    <source src="https://pub-7824dae2ffd24193b52760c54972be1d.r2.dev/00orb.mp4" type="video/mp4" />
+                  </video>
+                </div>
+              </FloatingElement>
+            </AdvancedScrollReveal>
           </div>
         </div>
       </section>
@@ -995,74 +1016,92 @@ export default function Home() {
 
           {/* Top Content - Above Tree */}
           <div className="text-center mb-16 sm:mb-20 lg:mb-24">
-            <ScrollReveal>
+            <AdvancedScrollReveal animation="fade" duration={0.6}>
               <p className="text-sm lg:text-base font-mono tracking-[0.3em] text-muted-foreground mb-6 font-medium uppercase">
                 GET IN TOUCH
               </p>
-            </ScrollReveal>
-            <ScrollReveal delay={100}>
+            </AdvancedScrollReveal>
+            <AdvancedScrollReveal animation="blur" delay={0.1} duration={0.8}>
               <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-8 px-4 sm:px-0">
                 Let's Build Something Legendary
               </h2>
-            </ScrollReveal>
-            <ScrollReveal delay={200}>
+            </AdvancedScrollReveal>
+            <AdvancedScrollReveal animation="slideUp" delay={0.2} duration={0.6}>
               <p className="text-lg lg:text-xl xl:text-2xl text-gray-700 max-w-2xl mx-auto px-4 sm:px-0 font-medium leading-relaxed">
                 We are passionate of delivering sustainable solutions and valuable tools to businesses. Let's connect and see if there's something you didn't know you needed.
               </p>
-            </ScrollReveal>
+            </AdvancedScrollReveal>
           </div>
 
           {/* Tree - Dead Center with Parallax */}
-          <ScrollReveal delay={300}>
+          <AdvancedScrollReveal animation="scale" delay={0.3} duration={1}>
             <Parallax speed={0.3}>
-              <div className="flex justify-center items-center my-16 sm:my-20 lg:my-24">
-                <div className="relative w-full max-w-md lg:max-w-lg">
-                  <Image
-                    src="/oogway1.png"
-                    alt="Tree"
-                    width={600}
-                    height={600}
-                    className="w-full h-auto"
-                    style={{ objectFit: 'contain', filter: 'brightness(0)' }}
-                    priority
-                  />
+              <FloatingElement distance={10} duration={5}>
+                <div className="flex justify-center items-center my-16 sm:my-20 lg:my-24">
+                  <div className="relative w-full max-w-md lg:max-w-lg">
+                    <Image
+                      src="/oogway1.png"
+                      alt="Tree"
+                      width={600}
+                      height={600}
+                      className="w-full h-auto"
+                      style={{ objectFit: 'contain', filter: 'brightness(0)' }}
+                      priority
+                    />
+                  </div>
                 </div>
-              </div>
+              </FloatingElement>
             </Parallax>
-          </ScrollReveal>
+          </AdvancedScrollReveal>
 
           {/* Bottom Content - Below Tree */}
           <div className="text-center">
-            <ScrollReveal delay={400}>
-              <div className="max-w-2xl mx-auto p-10 lg:p-14 border-2 border-gray-200 rounded-3xl mb-12 bg-white shadow-lg hover:shadow-xl transition-all duration-300">
-                <Mail className="w-12 lg:w-14 h-12 lg:h-14 text-foreground mx-auto mb-8" />
-                <a
-                  href="mailto:hello@haestus.dev"
-                  className="text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-foreground hover:opacity-70 transition-opacity duration-200 block mb-5"
-                >
-                  hello@haestus.dev
-                </a>
-                <p className="text-base lg:text-lg text-muted-foreground font-medium">
-                  We respond within 24 hours.
-                </p>
-              </div>
-            </ScrollReveal>
+            <AdvancedScrollReveal animation="scaleUp" delay={0.4} duration={0.7}>
+              <HoverCard lift={true} glow={false}>
+                <div className="max-w-2xl mx-auto p-10 lg:p-14 border-2 border-gray-200 rounded-3xl mb-12 bg-white">
+                  <Mail className="w-12 lg:w-14 h-12 lg:h-14 text-foreground mx-auto mb-8" />
+                  <a
+                    href="mailto:hello@haestus.dev"
+                    className="text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-foreground hover:opacity-70 transition-opacity duration-200 block mb-5"
+                  >
+                    hello@haestus.dev
+                  </a>
+                  <p className="text-base lg:text-lg text-muted-foreground font-medium">
+                    We respond within 24 hours.
+                  </p>
+                </div>
+              </HoverCard>
+            </AdvancedScrollReveal>
 
-            <ScrollReveal delay={500}>
-              <a
-                href="/portal"
-                className="inline-block text-lg lg:text-xl font-bold px-16 py-5 rounded-full text-white hover:opacity-90 hover:shadow-2xl transition-all duration-300"
-                style={{
-                  background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
-                }}
-              >
-                Clients
-              </a>
-            </ScrollReveal>
+            <AdvancedScrollReveal animation="bounceIn" delay={0.5} duration={0.8}>
+              <MagneticButton strength={0.2}>
+                <a
+                  href="/portal"
+                  className="inline-block text-lg lg:text-xl font-bold px-16 py-5 rounded-full text-white hover:opacity-90 hover:shadow-2xl transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(90deg, #d97757 0%, #ffd7b5 100%)',
+                  }}
+                >
+                  Clients
+                </a>
+              </MagneticButton>
+            </AdvancedScrollReveal>
           </div>
 
         </div>
       </section>
+
+      {/* Client Logos */}
+      <ClientLogos />
+
+      {/* Testimonials */}
+      <Testimonials />
+
+      {/* Newsletter */}
+      <Newsletter />
+
+      {/* Sticky CTA Button */}
+      <StickyCTA />
 
       <Footer />
     </div>

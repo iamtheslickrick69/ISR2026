@@ -37,9 +37,9 @@ export async function POST(request: NextRequest) {
         if (userId && tier) {
           const pricing = PRICING[tier]
 
-          await supabase
+          await (supabase
             .from('profiles')
-            .update({
+            .update as any)({
               subscription_tier: tier,
               subscription_status: 'trialing',
               stripe_subscription_id: session.subscription as string,
@@ -63,19 +63,20 @@ export async function POST(request: NextRequest) {
           .single()
 
         if (profile) {
+          const profileData = profile as any
           let status: 'active' | 'past_due' | 'canceled' | 'trialing' = 'active'
 
           if (subscription.status === 'trialing') status = 'trialing'
           else if (subscription.status === 'past_due') status = 'past_due'
           else if (subscription.status === 'canceled') status = 'canceled'
 
-          await supabase
+          await (supabase
             .from('profiles')
-            .update({
+            .update as any)({
               subscription_status: status,
               stripe_subscription_id: subscription.id,
             })
-            .eq('id', profile.id)
+            .eq('id', profileData.id)
         }
         break
       }
@@ -92,16 +93,17 @@ export async function POST(request: NextRequest) {
           .single()
 
         if (profile) {
-          await supabase
+          const profileData = profile as any
+          await (supabase
             .from('profiles')
-            .update({
+            .update as any)({
               subscription_tier: 'free',
               subscription_status: 'canceled',
               stripe_subscription_id: null,
               bot_limit: 1,
               conversation_limit: 100,
             })
-            .eq('id', profile.id)
+            .eq('id', profileData.id)
         }
         break
       }
@@ -118,10 +120,11 @@ export async function POST(request: NextRequest) {
           .single()
 
         if (profile) {
-          await supabase
+          const profileData = profile as any
+          await (supabase
             .from('profiles')
-            .update({ subscription_status: 'past_due' })
-            .eq('id', profile.id)
+            .update as any)({ subscription_status: 'past_due' })
+            .eq('id', profileData.id)
         }
         break
       }
@@ -137,17 +140,20 @@ export async function POST(request: NextRequest) {
           .eq('stripe_customer_id', customerId)
           .single()
 
-        if (profile && profile.subscription_status === 'past_due') {
-          await supabase
-            .from('profiles')
-            .update({ subscription_status: 'active' })
-            .eq('id', profile.id)
+        if (profile) {
+          const profileData = profile as any
+          if (profileData.subscription_status === 'past_due') {
+            await (supabase
+              .from('profiles')
+              .update as any)({ subscription_status: 'active' })
+              .eq('id', profileData.id)
+          }
         }
 
         // Reset monthly conversation count
-        await supabase
+        await (supabase
           .from('profiles')
-          .update({ conversations_used: 0 })
+          .update as any)({ conversations_used: 0 })
           .eq('stripe_customer_id', customerId)
 
         break

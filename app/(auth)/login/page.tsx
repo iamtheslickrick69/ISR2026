@@ -4,7 +4,8 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Bot, Mail, Lock, Loader2, ArrowRight } from "lucide-react"
+import { Mail, Lock, Loader2, ArrowRight, Eye, EyeOff } from "lucide-react"
+import Image from "next/image"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,6 +16,7 @@ export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const supabase = createClient()
@@ -35,7 +37,7 @@ export default function LoginPage() {
       return
     }
 
-    router.push("/agent-builder")
+    router.push("/portal")
     router.refresh()
   }
 
@@ -63,10 +65,15 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 shadow-lg shadow-blue-500/20">
-              <Bot className="h-7 w-7 text-white" />
-            </div>
-            <span className="text-2xl font-bold text-white">Agent Builder</span>
+            <Image
+              src="/yaya.png"
+              alt="Haestus"
+              width={140}
+              height={46}
+              className="h-12 w-auto"
+              style={{ filter: 'brightness(0) invert(1)' }}
+              priority
+            />
           </Link>
         </div>
 
@@ -74,7 +81,7 @@ export default function LoginPage() {
           <CardHeader className="text-center">
             <CardTitle className="text-2xl text-white">Welcome back</CardTitle>
             <CardDescription className="text-gray-400">
-              Sign in to manage your AI chatbots
+              Sign in to access your portal
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -119,13 +126,24 @@ export default function LoginPage() {
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                   <Input
                     id="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500"
+                    className="pl-10 pr-10 bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus:border-blue-500"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
                 </div>
               </div>
 

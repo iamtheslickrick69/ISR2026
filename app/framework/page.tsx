@@ -29,7 +29,7 @@ function VideoBackground() {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         className="w-full h-full object-cover"
       >
         <source
@@ -174,7 +174,7 @@ export default function Framework() {
                 <button
                   key={phase.id}
                   onClick={() => setActivePhase(phase.id)}
-                  className={`group px-6 py-4 rounded-2xl transition-all duration-300 ${
+                  className={`group px-6 py-4 min-h-[44px] md:min-h-0 min-w-[44px] md:min-w-0 rounded-2xl transition-all duration-300 ${
                     activePhase === phase.id
                       ? `bg-white/[0.06] border-2 shadow-lg ${
                           phase.accentColor === 'blue'

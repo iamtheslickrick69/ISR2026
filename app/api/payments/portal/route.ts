@@ -20,7 +20,9 @@ export async function POST() {
       .eq('id', user.id)
       .single()
 
-    if (!profile?.stripe_customer_id) {
+    const profileData = profile as any
+
+    if (!profileData?.stripe_customer_id) {
       return NextResponse.json(
         { error: 'No subscription found' },
         { status: 400 }
@@ -30,7 +32,7 @@ export async function POST() {
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
     const session = await createPortalSession({
-      customerId: profile.stripe_customer_id,
+      customerId: profileData.stripe_customer_id,
       returnUrl: `${appUrl}/agent-builder/settings`,
     })
 

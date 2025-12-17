@@ -29,21 +29,23 @@ export async function POST(request: NextRequest) {
       .eq('id', user.id)
       .single()
 
+    const profileData = profile as any
+
     // Get or create Stripe customer
-    let stripeCustomerId = profile?.stripe_customer_id
+    let stripeCustomerId = profileData?.stripe_customer_id
 
     if (!stripeCustomerId) {
       const customer = await getOrCreateCustomer({
         email: user.email!,
-        name: profile?.full_name || undefined,
+        name: profileData?.full_name || undefined,
         userId: user.id,
       })
       stripeCustomerId = customer.id
 
       // Update profile with Stripe customer ID
-      await supabase
+      await (supabase
         .from('profiles')
-        .update({ stripe_customer_id: stripeCustomerId })
+        .update as any)({ stripe_customer_id: stripeCustomerId })
         .eq('id', user.id)
     }
 

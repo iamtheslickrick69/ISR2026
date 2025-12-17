@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 import { generateEmbedding, generateChatResponse } from '@/lib/anthropic'
+import type { Bot, Profile } from '@/types/database'
 
 // POST /api/chat - Handle chat messages (public endpoint for embed widget)
 export async function POST(request: NextRequest) {
@@ -37,16 +38,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Bot not found or inactive' }, { status: 404 })
     }
 
+    const botData = bot as any as Bot
+
     // Check conversation limit
     const { data: profile } = await supabase
       .from('profiles')
-      .select('conversation_limit, conversations_used')
-      .eq('id', bot.user_id)
+      .select('conversation_limit, conversations_used, id')
+      .eq('id', botData.user_id)
       .single()
 
-    if (profile && profile.conversations_used >= profile.conversation_limit) {
+    const profileData = profile as any as Profile | null
+
+    if (profileData && profileData.conversations_used >= profileData.conversation_limit) {
       return NextResponse.json(
-        { error: 'Conversation limit reached', content: bot.fallback_message },
+        { error: 'Conversation limit reached', content: botData.fallback_message },
         { status: 429 }
       )
     }
@@ -63,7 +68,7 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (existingConversation) {
-        conversationId = existingConversation.id
+        conversationId = (existingConversation as any).id
       } else {
         const { data: newConversation } = await supabase
           .from('conversations')
@@ -72,16 +77,16 @@ export async function POST(request: NextRequest) {
             session_id: sessionId,
             visitor_user_agent: request.headers.get('user-agent') || undefined,
             visitor_referrer: request.headers.get('referer') || undefined,
-          })
+          } as any)
           .select()
           .single()
 
-        conversationId = newConversation!.id
+        conversationId = (newConversation as any)!.id
 
         // Increment conversations used
         await supabase.rpc('increment_conversations_used', {
-          user_id: bot.user_id,
-        })
+          user_id: botData.user_id,
+        } as any)
       }
     } else {
       const newSessionId = crypto.randomUUID()
@@ -92,11 +97,11 @@ export async function POST(request: NextRequest) {
           session_id: newSessionId,
           visitor_user_agent: request.headers.get('user-agent') || undefined,
           visitor_referrer: request.headers.get('referer') || undefined,
-        })
+        } as any)
         .select()
         .single()
 
-      conversationId = newConversation!.id
+      conversationId = (newConversation as any)!.id
     }
 
     // Store user message
@@ -104,7 +109,7 @@ export async function POST(request: NextRequest) {
       conversation_id: conversationId,
       role: 'user',
       content: message,
-    })
+    } as any)
 
     // Generate embedding for the query
     const queryEmbedding = await generateEmbedding(message)
@@ -115,11 +120,12 @@ export async function POST(request: NextRequest) {
       p_query_embedding: queryEmbedding,
       p_match_threshold: 0.7,
       p_match_count: 5,
-    })
+    } as any)
 
     // Build context from retrieved chunks
-    const context = chunks && chunks.length > 0
-      ? chunks.map((chunk: { content: string }) => chunk.content).join('\n\n')
+    const chunksData = chunks as any
+    const context = chunksData && chunksData.length > 0
+      ? chunksData.map((chunk: { content: string }) => chunk.content).join('\n\n')
       : 'No specific information found in the knowledge base.'
 
     // Prepare chat history
@@ -134,13 +140,13 @@ export async function POST(request: NextRequest) {
       messages: chatHistory,
       context,
       botConfig: {
-        botName: bot.bot_name,
-        tone: bot.tone,
-        customInstructions: bot.custom_instructions || undefined,
-        fallbackMessage: bot.fallback_message,
-        model: bot.model,
-        temperature: bot.temperature,
-        maxTokens: bot.max_tokens,
+        botName: botData.bot_name,
+        tone: botData.tone,
+        customInstructions: botData.custom_instructions || undefined,
+        fallbackMessage: botData.fallback_message,
+        model: botData.model,
+        temperature: botData.temperature,
+        maxTokens: botData.max_tokens,
       },
     })
 
@@ -151,16 +157,16 @@ export async function POST(request: NextRequest) {
       conversation_id: conversationId,
       role: 'assistant',
       content: responseContent,
-      model: bot.model,
+      model: botData.model,
       tokens_used: tokensUsed,
       latency_ms: latencyMs,
-      source_chunks: chunks?.map((c: { id: string }) => c.id) || [],
-    })
+      source_chunks: chunksData?.map((c: { id: string }) => c.id) || [],
+    } as any)
 
     // Update conversation
-    await supabase
+    await (supabase
       .from('conversations')
-      .update({
+      .update as any)({
         message_count: messages.length + 2,
         last_message_at: new Date().toISOString(),
       })

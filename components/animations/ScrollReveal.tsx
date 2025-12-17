@@ -20,9 +20,9 @@ interface ScrollRevealProps {
   distance?: number;
 }
 
-const easeOutExpo = [0.16, 1, 0.3, 1];
-const easeOutBack = [0.34, 1.56, 0.64, 1];
-const easeOutQuart = [0.25, 1, 0.5, 1];
+const easeOutExpo = [0.16, 1, 0.3, 1] as any;
+const easeOutBack = [0.34, 1.56, 0.64, 1] as any;
+const easeOutQuart = [0.25, 1, 0.5, 1] as any;
 
 export function ScrollReveal({
   children,
@@ -92,14 +92,14 @@ export function ScrollReveal({
     switch (animation) {
       case 'spring':
         return {
-          type: 'spring',
+          type: 'spring' as const,
           stiffness: 100,
           damping: 15,
           delay,
         };
       case 'bounce':
         return {
-          type: 'spring',
+          type: 'spring' as const,
           stiffness: 300,
           damping: 20,
           delay,
