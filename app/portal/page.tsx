@@ -14,6 +14,7 @@ export default function PortalPage() {
   const clientAccess: Record<string, string> = {
     "beehive2026": "https://beehive-2026.vercel.app",
     "coro": "https://coro2026-keh882u2g-rocky-teampayprocs-projects.vercel.app",
+    "maestro": "https://maestro.haestus.dev",
   }
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
