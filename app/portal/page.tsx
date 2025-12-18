@@ -15,6 +15,7 @@ export default function PortalPage() {
     "beehive2026": "https://beehive-2026.vercel.app",
     "coro": "https://coro.haestus.dev",
     "maestro": "https://maestro.haestus.dev",
+    "greg": "https://greg.haestus.dev",
   }
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
