@@ -13,7 +13,7 @@ export default function PortalPage() {
   // Client password → subdomain mapping
   const clientAccess: Record<string, string> = {
     "beehive2026": "https://beehive-2026.vercel.app",
-    "coro": "https://coro2026-keh882u2g-rocky-teampayprocs-projects.vercel.app",
+    "coro": "https://coro.haestus.dev",
     "maestro": "https://maestro.haestus.dev",
   }
 
