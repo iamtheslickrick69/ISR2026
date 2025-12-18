@@ -1033,47 +1033,9 @@ export default function Home() {
             </AdvancedScrollReveal>
           </div>
 
-          {/* Tree - Dead Center with Parallax */}
-          <AdvancedScrollReveal animation="scale" delay={0.3} duration={1}>
-            <Parallax speed={0.3}>
-              <FloatingElement distance={10} duration={5}>
-                <div className="flex justify-center items-center my-16 sm:my-20 lg:my-24">
-                  <div className="relative w-full max-w-md lg:max-w-lg">
-                    <Image
-                      src="/oogway1.png"
-                      alt="Tree"
-                      width={600}
-                      height={600}
-                      className="w-full h-auto"
-                      style={{ objectFit: 'contain', filter: 'brightness(0)' }}
-                      priority
-                    />
-                  </div>
-                </div>
-              </FloatingElement>
-            </Parallax>
-          </AdvancedScrollReveal>
-
-          {/* Bottom Content - Below Tree */}
-          <div className="text-center">
-            <AdvancedScrollReveal animation="scaleUp" delay={0.4} duration={0.7}>
-              <HoverCard lift={true} glow={false}>
-                <div className="max-w-2xl mx-auto p-10 lg:p-14 border-2 border-gray-200 rounded-3xl mb-12 bg-white">
-                  <Mail className="w-12 lg:w-14 h-12 lg:h-14 text-foreground mx-auto mb-8" />
-                  <a
-                    href="mailto:hello@haestus.dev"
-                    className="text-3xl lg:text-4xl xl:text-5xl font-heading font-bold text-foreground hover:opacity-70 transition-opacity duration-200 block mb-5"
-                  >
-                    hello@haestus.dev
-                  </a>
-                  <p className="text-base lg:text-lg text-muted-foreground font-medium">
-                    We respond within 24 hours.
-                  </p>
-                </div>
-              </HoverCard>
-            </AdvancedScrollReveal>
-
-            <AdvancedScrollReveal animation="bounceIn" delay={0.5} duration={0.8}>
+          {/* CTA Button */}
+          <div className="text-center mt-16">
+            <AdvancedScrollReveal animation="bounceIn" delay={0.3} duration={0.8}>
               <MagneticButton strength={0.2}>
                 <a
                   href="/portal"
